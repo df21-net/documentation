@@ -1,0 +1,200 @@
+<html>
+<head>
+<title>DF Specs - BM FILES</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_fntfon.htm#FNT Files"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_fme.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> BM FILES</strong></font>
+<p>
+BM files store textures used in a variety of ways in DF.<br>
+They serve as wall textures, as floor and ceiling textures (in which case they must be 64*64),
+and as 3DO facet textures, as weapons, and as the Heads Up Display.
+<p>
+ See Also
+<ul>
+<li><a href="#General">     Normal BM </a>
+<li><a href="#Transparent"> Transparent BM</a>
+<li><a href="#Multiple">    Multiple BM</a>
+<li><a href="#Compressed">  Compressed BM</a>
+</ul>
+
+<hr size="2">
+<a name="General"></a>
+<font size="+1"><strong>Normal BM </strong></font><p>
+
+Here is the data structure for the BM file header.
+<p>
+
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>BM_Header IS</th><th></th><th></th></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td>MAGIC</td><td>char[4]</td><td>// = 'BM ' + 0x1E</td></tr>
+<tr><td> SizeX </td><td>int</td><td>// if = 1 then multiple BM in the file</td></tr>
+<tr><td>SizeY</td><td>int</td><td>// EXCEPT if SizeY also = 1,// in which case it is a 1x1 BM </td></tr>
+<tr><td>idemX </td><td>int</td><td>//unused by engine</td></tr>
+<tr><td>idemY</td><td>int </td><td>//unused by engine</td></tr>
+<tr><td>Transparent </td><td>byte</td><td>// 0x36 for normal // 0x3E for transparent // 0x08 for weapons</td></tr>
+<tr><td> logSizeY</td><td>byte</td><td>// logSizeY = log2(SizeY)// logSizeY = 0 for weapons</td></tr>
+<tr><td>Compressed</td><td>int </td><td>// 0 = not compressed// 1 = compressed (RLE)// 2 = compressed (RLE0)</td></tr>
+<tr><td>DataSize </td><td>long</td><td>// Data size for compressed BM// excluding header and columns starts table// If not compressed,DataSize is unused
+</td></tr>
+<tr><td> pad1</td><td>byte[12]</td><td>// 12 times 0x00</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+ <p>Pease note that BM must have a height which is a power of 2 (except weapons).<br>
+The data follows, encoded by COLUMNS from the bottom to the top.
+<p>
+
+<hr size="2">
+<a name="Transparent"></a>
+<font size="+1"><strong>Transparent BM </strong></font><p>
+<p>
+
+You can transform any BM in a transparent BM by changing its Transparent value from 0x36 to 0x3E.
+The color 0 will 'disappear' and you will be able to see through it if it is a MID texture on an adjoined wall.
+Note that this isn't the same as DOOM transparent textures (which use something very similar to RLE0).
+<p>
+
+<strong>Note</strong> that weapons BM use 0x08 for their transparent value, so maybe the transparent byte is a collection of flags, where the bit 3 means transparent.
+<p>
+
+<hr size="2">
+<a name="Multiple"></a>
+<font size="+1"><strong>Multiple BM </strong></font><p>
+<p>
+IIf SizeX = 1  (EXCEPT if SizeY = 1 in which case it is a 1*1 BM) the BM file is multiple.<p>
+<p>
+The header of multiple BMs is different from that of a normal BM.
+
+<p>
+<table border="1" cellpadding="5"><tr><td><table cellpadding="5">
+<tr><th>BM_Multiple_Header IS</th><td></td><td></td></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td>MAGIC</td><td>char[4]</td><td>// = 'BM ' + 0x1E </td></tr>
+<tr><td>SizeX</td><td>int</td><td>// = 1</td></tr>
+<tr><td>SizeY</td><td>int</td><td>// = length of file - 32 </td></tr>
+<tr><td>idemX</td><td>int</td><td>// = -2</td></tr>
+<tr><td>idemY</td><td>int</td><td>// number of 'sub' BMs </td></tr>
+<tr><td>Transparent</td><td>byte</td><td></td></tr>
+<tr><td>logSizeY</td><td>byte</td><td></td></tr>
+<tr><td>Compressed</td><td>int</td><td></td></tr>
+<tr><td>DataSize</td><td>long</td><td></td></tr>
+<tr><td>pad1</td><td>byte[12]</td><td>// 12 times 0x00</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+
+<p>
+
+<strong>Important notes</strong>
+<p>
+Straight after the Multiple BM header are two bytes:
+- The first is either the frame rate (in frames per second) of an animated texture, or is 0 to designate a switch. You may alter this value if you want.
+(Note: A switch can only have two textures on or off and anything more will not work.)
+- The second byte is 2.
+<p>
+Then follows a table of offsets to the 'sub' BM composed of idemY long.
+The simple fact that this table exists tells us that sub BMs of different sizes may be stored.
+
+Each 'sub' BM then has its own header, slightly different from the BM_Header:
+<p>
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>BM_SUBHeader IS</th><th></th><th></th></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td>SizeX</td><td>int</td><td>// horizontal size</td></tr>
+<tr><td>SizeY</td><td>int</td><td>// vertical size</td></tr>
+<tr><td>idemX</td><td>int</td><td>// unused by engine</td></tr>
+<tr><td>idemY</td><td>int</td><td>// unused by engine</td></tr>
+<tr><td>DataSize</td><td>long</td><td>// unused (no compression allowed)</td></tr>
+<tr><td>logSizeY</td><td>byte</td><td>// logSizeY = log2(SizeY)</td></tr>
+<tr><td>pad1</td><td>byte[3]</td><td></td></tr>
+<tr><td>u1</td><td>byte[3]</td><td>// these are always filled, but they seem // to be unused</td></tr>
+<tr><td>pad2</td><td>byte[5]</td><td></td></tr>
+<tr><td>Transparent</td><td>byte</td><td>// 0x36 for normal // 0x3E for transparent</td></tr>
+<tr><td>pad3</td><td>byte[3]</td><td></td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+ <p>
+<strong>Important Notes</strong>
+<p>
+1) There is no MAGIC field.<br>
+2) For a multiple BM to work correctly, it must be made a SIGN, and for switches there MUST also exist a corresponding trigger in the .INF Else, switches will be displayed wrong (as a single column) and the animated will display correctly, but static.
+This means that you cannot do animated floors and ceilings this way !<br>
+3) The multiple BMs are limited to 64K in size because SizeY contains the size of the file - 32 and is an int.<br>
+Although it should never be a problem with switches, this means that you must use animated BMs for small textures only.
+<p>
+A solution that allows animated walls of any size AND animated floors and ceilings is to compose a huge texture with your multiple images pasted next to each other. Then use INF elevators to scroll wall or scroll floor/ceiling using the offsets of the images as stops. If you set a speed of 0, the change will be instantaneous, and the effect will be the same. An added bonus is that you'll also have complete control on starting/stopping the animation.
+<p>
+
+
+
+
+<hr size="2">
+<a name="Compressed"></a>
+<font size="+1"><strong>Compressed BM </strong></font><p>
+<p>
+
+If Compressed = 1 or 2, the BM is compressed.<br>
+These existed in the DEMO (buyit.bm, Compressed = 1; wait.bm, Compressed = 2), but there aren't any in the full game.<br>
+The engine still supports them however, so here are their descriptions.<br>
+Note that Multiple BMs don't allow compression. <br>
+(thanks to Alex Novikov for corrections and improvements on these notions).
+<p>
+
+The heart of the data is a columns starts table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one long entry per column containing this column start address.
+This start address is calculated without the 32 bytes BM header (i.e. read the header in a struct, then the data in a huge buffer at offset 0).
+<p>
+
+<strong>Compressed = 1 (RLE)</strong>
+<p>
+
+The coding of one column follows (in pseudo code format).
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+while(end of data for this column not reached)
+{
+ if(buffer[address] &lt;= 127)
+   the FOLLOWING n bytes are direct values
+ else
+   the FOLLOWING byte is a color byte to repeat n-128 times
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+So, for example, the following hex values ...88 02 17 28 82... mean:<br>
+write 8 pixels of color 02, then write 17 pixels with colors 28, 82, etc.
+<p>
+
+This should be the format of choice for non-transparent BMs.
+<p>
+
+<strong>Compressed = 2 (RLE0)</strong>
+<p>
+
+The coding of one column follows (in pseudo code format).
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+while(end of data for this column not reached)
+{
+ if(buffer[address] &lt;= 127)
+   the FOLLOWING n bytes are direct values
+ else
+   skip n-128 transparent (background) pixels
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+So, for example, the following hex values ...88 02 17 28 82... mean:<br>
+skip 8 background pixels, then write two pixels with colors 17 and 28, then skip 2 background pixels, etc.
+<p>
+
+This should be the format of choice for transparent BMs.
+<p>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>DF Specs - ANIM LFD Resource</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_msg.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_delt.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> ANIM LFD Resource (ANM Files)</strong></font>
+<p>
+Those LFD resources contain animations played in the cutscenes, the missions objective screens that appear in the PDA, and the game menus.<br>
+ANIMs are quite logically a collection of DELTs.
+<p>
+
+Note: the .anm extension is a convention adopted by add-on developers when writing conversion programs, there are no real ANM files in DARK FORCES.
+<p>
+
+Their format is quite simple:
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+ANIM_Header IS
+{		
+ NbDELT           int              // number of embedded DELTs
+}		
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Then follows each DELT, encoded as:
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+ANIM_DELTData IS
+{		
+ DELTSize         long             // the size of the embedded DELT
+ aDELT            bytes[n]         // a complete DELT resource
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+</body>
+</html>

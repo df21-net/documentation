@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>DF Specs - GOB FILES</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_filfmt.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_lfd.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> GOB FILES</strong></font>
+<hr size="2">
+
+<a href="s_doom.htm#GOB Files"><img src="./images/gotodoom.gif" align="ABSMIDDLE" alt="Doom Note"></a>
+<p>
+
+GOB files are a repository for many other files, and are by far the best way to distribute add-on levels.<br>
+They contain a header with a signature, a data part and an index part.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+GOB_Header IS
+{
+ GOB_MAGIC        char[4]          // 'GOB' followed by 0x0A
+ MASTERX          long             // offset to MASTERN
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+The embedded files follow, then comes the index.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+GOB_Index IS
+{
+ MASTERN          long             // number of files in the GOB
+ INDEXES          GOB_Ix_Entry[n]  // one index entry per file
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Where:
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+GOB_Ix_Entry IS
+{
+ IX               long             // pointer to start of the file
+ LEN              long             // length of the file
+ NAME             char[13]         // name of the file, null terminated
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+</body>
+</html>

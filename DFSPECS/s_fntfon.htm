@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>DF Specs - FONTS</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_cmp.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_bm.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> FONT FILES</strong></font>
+
+<ul>
+<li><a href="#FNT Files"> FNT Files</a>
+<li><a href="#FONT Res"> FONT Resources (FON Files)</a>
+</ul>
+
+<hr size="2">
+
+<a name="FNT Files"></a>
+<font size="+1"><strong>FNT Files </strong></font><p>
+
+These files store a proportional character set. FNT files are found in DARK.GOB<br>
+This set may not be complete. The font used to display the ammo, for instance contains only the numbers and the ':' character.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+FNT_Header IS
+{
+ Magic            char[4]          // 'FNT' + 15h (21d)
+ Height           byte             // Height of the font
+ u1               byte             // Unknown
+ DataSize         int              // Data after header
+ First            byte             // First character in font
+ Last             byte             // Last character in font
+ pad1             byte[22]         // 22 times 0x00
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Then follow the characters. <br>
+There is (Last-First+1) FNT_Character blocks (one per character). 
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+FNT_Character IS
+{
+ Width            byte             // Width of the character
+ Picture          byte[Width*Height] 
+                                   // Bytes describing the character,
+                                   // by columns from bottom to top
+                                   // Each byte is an index in the
+                                   // current PAL palette
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+<hr size="2">
+
+<a name="FONT Res"></a>
+<font size="+1"><strong>FONT Resources (FON Files)</strong></font><p>
+
+These LFD resources store a proportional character set, which may be incomplete.<br>
+I found two examples : font6 and font8.
+<p>
+
+<strong>Note</strong><br>
+the .fon extension is a convention adopted by add-on developers when writing conversion programs, there are no real FON files in DARK FORCES. There are FNT files however, which are quite different !
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+FON_Header IS
+{
+ First            int              // First character in font
+ Last             int              // Last character in font
+ u1               int              // 8, could be bits per char line
+ Height           int              // Height of Chars
+ u2               int              // could be average Width
+                                   // or the minimal Width to use
+ pad1             byte[2]          // 2 times 0x00
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Then follows a block of (Last-First+1) bytes (one per character), which code the width of the corresponding character.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+FON_Characters_Widths IS
+{
+ Widths           byte[Last-First+1] 
+                                   // each byte is the width 
+                                   // of one character
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Then each character is described in turn:
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+FON_Character IS
+{
+ Bitmap           Byte[Height]     // Height bytes for each
+                                   // character
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Now the funny part: each of these bytes is a bitmap representation of a line of the character.<br>
+A bit set correspond to a pixel drawn on the screen.
+<p>
+
+For example, if the bytes are 48h, FCh, 48h, FCh, 48h, 00h
+this gives
+<p>
+
+<table border="1" width="150"><tr><td><pre>
+ 48h   .X..X...
+ FCh   XXXXXX..
+ 48h   .X..X...
+ FCh   XXXXXX..
+ 48h   .X..X...
+ 00h   ........
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Which is the # character.<br>
+
+Note that the width as referenced in the FON_Characters_Widths array would be 6 for this character. <br>
+In fact, FON_Characters_Widths must be used to determine where on the screen to draw the next character.
+<p>
+
+</body>
+</html>

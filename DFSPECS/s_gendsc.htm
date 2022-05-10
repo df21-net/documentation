@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>DF Specs - General Description</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_new.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_filfmt.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> General Description</strong></font>
+
+<ul>
+<li><a href="#Containers &amp; Patching">Containers &amp; Patching</a>
+<li><a href="#General File Description">General File Description</a>
+</ul>
+
+<hr size="2">
+
+<a name="Containers &amp; Patching"></a><font size="+1"><strong>Containers &amp; Patching </strong></font><a href="s_doom.htm#Containers &amp; Patching"><img src="./images/gotodoom.gif" align="ABSMIDDLE" alt="Doom Note"></a><p>
+
+<strong>Containers </strong>
+<p>
+Dark Forces contains a huge amount of files, and these are grouped by type in what are called <a href="s_gob.htm">GOB </a> files and <a href="s_lfd.htm">LFD Files</a>. 
+They serve as containers for other files which in turn contain information. 
+GOB Files mainly contain the level information, while LFD Files contain the data needed for the cutscenes, the briefings, and more generally all what is drawn OUT of the 3D engine. 
+<p>
+<strong>Patching</strong>
+<p>
+Files can be extracted from the GOB and worked upon, then be used in the game. 
+LucasArts made a very good job of this and prepared a path for users to modify levels. 
+If you want to make DF accept new or modified files, create a <a href="s_gob.htm">GOB</a> file with them (say <em>mylevel.gob</em>). 
+Then use the following command line: <strong>dark -u<em>mylevel.gob</em></strong> 
+<p>
+The order in which DF looks for a file is as follows:
+<p>
+<ol>
+<li> as a file in the installed directory 
+<li> in the GOB specified by -u... 
+<li> in its normal GOB in the installed directory 
+<li> in its normal GOB on the CD 
+</ol>
+<p>
+LFD resources can also be extracted and worked upon, but there isn't any facility to load them.<br>
+What you have to do is recompose the patched LFD, and set it in the installed directory, or in the lfd subdirectory of the installed directory.
+<p>
+Putting a patched LFD in a GOB and loading it with -u doesn't seem to work.
+<p>
+
+<hr size="2">
+
+<a name="General File Description"></a><font size="+1"><strong>General File Description </strong></font><a href="s_doom.htm#General File Description"><img src="./images/gotodoom.gif" align="ABSMIDDLE" alt="Doom Note"></a><p>
+
+
+<p>
+<table border="1">
+<tr><td>Files critical to DF:</td><td>
+<table><tr><td>JEDI.LVL</td><td>List of the levels</td></tr>
+<tr><td>TEXT.MSG</td><td>In-game text messages</td></tr>
+<tr><td>BRIEFING.LST</td><td>List of the briefings</td></tr>
+<tr><td>CUTSCENE.LST</td><td>List of the cutscenes</td></tr>
+<tr><td>CUTMUSE.TXT</td><td>Cutscene musics</td></tr>
+</td></tr></table>
+
+<tr><td>Levels </td>
+<td>
+are composed of 6 files, found in dark.gob
+<table>
+<tr><td>name.LEV </td><td>geometry (static) </td></tr>
+<tr><td>name.INF </td><td>workings (dynamic) </td></tr>
+<tr><td>name.GOL </td><td>goals </td></tr>
+<tr><td>name.O </td><td>objects </td></tr>
+<tr><td>name.PAL </td><td>palette </td></tr>
+<tr><td>name.CMP </td><td>palette mappings </td></tr>
+</table>
+</td></tr>
+<tr><td>Textures </td><td>are stored in .BM  files, as are the weapons display, and so on. </td></tr>
+<tr><td>Sounds</td><td>are stored in .VOC files (normal Creative Labs format). </td></tr>
+<tr><td>Musics</td><td>are stored in .GMD files (General MIDI format). </td></tr>
+<tr><td>Objects
+</td>
+<td>
+are stored in the following files depending on their type :<br>
+<table>
+<tr><td>name.3DO </td><td>3D </td><td>(real 3D object)</td></tr>
+<tr><td>name.FME </td><td>FRAME </td><td>(a "one view" object)</td></tr>
+<tr><td>name.WAX </td><td>SPRITE </td><td>(i.e. all the enemies)</td></tr>
+<tr><td>name.VOC </td><td>SOUND </td><td>(any sound)</td></tr>
+</table>
+</td></tr>
+<tr><td>3D object motions </td><td>are stored in .VUE files (normal 3D Studio format). </td></tr>
+</table>
+
+
+</body>
+</html>

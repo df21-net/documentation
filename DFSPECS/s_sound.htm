@@ -1,0 +1,210 @@
+<html>
+<head>
+<title>DF Specs 2.00 - SOUND FILES</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_vue.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_msg.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> SOUND FILES</strong></font>
+
+<ul>
+<li><a href="#VOC Files"> VOC Files</a>
+<li><a href="#VOIC Res"> VOIC Resources (VOC Files)</a>
+<li><a href="#GMD Files"> GMD Files</a>
+<li><a href="#GMID Res"> GMID Resources (GMD Files)</a>
+</ul>
+
+<hr size="2">
+
+<a name="VOC Files"></a>
+<font size="+1"><strong>VOC Files </strong></font><p>
+
+<p>
+These are standard .VOC files in the <strong>Creative Labs format. </strong>
+<p>
+The DF engine only accepts <strong>MONO 8-bit 11KHz (11025 Hz) .VOC files.</strong>
+<p>
+Note that sounds are looped (eg. the water and wind) using REPEAT/END REPEAT markers.
+<p>
+
+[by galt@dsd.es.com]
+<p>
+<strong>Creative Voice File (VOC) Format:</strong>
+<p>
+    HEADER (bytes 00-19)<br>
+    Series of DATA BLOCKS (bytes 1A+) [Must end w/ Terminator Block]
+<p>
+
+<table border="1" cellpadding="5">
+<tr><th>HEADER:</th><td></td></tr>
+ <tr><td>    byte #  </td><td>Description</td></tr>
+ <tr><td>   00-12  </td><td>    Creative Voice File</td></tr>
+<tr><td>  13-15 </td><td>     1A 1A 00  (eof to abort printing of file)</td></tr>
+   <tr><td>  16-17 </td><td>     Version number (minor,major) (VOC-HDR puts 0A 01)</td></tr>
+   <tr><td>  18-19  </td><td>    2's Comp of Ver. # + 1234h (VOC-HDR puts 29 11)</td></tr>
+</table>
+<p>
+
+
+<strong>DATA BLOCK:</strong>
+<p>
+
+   Data Block:  TYPE(1-byte), SIZE(3-bytes), INFO(0+ bytes)
+<p>
+ <strong>  NOTE: </strong>Terminator Block is an exception -- it has only the TYPE byte.
+<p>
+<table border="1" cellpadding="5">
+<tr><th>TYPE  </th><th> Description </th><th>    Size (3-byte int) </th><th>  Info</th></tr>
+<tr><td>00 </td><td>Terminator</td><td>(NONE) </td><td> (NONE)</td></tr>
+<tr><td>01</td><td>Sound data </td><td>   2+length of data </td><td>  <strong> *</strong></td></tr>
+<tr><td>02</td><td>Sound continue </td><td> length of data</td><td>Voice Data</td></tr>
+<tr><td>03</td><td>Silence </td><td>3  </td><td>  <strong>**</strong></td></tr>
+<tr><td>04</td><td>Marker </td><td>2 </td><td>  Marker# (2 bytes)</td></tr>
+<tr><td>05</td><td>ASCII  </td><td>length of string  </td><td>  null terminated string</td></tr>
+<tr><td>06</td><td>Repeat  </td><td>2 </td><td>  Count# (2 bytes)</td></tr>
+<tr><td>07</td><td>End repeat </td><td>0 </td><td>    (NONE)</td></tr>
+</table>
+<p><br>
+<table border="1" cellpadding="5">
+<tr><th>*Sound Info Format:</th><th></th><th>**Silence Info Format:</th></tr>    
+<tr><td>00 </td><td> Sample Rate </td><td>00-01 </td><td>Length of silence - 1</td></tr>
+<tr><td>01 </td><td>Compression Type </td><td> 02 </td><td>Sample Rate</td></tr>
+<tr><td>02+ </td><td> Voice Data</td><td></td><td></td></tr>
+</table>
+<p><br>
+<table border="1" cellpadding="5">
+ <tr><td> Marker#   </td><td>        -- Driver keeps the most recent marker in a status byte</td></tr>
+<tr><td>  Count#     </td><td>       -- Number of repetitions + 1</td></tr>
+<tr><td> </td><td> Count# may be 1 to FFFE for 0 - FFFD repetitions</td></tr>
+<tr><td> </td><td>  or FFFF for endless repetitions</td></tr>
+<tr><td> Sample Rate </td><td>-- SR byte = 256-(1000000/sample_rate)</td></tr>
+<tr><td> Length of silence </td><td>-- in units of sampling cycle</td></tr>
+<tr><td> Compression Type </td><td> -- of voice data</td></tr>
+<tr><td> </td><td>8-bits    = 0</td></tr>
+<tr><td>  </td><td>4-bits    = 1</td></tr>
+<tr><td>  </td><td>2.6-bits  = 2</td></tr>
+<tr><td>  </td><td>2-bits    = 3</td></tr>
+<tr><td> </td><td>Multi DAC = 3+(# of channels) [interesting--  this isn't in the developer's manual]</td></tr>
+</table>
+<p>
+<hr size="2">
+
+<a name="VOIC Res"></a>
+<font size="+1"><strong>VOIC Resources (VOC Files) </strong></font><p>
+
+Those LFD resources store .VOC files, in the Creative Labs format.
+<p>
+
+It seems that all the VOIC resources are in the jedisfx.lfd file.
+<p>
+
+<hr size="2">
+
+<a name="GMD Files"></a>
+<font size="+1"><strong>GMD Files </strong></font><p>
+
+<p>
+They contain the musics.
+<p>
+[by Alex Novikov]
+<p>
+The header of GMD file (or the LFD GMID resource) consists of two fields:
+<p><table border="1" cellpadding="5"><tr><td><table>
+<tr><th>GMD_Header IS</th><td></td><td></td></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td>Magic</td><td>char[4]</td><td>	// the string 'MIDI'</td></tr>
+<tr><td>Size</td><td>long</td><td>// Size of the whole file excluding header // inverted byte order</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr><table><p>
+
+The order of bytes in the Size field is inverted: the first byte is the highest byte, the 4th byte is the lowest byte of the value (this order is normal for Mac, but inverted for PC).
+<p>
+Then follow a variable number of chunks in format:
+<p>
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>GMD_Chunk IS</th><td></td><td></td></tr>
+<tr><td>{</td><td></td><td></td></tr>
+ <tr><td>Type</td><td>char[4]</td><td>	// chunk type</td></tr>
+ <tr><td>Size</td><td>long</td><td>// Size of the chunk excluding header // inverted byte order</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+<p>
+The field Size has the inverted order of bytes - same as the field Size of the file header.
+<p>
+The following Chunks are encountered:
+<p>
+<strong>MDpg</strong><br>
+Varied length, usually 14 (0Eh)<br>
+Very strange content - mostly doesn't change from file to file, but if it does - some new byte is INSERTED between usual ones (with chunk size preserved, so the last byte of chunk goes).
+<p>
+<strong>MThd</strong><br>
+6 bytes long.<br>
+Normal MIDI header. Indicates MIDI format 2.
+<p>
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>MTHD_CHUNK IS</th><td></td><td></td></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td>Format </td><td> INVERTED_INT</td><td>// always 2 (MIDI2 format)</td></tr>
+<tr><td>NTracks</td><td>INVERTED_INT</td><td>// Number of tracks in the file</td></tr>
+<tr><td>Division</td><td>INVERTED_INT</td><td>// always 1E0h (tempo constant)</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+<p>
+<strong>INVERTED_INT </strong>is an <strong>INT</strong> with inverted byte order.
+<p>
+<strong>MTrk</strong><br>
+Normal MIDI format 0(2) track data with the exception that "running status" (i.e. if one MIDI event followed by the same MIDI event with different parameters, the MIDI event code can omitted) is not used/supported. You cannot omit MIDI event codes.This basically means that GMD MTrk data are compatible with the MIDI standard, but MTrk from external MIDIs can be (and often are) incompatible with the GMD standard. See SMF (Standard MIDI File) specs for more info on MTrk chunk content.
+<p>
+
+The additional data in GMD's MTrk chunks is internal iMuse commands. Internal iMuse commands are stored as SysEx (System Exclusive) messages. They usually look like:
+<p>
+<table border="1" cellpadding="5">
+<tr><th>F0 Size 7D 03 TEXT 00 F7</th><td></td><td></td></tr>
+<tr><td>F0</td><td> identifier of SysEx message</td></tr>
+<tr><td>Size</td><td> value of message size in MIDI variable length format</td></tr>
+<tr><td>7D 03</td><td> probably an identifier of iMuse message</td></tr>
+<tr><td>TEXT</td><td> a text string of several characters</td></tr>
+<tr><td>00</td><td> string terminator</td></tr>
+<tr><td>F7</td><td> SysEx message terminator</td></tr>
+</table>
+<p>
+The encounteded messages are (TEXT part):<p>
+
+<table border="1" cellpadding="5">
+<tr><td>start new</td><td></td></tr>
+<tr><td>stalk trans #</td><td>// # is a number appears to be a float</td></tr>
+<tr><td>fight trans #,#</td><td></td></tr>
+<tr><td>engage trans #</td><td></td></tr>
+<tr><td>from fight #,#</td><td></td></tr>
+<tr><td>from stalk #,#,#</td><td></td></tr>
+<tr><td>from boss #</td><td></td></tr>
+<tr><td>clear callback</td><td></td></tr>
+<tr><td>to X</td><td>// X= A,B,C...</td></tr>
+<tr><td>to Xslow</td><td>	// X=A,B,C...</td></tr>
+</table>
+<p>
+The number of parameters may vary. And, actually, the effect of these messages is not really known.
+
+<p>
+There are also iMuse messages beginning with 7D 01 whose format is unknown. They seem to have something to do with looping the in-level music.
+<p>
+
+
+
+
+<hr size="2">
+
+<a name="GMID Res"></a>
+<font size="+1"><strong>GMID Resources (GMD Files) </strong></font><p>
+
+Those LFD resources store .GMD general midi files.
+<p>
+
+See the GMD discussion just above.
+<p>
+
+</body>
+</html>

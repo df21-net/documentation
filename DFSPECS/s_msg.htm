@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>DF Specs - MSG FILES</title>
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_sound.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_anim.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> MSG FILES</strong></font>
+
+<hr size="2">
+
+They contain the text messages used in the game.
+<p>
+
+<table border="1" cellpadding="5">
+<tr><td>text.msg </td><td>	Contains in-game text messages. You can create new messages or patch existing ones. New messages can be displayed with the "TEXT:" INF function. </td></tr>
+<tr><td>local.msg </td><td>Contains run-time error messages and should be left untouched.</td></tr>
+<tr><td>hotkeys.msg</td><td>Contains menu hotkeys and should be left untouched</td></tr>
+
+</table>
+<p>
+
+<strong>General format:</strong>
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+| MSG 1.0
+|
+| MSGS 119
+|
+| # internal game messages
+| 0    0:  "Joystick Off"
+| ...
+| END
+</pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+MSGS is the number of messages. Don't forget to update it if you add messages.
+<p>
+
+I found no problems by adding messages to TEXT.MSG at 900 and more.
+<p>
+eg.
+<table border="1" width="600"><tr><td><pre>
+| 900  1:  "Hurry up !"
+</pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+<table width="99%"><tr><td>
+The number followed by a colon (eg. 1:) rates the importance of the message relative to other messages in the MSG file. '0: ' is the most important, and as the number increases, the message becomes less important. If a message is currently on screen, it can be immediately overwritten with one of the same or more importance, otherwise if the incoming message is less important, it won't be shown. So for example, you will probably want the pickup message of a goal item to be more important than the pickup message of a shield or clip.</td></tr></table>
+<p>
+
+The 'cheat messages' are from 700 onwards. <br>
+Just so you know where to insert a few 'Cheater!' and 'Chicken Mode ON' ... :-)
+<p>
+
+</body>
+</html>

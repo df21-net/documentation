@@ -1,0 +1,97 @@
+<html>
+<head>
+<title> DF Specs - FME FILES </title>
+<!--Version 3.00-->
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_bm.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_wax.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> FME FILES</strong></font>
+<p>
+
+They contain the frames, which are the "one view" objects (you can turn around them, and you always see the same image).
+<p>
+
+Here are the data structures for the FME file headers.
+<p>
+
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>FME_Header1 IS</th><th width="50px"></th><th></th></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td> InsertX</td><td>    long   </td><td>// Insertion point, X coordinate</td></tr>
+<tr><td></td><td></td><td>// Negative values shift the FME left</td></tr>
+<tr><td></td><td></td><td>// Positive values shift the FME right</td></tr>
+<tr><td> InsertY</td><td>    long    </td><td>// Insertion point, Y coordinate</td></tr>
+<tr><td></td><td></td><td>// Negative values shift the FME up</td></tr>
+<tr><td></td><td></td><td>// Positive values shift the FME down</td></tr>
+<tr><td> Flip</td><td>    long    </td><td>// 0 = not flipped</td></tr>
+<tr><td></td><td></td><td>// 1 = flipped horizontally</td></tr>
+<tr><td> Header2</td><td>    long    </td><td>// pointer to FME_Header2</td></tr>
+<tr><td> UnitWidth</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td> UnitHeight</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td> pad3</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td> pad4</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+<p>
+
+<table border="1" cellpadding="5"><tr><td><table>
+<tr><th>FME_Header2 IS</th><th width="50px"></th><th></th></tr>
+<tr><td>{</td><td></td><td></td></tr>
+<tr><td> SizeX</td><td>    long    </td><td>// Size of the FME, X value</td></tr>
+<tr><td> SizeY</td><td>    long    </td><td>// Size of the FME, Y value</td></tr>
+<tr><td> Compressed</td><td>    long    </td><td>// 0 = not compressed</td></tr>
+<tr><td></td><td></td><td>// 1 = compressed</td></tr>
+<tr><td> DataSize</td><td>    long    </td><td>// Datasize for compressed FMEs,</td></tr>
+<tr><td></td><td></td><td>// equals length of the FME file - 32</td></tr>
+<tr><td></td><td></td><td>// If not compressed, DataSize = 0</td></tr>
+<tr><td> ColOffs</td><td>    long    </td><td>// Always 0, because columns table </td></tr>
+<tr><td></td><td></td><td>// follows just after</td></tr>
+<tr><td> pad1</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td>}</td><td></td><td></td></tr>
+</table></td></tr></table>
+<p>
+If Compressed = 0, the data follows, encoded by COLUMNS from the bottom to the top.
+
+<p>
+<strong>Compressed FME</strong>
+
+<p>
+Compressed FMEs are very similar to compressed BMs (RLE0).
+
+<p>
+After FME_Header2 follows a table of offsets to the starts of the columns data. <br>
+Those are offsets from the start of FME_Header2.
+
+<p>
+Then follow the columns data.
+
+<p>
+The coding of one column follows (in pseudo code format).
+
+<p>
+<table border="1" width="600"><tr><td><pre>
+while(end of data for this column not reached)
+{
+ if(buffer[address] &lt;= 128)
+   the FOLLOWING n bytes are direct values
+ else
+   skip n-128 transparent (background) pixels
+}
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+
+<p>
+So, for example, the following hex values ...88 02 17 28 82... mean:<br>
+skip 8 background pixels, then write two pixels with colors 17 and 28, then skip 2 background pixels, etc.
+<p>
+
+
+
+
+
+
+</body>
+</html>

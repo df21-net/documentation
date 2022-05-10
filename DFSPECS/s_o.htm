@@ -1,0 +1,558 @@
+<html>
+<head>
+<title>DF Specs - O Files</title>
+<!--Version 3.00-->
+</head>
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_gol.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_palplt.htm#PAL Files"><img src="./images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong> O Files</strong></font>
+<p>
+
+O files contain all the level objects. They are in text format.
+<p>
+
+<ul>
+<li><a href="#ge"> Generalities - Object Types</a>
+<li><a href="#ff"> File Format</a>
+  <ul>
+   <li><a href="#ff_mvl"> Magic, Version number and level name </a>
+   <li><a href="#ff_obt"> Objects Tables </a>
+   <li><a href="#ff_obd"> Object Descriptions </a>
+     <ul>
+       <li><a href="#ff_obd_sl"> Sequences and Logics </a>
+       <li><a href="#ff_obd_gn"> Generators </a>
+     </ul>
+  </ul>
+<li><a href="#ol"> All Objects Logics</a>
+</ul>
+
+<hr size="2">
+
+<a name="ge"></a><font size="+1"><strong>Generalities - Object Types </strong></font><p>
+
+There are many different object types in Dark Forces:
+<p>
+
+<table border="2">
+ <tr><td><strong>Type </strong></td><td><strong>File </strong></td><td><strong>Description </strong></td></tr>
+ <tr><td>SPIRIT </td><td>[none] </td><td>an object not linked to a viewable file (i.e. invisible)<br>Its main use is for the PLAYER, <br> but you can create other invisible items. </td></tr>
+ <tr><td>SAFE </td><td>[none] </td><td>a restart point after the player died. <br> You should put SAFEs in your levels, to allow the player <br>to restart not far from where he died. </td></tr>
+ <tr><td>SPRITE </td><td>WAX </td><td>fully animated objects such as enemies. </td></tr>
+ <tr><td>FRAME </td><td>FME </td><td>"one view" objects such as energy power ups. </td></tr>
+ <tr><td>3D </td><td>3DO </td><td>3D objects such as mousebots. </td></tr>
+ <tr><td>SOUND </td><td>VOC </td><td>an ambient sound around the object position. </td></tr>
+</table>
+<p>
+
+<hr size="2">
+
+<a name="ff"></a><font size="+1"><strong>File Format</strong></font><p>
+
+<ul>
+ <li><a href="#ff_mvl"> Magic, Version number and level name </a>
+ <li><a href="#ff_obt"> Objects Tables </a>
+ <li><a href="#ff_obd"> Object Descriptions </a>
+   <ul>
+     <li><a href="#ff_obd_sl"> Sequences and Logics </a>
+     <li><a href="#ff_obd_gn"> Generators </a>
+   </ul>
+</ul>
+
+O Files accept C like  /* */ comments.
+<p>
+<hr size="2">
+
+<a name="ff_mvl"></a>
+<font size="+1"><strong>Magic, Version number and level name </strong></font><p>
+
+<table border="1" width="600"><tr><td><pre>
+| O 1.1
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+This is trivial.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+| LEVELNAME SECBASE
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+I'm not sure this level name is used in DF !
+<p>
+
+<hr size="2">
+
+<a name="ff_obt"></a>
+<font size="+1"><strong>Object Tables </strong></font><p>
+
+As there is a lot of OB information in a level, 4 object tables are created to avoid storing OB names in full at each occurrence.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+| PODS 3             # These are the "3D" objects
+|  POD: DEATH.3DO    # 00
+|  ...
+|
+| SPRS 10            # These are the SPRITES
+|  SPR: OFFCFIN.WAX  # 00
+|   ...
+|
+| FMES 6             # These are the FRAMES
+|  FME: IENERGY.FME  # 00
+|  ...
+|
+| SOUNDS 1           # These are the SOUNDS
+|  SOUND: BANG.VOC   #00
+|  ...
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Afterwards, all the objects are referred to by their 0 based index in the object tables. <br>
+The object CLASS determines in which table to look.
+<p>
+
+<hr size="2">
+
+<a name="ff_obd"></a>
+<font size="+1"><strong>Object Descriptions </strong></font><p>
+
+<ul>
+<li><a href="#ff_obd_sl"> Sequences and Logics </a>
+<li><a href="#ff_obd_gn"> Generators </a>
+</ul>
+
+The first data is the total number of objects in the level :
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+| OBJECTS 185
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+Then each object is described.<br>
+Please note that the object data first line has been split here for visual convenience.
+<p>
+
+<table border="1" width="600"><tr><td><pre>
+| CLASS: SPIRIT  DATA:  0 X: 131.00 Y:    0.00    Z: 210.00
+\                       PCH:   0.00 YAW: 176.34 ROL:   0.00
+\                       DIFF: 1
+|  SEQ
+|   LOGIC:     PLAYER
+|   EYE:       TRUE
+|  SEQEND
+|
+| CLASS: SPRITE  DATA:  0 X: 320.62  Y:  20.00   Z:  275.64
+\                       PCH: 0.00  YAW: 270.00 ROL:    0.00
+\                       DIFF: 1
+|  SEQ
+|   TYPE:      I_OFFICER
+|  SEQEND
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+CLASS is the type of object, and DATA is the offset in the corresponding object table.
+(SPIRIT and SAFE have DATA = 0).
+<p>
+
+X, Y, Z are trivial.
+<p>
+
+PCH, YAW, ROL are classic spatial orientation, but only YAW is really used (DOOM equivalent is THING orientation). It takes a value in degrees where 0 is at the "top of the screen when you look at the map". The 
+value increases clockwise.
+<p>
+
+DIFF is the difficulty level at which the object appears.
+<p>
+
+<table border="2">
+ <tr><td><strong>DIFF </strong></td><td><strong>EASY </strong></td><td><strong>MED </strong></td><td><strong>HARD </strong></td></tr>
+ <tr><td>-3 </td><td>X </td><td>X </td><td>X </td></tr>
+ <tr><td>-2 </td><td>X </td><td>X </td><td>  </td></tr>
+ <tr><td>-1 </td><td>X </td><td>  </td><td>  </td></tr>
+ <tr><td>0 </td><td>X </td><td>X </td><td>X </td></tr>
+ <tr><td>1 </td><td>X </td><td>X </td><td>X </td></tr>
+ <tr><td>2 </td><td>  </td><td>X </td><td>X </td></tr>
+ <tr><td>3 </td><td>  </td><td>  </td><td>X </td></tr>
+</table>
+<p>
+
+<hr size="2">
+
+<a name="ff_obd_sl"></a>
+<font size="+1"><strong>Sequences and Logics </strong></font><p>
+
+SEQ and SEQEND are delimiters for a series of options/modifiers to apply to the object<br>
+ which determine its behavior.
+<p>
+The basic thing that all entities will have is a LOGIC: that controls it (eg. for an enemy, tells it what direction to walk in, when to shoot and so on). <p>
+Logics are hardcoded in DARK.EXE and also determine things like how fast an enemy moves, how it attacks, how strong it is, what sounds it makes, what weapon it drops when it dies etc.<p> In addition, logics will control what the sprite appears to be doing (i.e. what frames in the WAX that are shown).<p>
+
+
+<a href="#ol"> See Full Logics List</a>
+<p>
+
+
+<strong> ( LOGIC: )</strong>.<br>
+The same viewable file may be used to create 'different' objects.<p> For instance, OFFCFIN.WAX may be used with a LOGIC: I_OFFICER or LOGIC: I_OFFICERR (note the second 'R') which will generate a red key then killed instead of the usual ammo clip. <p>Or you can use it with LOGIC: STORM1 and although the enemy will appear like an officer, it will behave as a stormtrooper, take as many shots to kill as a stormtrooper etc.
+
+<p>
+
+The keywords TYPE: and LOGIC: are freely exchangeable, and the ITEM keyword is optional before item logics.
+<p>
+
+<strong>Combined Logics</strong>
+<p>
+
+If you combine enemy logics, the first LOGIC: is in this case the primary logic, which means that to kill the object, <br>you have to use the firepower needed to kill its first LOGIC: .<p>Very strange things may happen when combining LOGICs, and some combinations don't work, or even don't work every time!
+Try Mousebot + Barrel, or Player + Mousebot...<br>
+
+<hr size="2">
+
+<a name="ff_obd_gn"></a>
+<font size="+1"><strong>Generators </strong></font><p>
+
+Generators cause enemies to appear mid-way through a level. Here is a quite self explaining example:<p>
+
+<table border="1" width="600"><tr><td><pre>
+| CLASS: SPRITE  DATA:  4 X: 396.88   Y:  -2.00   Z: 217.48
+\                       PCH:   0.00 YAW:   0.00 ROL:   0.00 
+\                      DIFF: 1
+|  SEQ
+|   LOGIC:     GENERATOR STORM1
+|   DELAY:     30
+|   INTERVAL:  20
+|   MIN_DIST:  70
+|   MAX_DIST:  200
+|   MAX_ALIVE: 3
+|   NUM_TERMINATE: 8
+|   WANDER_TIME: 40
+|  SEQEND
+<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+<p>
+
+All generated enemies will use the sprite defined, and will appear "awake" (i.e. walking around, not standing still)
+ from the X, Y and Z coordinates of the generator.<p>
+
+
+<strong>LOGIC:</strong>  is the logic that the generated sprites will have. <p>Note the GENERATOR keyword. <p>
+<strong>Note</strong> also that only the following logics are allowed to be generated (generating others will cause problems
+ and usually crash the game!)<p>
+<pre>
+	I_OFFICER and key variations
+	TROOP
+	STORM1
+	COMMANDO
+	BOSSK
+	G_GUARD
+	REE_YEES
+	REE_YEES2
+	SEWER1
+	INT_DROID
+	PROBE_DROID
+	REMOTE
+</pre><p>
+DELAY: is the time in seconds that needs to pass from the start of a level before the generator starts operating.<p>
+
+INTERVAL: is the time in seconds between each generation.<p>
+
+For an enemy to be generated, the player must be at a distance from the generator that is between <br>MIN_DIST and MAX_DIST.<p>
+
+MAX_ALIVE: is the maximum number of enemies from the generator allowed alive at the same time.<p>
+
+NUM_TERMINATE: is the number of enemies to be generated. When this is reached, the generator deactivates.<br> If set to -1, an infinite amount will be generated, and the generator will never deactivate.<p>
+
+WANDER_TIME: is the time in seconds that a generated sprite walks around before becoming inactive.<p>
+
+<strong>Note: </strong>in DARK.EXE, there is a keyword "PLUGIN:" among the above generator keywords. Its usage is still unknown.<p>
+
+Sprites aren't generated when the generator is able to see you, however (otherwise it would look like the 
+enemies were walking out of thin air!). The best way to observe a generator working is therefore on the map
+ by using the LACDS cheat.<p>
+
+Also note that you can set MASTER: OFF on a generator (not to be confused with the INF master variable!), 
+and activate it by sending a "master_on" message to the sector that contains it.
+<p>
+
+
+
+<a name="ol"></a><font size="+1"><strong>All Objects Logics </strong></font><p>
+
+This is a list of all the objects and other modifiers that can be used in the sequences of objects.
+<p>
+Please also see the end of this section for some unknowns found in DARK.EXE.
+<p>
+
+
+<strong>Player</strong><p>
+
+<pre>
+| LOGIC:     PLAYER
+| EYE:       TRUE
+</pre><p>
+These should always be used together. Technically though, the LOGIC: PLAYER is the entity that you will control  and move around, while EYE: TRUE is the object from whose point of view the level is viewed from. <br>So yes, you can try following enemies and mousebots around with the eye......<p>
+
+
+
+<strong>Items</strong><p>
+Remember that you can use ITEM keyword before these logics.<br>
+Message is the message number from TEXT.MSG that is displayed when you pick up the item <br>(just in case you want to patch).<p>
+
+<table border="1CELLPADDING=5" cellspacing="3">
+<tr><th>Logic:Description:</th><th>Message:</th><th>Message: #</th></tr>
+<tr><th>General</th><td></td><td></td></tr>
+<tr><td>LOGIC: SHIELD</td><td>20 shield units </td><td>114</td></tr>
+<tr><td>LOGIC: BATTERY</td><td>battery unit </td><td>211</td></tr>
+<tr><td>LOGIC: CLEATS</td><td>ice cleats </td><td>304</td></tr>
+<tr><td>LOGIC: GOGGLES</td><td>infra red goggles </td><td>303</td></tr>
+<tr><td>LOGIC: MASK</td><td>gas mask</td><td>305</td></tr>
+<tr><td>LOGIC: MEDKIT</td><td>med kit </td><td>311</td></tr>
+<tr><th>Weapons</th><td></td><td></td></tr>
+<tr><td>LOGIC: RIFLE</td><td>Blaster rifle / 15 energy units </td><td>100 / 101</td></tr>
+<tr><td>LOGIC: AUTOGUN</td><td>Repeater Rifle / 30 power units </td><td> 103 / 104</td></tr>
+<tr><td>LOGIC: FUSION</td><td>Jeron fusion cutter / 50 power units </td><td>107 / 108</td></tr>
+<tr><td>LOGIC: MORTAR</td><td>Mortar Gun / 3 mortar shells </td><td>105 / 106</td></tr>
+<tr><td>LOGIC: CONCUSSION</td><td>Concussion Rifle / 100 power units </td><td>110 / 111</td></tr>
+<tr><td>LOGIC: CANNON</td><td>	Assault cannon / 30 plasma units </td><td>112 / 113</td></tr>
+<tr><th>Ammo</th><td></td><td></td></tr>
+<tr><td>LOGIC: ENERGY</td><td>15 energy units </td><td>200</td></tr>
+<tr><td>LOGIC: DETONATOR</td><td>1 thermal detonator</td><td> 203</td></tr>
+<tr><td>LOGIC: DETONATORS</td><td>5 thermal detonators</td><td> 204</td></tr>
+<tr><td>LOGIC: POWER</td><td>10 power units </td><td>201</td></tr>
+<tr><td>LOGIC: MINE</td><td>1 mine </td><td>207</td></tr>
+<tr><td>LOGIC: MINES</td><td>5 mines </td><td>208</td></tr>
+<tr><td>LOGIC: SHELL</td><td>1 mortar shell </td><td>205</td></tr>
+<tr><td> LOGIC: SHELLS</td><td>5 mortar shells </td><td>206</td></tr>
+<tr><td>LOGIC: PLASMA</td><td>20 Plasma units </td><td>202</td></tr>
+<tr><td>LOGIC: MISSILE</td><td>1 missile </td><td>209</td></tr>
+<tr><td>LOGIC: MISSILES</td><td>5 missiles</td><td> 210</td></tr>
+<tr><th>Bonuses</th><td></td><td></td></tr>
+<tr><td>LOGIC: SUPERCHARGE</td><td>weapon supercharge </td><td>307</td></tr>
+<tr><td>LOGIC: INVINCIBLE</td><td>shield supercharge </td><td>306</td></tr>
+<tr><td>LOGIC: LIFE</td><td>extra life </td><td>310</td></tr>
+<tr><td>LOGIC: REVIVE</td><td>revive </td><td>308</td></tr>
+<tr><th>Keys</th><td></td><td></td></tr>
+<tr><td>LOGIC: BLUE</td><td>blue key</td><td> 302</td></tr>
+<tr><td>LOGIC: RED</td><td>red key</td><td>300</td></tr>
+<tr><td>LOGIC: YELLOW</td><td>yellow key</td><td>301</td></tr>
+<tr><td>LOGIC: CODE1</td><td>code key 1</td><td>501</td></tr>
+<tr><td>LOGIC: CODE2</td><td>code key 2</td><td>502</td></tr>
+<tr><td>LOGIC: CODE3</td><td>code key 3</td><td>503</td></tr>
+<tr><td>LOGIC: CODE4</td><td>code key 4</td><td>504</td></tr>
+<tr><td>LOGIC: CODE5</td><td>code key 5 </td><td>505</td></tr>
+<tr><td>LOGIC: CODE6</td><td>code key 6</td><td> 506</td></tr>
+<tr><td>LOGIC: CODE7</td><td>code key 7 </td><td>507</td></tr>
+<tr><td>LOGIC: CODE8</td><td>code key 8</td><td>508</td></tr>
+<tr><td>LOGIC: CODE9</td><td>code key 9 </td><td>509</td></tr>
+<tr><th>Goal Items</th><td></td><td></td></tr>
+<tr><td>LOGIC: DATATAPE</td><td>data tapes</td><td> 406</td></tr>
+<tr><td>LOGIC: PLANS</td><td>Death Star plans </td><td>400</td></tr>
+<tr><td>LOGIC: DT_WEAPON</td><td>broken DT weapon </td><td>405</td></tr>
+<tr><td>LOGIC: NAVA</td><td>Nava Card </td><td>402</td></tr>
+<tr><td>LOGIC: PHRIK</td><td>Phrik metal	 </td><td>401</td></tr>
+<tr><td>LOGIC: PILE</td><td>Your Gear</td><td>312</td></tr>
+</table>
+<p>
+
+
+<strong>Enemy Logics</strong><p>
+
+<table border="1CELLPADDING=5" cellspacing="3">
+<tr><th>Logic:</th><th>Description:</th></tr>
+<tr><th>Imperials</th><td></td></tr>
+<tr><td>LOGIC: I_OFFICER</td><td>Imperial officer</td></tr>
+<tr><td>LOGIC: I_OFFICERR</td><td>Officer with red key</td></tr>
+<tr><td>LOGIC: I_OFFICERB</td><td>Officer with blue key</td></tr>
+<tr><td>LOGIC: I_OFFICERY</td><td>Officer with yellow key</td></tr>
+<tr><td>LOGIC: I_OFFICER1</td><td>Officer with code key 1</td></tr>
+<tr><td>LOGIC: I_OFFICER2</td><td>Officer with code key 2</td></tr>
+<tr><td>LOGIC: I_OFFICER3</td><td>Officer with code key 3</td></tr>
+<tr><td>LOGIC: I_OFFICER4</td><td>Officer with code key 4</td></tr>
+<tr><td>LOGIC: I_OFFICER5</td><td>Officer with code key 5</td></tr>
+<tr><td>LOGIC: I_OFFICER6</td><td>Officer with code key 6</td></tr>
+<tr><td>LOGIC: I_OFFICER7</td><td>Officer with code key 7</td></tr>
+<tr><td>LOGIC: I_OFFICER8</td><td>Officer with code key 8</td></tr>
+<tr><td>LOGIC: I_OFFICER9</td><td>Officer with code key 9</td></tr>
+<tr><td>LOGIC: TROOP</td><td>Stormtrooper</td></tr>
+<tr><td>LOGIC: STORM1</td><td>Stormtrooper</td></tr>
+<tr><td> LOGIC: COMMANDO</td><td>Imperial Commando</td></tr>
+<tr><th>Aliens</th><td></td></tr>
+<tr><td>LOGIC: BOSSK</td><td>Bossk</td></tr>
+<tr><td>LOGIC: G_GUARD</td><td>Gammorean Guard</td></tr>
+<tr><td>LOGIC: REE_YEES</td><td>ReeYees with thermal detonators</td></tr>
+<tr><td>LOGIC: REE_YEES2</td><td>ReeYees w/o thermal detonators</td></tr>
+<tr><td>LOGIC: SEWER1</td><td>Sewer creature</td></tr>
+<tr><th>Robots</th><td></td></tr>
+<tr><td>LOGIC: INT_DROID</td><td>Interrogator droid</td></tr>
+<tr><td>LOGIC: PROBE_DROID</td><td>Probe droid</td></tr>
+<tr><td>LOGIC: REMOTE</td><td>	Remote</td></tr>
+<tr><th>Bosses</th><td></td></tr>
+<tr><td>LOGIC: BOBA_FETT</td><td>Boba Fett</td></tr>
+<tr><td>LOGIC: KELL</td><td>Kell Dragon</td></tr>
+<tr><td>LOGIC: D_TROOP1</td><td>Phase 1 Dark Trooper</td></tr>
+<tr><td>LOGIC: D_TROOP2</td><td>Phase 2 Dark Trooper</td></tr>
+<tr><td>LOGIC: D_TROOP3</td><td>Phase 3 Dark Trooper (Mohc)</td></tr>
+</table>
+<p>	
+
+	
+	
+<strong>Special Sprite Logics</strong><p>
+
+Note: The WAX files used for the explosions of the Barrel and Land Mine are hardcoded.<p>
+
+<table border="1CELLPADDING=5" cellspacing="3">
+<tr><th>Logic:</th><th>Description:</th></tr>
+<tr><td>LOGIC: SCENERY</td><td>Displays first cell of wax 0, then all of wax 1 when attacked</td></tr>
+<tr><td> LOGIC: ANIM</td><td>Displays wax 0 over and over</td></tr>
+<tr><td>LOGIC: BARREL</td><td>	Power Generating unit</td></tr>
+<tr><td>LOGIC: LAND_MINE</td><td>Land mine</td></tr>
+</table><p>
+
+<strong>3D Object Logics</strong><p>
+
+<table border="1CELLPADDING=5" cellspacing="3">
+<tr><th>Logic:</th><th>Description:</th></tr>
+<tr><td>LOGIC: TURRET</td><td>	gun turret</td></tr>
+<tr><td>LOGIC: MOUSEBOT</td><td>mousebot</td></tr>
+<tr><td>LOGIC: WELDER</td><td>welding arm</td></tr>
+
+</table><p>
+
+
+<strong>3D Object Motion Logics</strong>
+<p>
+<pre>
+There are 2 logics for giving motions to a  3D object:
+LOGIC: UPDATE to perpetually rotate a 3D, and 
+LOGIC: KEY to give a VUE motion to the 3D
+<p>
+</pre>
+<table border="1" cellpadding="5">
+<tr><td>Rotation on X-axis</td><td>Rotation on Y-axis </td><td>Rotation on Z-axis </td></tr>
+<tr><td><pre>
+
+LOGIC:   UPDATE 
+FLAGS:    8
+D_PITCH:  [speed]
+</pre></td><td><pre>
+
+LOGIC:    UPDATE 
+FLAGS:    16
+D_YAW:    [speed]
+</pre></td><td><pre>
+LOGIC:   UPDATE 
+FLAGS:   32
+D_ROLL:  [speed] 
+</td></tr></pre>
+</table>
+<p>
+
+Speed is the speed at which the 3D object rotates from -999 (max anti-clockwise) to 999 (max clockwise).
+
+<p>
+
+<strong>VUE Object</strong><p>
+<table border="1" cellpadding="5"><tr><td><pre>
+LOGIC:          KEY
+VUE:            filename.VUE "id"
+VUE_APPEND:     filenam2.VUE "id"
+PAUSE:          TRUE
+FRAME_RATE:    [frame rate]
+</pre></td></tr>
+</table>
+<p>
+
+filename.VUE is the name of the VUE file to use.<p>
+
+"id" is the name of the identifier within the VUE file to use<p>
+
+VUE_APPEND: is an optional VUE to be played after the first VUE.<p>
+
+PAUSE: TRUE will cause the VUE to pause each time it is played until a "wakeup" message is sent to the sector  containing the 3D object. Objects with "PAUSE: TRUE" will also be "woken up" if their RADIUS is shot.<p>
+
+Frame rate is in frames per second.
+<p>
+<br>
+
+<strong>Other Sequence Modifiers</strong><p>
+
+ BOSS:	TRUE<br>
+This can be set to the following logics:
+<br><pre>
+	BOBA_FETT
+	KELL
+	D_TROOP1
+	D_TROOP2
+	D_TROOP3
+</pre><p>
+When you kill the enemy, an elevator called "boss" will move to its next stop <br>(unless it is LOGIC: D_TROOP3, where the elevator must be called "mohc"). This is similar to the movement of "complete" when a goal item is picked up. Using this modifier, you can cause something to happen when the player has killed the boss, for instance the player could be locked in a certain area until he has killed the boss and then a door will be opened letting him out.
+<p>        
+<br>
+
+ <table border="0">
+<tr><td width="80"><strong>RADIUS:</strong></td><td>[horizontal distance]
+</td></tr>
+</table><br>
+This defines the size of an invisible circle around the object where the PLAYER cannot enter or shoot through. Frames and sprites have radiuses by default, but 3D objects don't, so you have to set one unless you want the PLAYER to walk right through. You can use this with a Spirit to create an invisible obstacle.
+<p>
+<br>
+
+ <table border="0">
+<tr><td width="100"><strong>HEIGHT:</strong></td><td>[vertical distance]</td></tr>
+</table>
+<br>
+
+Similar to radius, height defines an area above (positive value) or below (negative value) an object where you can't walk or fire through. Therefore, using radius and height together, you can effectively create an impenetrable cylinder-shaped area around an object.
+<p>
+<br>
+
+
+A further note:<br>
+	RADIUS and HEIGHT, if used with objects having a logic, will also affect how the logic interacts with the player. If used with items, they determine the distance Kyle has to be from the item to pick it up. If used with enemies and "LOGIC: SCENERY", they determine the distance from the enemy that laser bolts etc. have to come within to damage the enemy.
+<p>
+<br>
+
+<strong>Unknown</strong>
+<p>
+These are found in DARK.EXE. It is likely that some are only used internally by the DF engine. We would appreciate any help working out any possible usable ones!
+<p>
+<pre>
+VISIBLE:
+SHADED:
+LIGHT:
+PARENT:
+D_X:
+D_Y:
+D_Z:
+D_VIEW_PITCH:
+D_VIEW_YAW:
+D_VIEW_ROLL:
+VIEW_PITCH:
+VIEW_YAW:
+VIEW_ROLL:
+EYE_D_XYZ:
+EYE_D_PYR:
+SYNC:
+PLUGIN:
+
+STORM
+DISPATCH
+THINKER
+FOLLOW
+FOLLOW_Y
+RANDOM_YAW
+MOVER
+SHAKER
+PERSONALITY
+</pre>
+<br>
+<hr size="2">
+
+</body>
+</html>

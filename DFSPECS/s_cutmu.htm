@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>DF Specs - Cutmuse files</title></head>
+
+<body bgcolor="#CFCFCF" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000">
+
+<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+<a href="s_cutsc.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+<a href="s_anim.htm"><img src=".y/images/gotonext.gif" alt="[Next]"></a>
+
+<font size="+2"><strong>Cutmuse.txt </strong></font>
+<hr size="2">
+<p>
+This file controls the music to be played during cutscenes.
+<p>
+<strong>CUTMUSE.TXT</strong> accepts // comments.
+<p>
+
+<table border="1" cellpadding="5">
+<tr><th>File Format</th></tr>
+<tr><td></td></tr>
+<tr><td>SEQUENCE: 1</td></tr>
+<tr><td></td></tr>
+<tr><td>// cue 1</td></tr>
+<tr><td>CUE: star-thm</td></tr>
+<tr><td>0 0 0 0</td></tr>
+<tr><td></td></tr>
+<tr><td>// cue 2</td></tr>
+<tr><td>CUE: star-thm</td></tr>
+<tr><td>B 2 B 2</td></tr>
+<tr><td>...</td></tr>
+<tr><td></td></tr>
+<tr><td>SEQUENCE: 2</td></tr>
+<tr><td></td></tr>
+<tr><td>// cue 1</td></tr>
+<tr><td>CUE: execmus</td></tr>
+<tr><td>0 0 0 0</td></tr>
+<tr><td>...</td></tr>
+<tr><td></td></tr>
+</table>
+<p>
+<strong>Note:</strong> there is no header.
+
+<p>
+As you can see, the file is split into a number of Sequences which correspond to the "SEQ number" in CUTSCENE.LST. Sequences are nothing more than logical groupings of cutscenes that are played together, for example the starting sequence, the long sequence before TALAY, the ending sequence. The whole point of a sequence is that in CUTSCENE.LST, only the first cutscene in each sequence of cutscenes needs to point to the corresponding music sequence in CUTMUSE.TXT -- the rest can have "SEQ number" set to 0 as the same music sequence selected at the first cutscene will apply throughout the remainder of the cutscene sequence.
+<p>
+Sequences each have a number of Cues which are fired by the CUST objects in FILMs of cutscenes. Cues define a .GMD file (note - without the extension) to play the music from, what chunk within it to play, and how and when to play the chunk.
+<p>
+<strong>Note: </strong>the numbering of CUEs in CUTMUSE.TXT are just comments -- they are not actually defined with numbers.
+<p>
+[Thanks to Alex Novikov for lots of help in figuring out the following]
+<p>
+Cues point to the chunk to be played like this:
+<p>
+<table border="1" cellpadding="5">
+<tr><td>%c  </td><td>%d</td><td> %c</td><td>%d</td></tr>
+</table>
+<p>
+The two characters refer to MTrk chunks within the GMD. Capital letters are used, i.e. A, B, C, D, E..... where A is the first track, B is the second...... The numbers seem to refer to a point in the track -- larger numbers will start the track from further on. They maybe refer to a number of patterns or an interval of time (seconds or beats?), from the start of the track.
+<p>
+Now, the overall meaning seems to be something like this: the first character and number refer to a certain point in the music, which when reached, will change the music to a point defined by the second character and number. So "C 7 D 2" possibly means: when the music reaches track C time/pattern 7, then change to track D time/pattern 2. All this will happen when a FILM CUST object fires the Cue.
+<p>
+There are also a few exceptions:
+<p>
+"0 0 0 0" seems to be the equivilant of  "give no command", so the music will just play on through unless it gets into a melody loop.
+<p>
+"1 0 0 0" usually means start the next track, but it has varying effects in different cutscenes, and sometimes will bring the music out of a loop, but sometimes won't.
+<p>
+". 0 0 0" will fade the music away.
+<p>
+A lot of this seems to be dependant on the internal iMUSE commands within GMD tracks, whose workings are unfortunately still very much unknown.
+<hr size="2">
+<p>
+</body>
+</html>

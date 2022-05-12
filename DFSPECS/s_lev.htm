@@ -398,7 +398,7 @@ Note that this is only a logical grouping, but is also used by the map in the ga
 <tr><td>2</td><td>DOOR</td><td>instant door</td></tr>
 <tr><td>4</td><td>SHOT REFLECTION / MAG.SEAL </td><td>walls, floor and ceiling reflect weapon shots </td></tr>
 <tr><td>8</td><td>EXTERIOR ADJOIN</td><td>	will adjoin adjacent skies.</td></tr>
-<tr><td>16</td><td>ICE FLOOR        (SKATING)</td><td></td></tr>
+<tr><td>16</td><td>ICE FLOOR (NO FRICTION)</td><td>Requires ice cleats to walk normally</td></tr>
 <tr><td>32</td><td>SNOW FLOOR</td><td>no apparent effects</td></tr>
 <tr><td>64</td><td>EXPLODING WALL/DOOR</td><td>instant exploding door</td></tr>
 <tr><td>128</td><td>EXTERIOR - NO FLOOR  (PIT)</td><td>Note: actual floor limit will be the floor altitude - 100</td></tr>
@@ -406,12 +406,12 @@ Note that this is only a logical grouping, but is also used by the map in the ga
 <tr><td>512</td><td>CRUSHING SECTOR</td><td>vertically moving elevators will crush the player</td></tr>
 <tr><td>1024</td><td>NO WALL DRAW / "HORIZON"</td><td>removes walls of a sector(sector must be sky and pit to work properly)</td></tr>
 <tr><td>2048</td><td>LOW  DAMAGE</td><td></td></tr>
-<tr><td>4096</td><td>HIGH DAMAGE (both = GAS)</td><td>both can be combined for GAS</td></tr>
-<tr><td>8192</td><td>NO SMART OBJECT REACTION</td><td></td></tr>
-<tr><td>16384</td><td>SMART OBJECT REACTION</td><td></td></tr>
+<tr><td>4096</td><td>HIGH DAMAGE (both = GAS)</td><td>2048 + 4096 can be combined for GAS</td></tr>
+<tr><td>8192</td><td>NO SMART OBJECT REACTION</td><td>Enemies cannot open door (see below)</td></tr>
+<tr><td>16384</td><td>SMART OBJECT REACTION</td><td>Enemies can open door  (see below)</td></tr>
 <tr><td>32768</td><td>SUBSECTOR</td><td>no apparent effects</td></tr>
-<tr><td>65536</td><td>SAFE SECTOR</td><td></td></tr>
-<tr><td>131072</td><td>RENDERED</td><td></td></tr>
+<tr><td>65536</td><td>SAFE SECTOR</td><td>unknown</td></tr>
+<tr><td>131072</td><td>RENDERED</td><td>unknown</td></tr>
 <tr><td>262144</td><td>PLAYER</td><td></td></tr>
 <tr><td>524288</td><td>SECRET SECTOR</td><td>increments the %secret when entered</td></tr>
 </table>
@@ -558,19 +558,19 @@ Relative modification of the luminosity on this specific WL.
  <td><strong>Description</strong></td>
  <td><strong>Comment</strong></td>
 </tr>
-<tr><td>1</td><td>ADJOINING MID TX</td><td>the MID TX is NOT removed </td></tr>
+<tr><td>1</td><td>ADJOINING MID TX</td><td>the MID TX is NOT removed. Can use with texture transparency</td></tr>
 <tr><td>2</td><td>ILLUMINATED SIGN</td><td></td></tr>
 <tr><td>4</td><td>FLIP TEXTURE HORIZONTALLY</td><td></td></tr>
-<tr><td>8</td><td>ELEV CAN CHANGE WALL LIGHT </td><td></td></tr>
-<tr><td>16</td><td>WALL TX ANCHORED</td><td></td></tr>
-<tr><td>32</td><td>WALL MORPHS WITH ELEV</td><td></td></tr>
-<tr><td>64</td><td>ELEV CAN SCROLL TOP  TX</td><td></td></tr>
-<tr><td>128</td><td>ELEV CAN SCROLL MID  TX</td><td></td></tr>
-<tr><td>256</td><td>ELEV CAN SCROLL BOT  TX</td><td></td></tr>
-<tr><td>512</td><td>ELEV CAN SCROLL SIGN TX</td><td></td></tr>
+<tr><td>8</td><td>ELEV CAN CHANGE WALL LIGHT </td><td>Use with elevator change_wall_light</td></tr>
+<tr><td>16</td><td>WALL TX ANCHORED</td><td>Texture does not move vertically with elevator movement</td></tr>
+<tr><td>32</td><td>WALL MORPHS WITH ELEV</td><td>Use with morph_move and morph_spin elevators</td></tr>
+<tr><td>64</td><td>ELEV CAN SCROLL TOP  TX</td><td>Use with elevator scroll_wall</td></tr>
+<tr><td>128</td><td>ELEV CAN SCROLL MID  TX</td><td>Use with elevator scroll_wall</td></tr>
+<tr><td>256</td><td>ELEV CAN SCROLL BOT  TX</td><td>Use with elevator scroll_wall</td></tr>
+<tr><td>512</td><td>ELEV CAN SCROLL SIGN TX</td><td>Use with elevator scroll_wall</td></tr>
 <tr><td>1024</td><td>HIDE ON MAP</td><td></td></tr>
 <tr><td>2048</td><td>SHOW AS NORMAL ON MAP</td><td>i.e. light green</td></tr>
-<tr><td>4096</td><td>SIGN ANCHORED</td><td></td></tr>
+<tr><td>4096</td><td>SIGN ANCHORED</td><td>Sign tx will not move with elevator</td></tr>
 <tr><td>8192</td><td>WALL DAMAGES PLAYER</td><td></td></tr>
 <tr><td>16384</td><td>SHOW AS LEDGE ON MAP</td><td>i.e. dark green</td></tr>
 <tr><td>32768</td><td>SHOW AS DOOR  ON MAP</td><td>i.e. yellow</td></tr>
@@ -592,10 +592,10 @@ is unused.
  <td><strong>Description</strong></td>
  <td><strong>Comment </strong></td>
 </tr>
-<tr><td>1</td><td>CAN ALWAYS WALK</td><td>Player will climb any height</td></tr>
-<tr><td>2</td><td>	PLAYER &amp; ENEMIES CANNOT WALK THROUGH WALL</td><td></td></tr>
-<tr><td>4</td><td>	ENEMIES ONLY CANNOT WALK THROUGH WALL</td><td></td></tr>
-<tr><td>8</td><td>CANNOT FIRE THROUGH WALL </td><td></td></tr>
+<tr><td>1</td><td>CAN ALWAYS WALK</td><td>Player will climb any height (equivalent of LAPOGO)</td></tr>
+<tr><td>2</td><td>	BLOCK PLAYER &amp; ENEMY MOVEMENT</td><td>Applies to adjoined walls</td></tr>
+<tr><td>4</td><td>	BLOCK ENEMY MOVEMENT</td><td>Applies to adjoined walls</td></tr>
+<tr><td>8</td><td>BLOCK WEAPONS </td><td>Applies to adjoined walls</td></tr>
 </table>
 <p>
 

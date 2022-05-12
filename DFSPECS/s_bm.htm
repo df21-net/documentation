@@ -96,7 +96,7 @@ Straight after the Multiple BM header are two bytes:
 (Note: A switch can only have two textures on or off and anything more will not work.)
 - The second byte is 2.
 <p>
-Then follows a table of offsets to the 'sub' BM composed of idemY long.
+Then follows a table of offsets to the 'sub' BM composed of idemY * int32.
 The simple fact that this table exists tells us that sub BMs of different sizes may be stored.
 
 Each 'sub' BM then has its own header, slightly different from the BM_Header:
@@ -144,7 +144,7 @@ Note that Multiple BMs don't allow compression. <br>
 (thanks to Alex Novikov for corrections and improvements on these notions).
 <p>
 
-The heart of the data is a columns starts table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one long entry per column containing this column start address.
+The heart of the data is a columns starts table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one int32 entry per column containing this column start address.
 This start address is calculated without the 32 bytes BM header (i.e. read the header in a struct, then the data in a huge buffer at offset 0).
 <p>
 

@@ -160,11 +160,14 @@ CLASS is the type of object, and DATA is the offset in the corresponding object 
 (SPIRIT and SAFE have DATA = 0).
 <p>
 
-X, Y, Z are trivial.
+X, Y, Z are the position of the object in the level. 
+	This is the same coordinate system as found in the LEV file. 
+	The Y coordinate is "flipped" as in the LEV file (positive is down, negative is up).
 <p>
 
-PCH, YAW, ROL are classic spatial orientation, but only YAW is really used (DOOM equivalent is THING orientation). It takes a value in degrees where 0 is at the "top of the screen when you look at the map". The 
-value increases clockwise.
+PCH, YAW, ROL are classic spatial orientation. Values are in degrees.
+	For YAW, 0 is north and the value increases clockwise (90 degrees is east).
+	PCH (pitch) and ROL (roll) are only relevant for 3DOs. They have no effect on sprites and other objects.
 <p>
 
 DIFF is the difficulty level at which the object appears.
@@ -180,7 +183,7 @@ DIFF is the difficulty level at which the object appears.
  <tr><td>2 </td><td>  </td><td>X </td><td>X </td></tr>
  <tr><td>3 </td><td>  </td><td>  </td><td>X </td></tr>
 </table>
-<p>
+<p></p>
 
 <hr size="2">
 

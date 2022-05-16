@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>DF Specs - Dfbrief.lfd</title></head>
+<title>DF Specs - DFBRIEF.lfd</title></head>
 
 <body bgcolor="#CFCFCF" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000">
 
@@ -8,10 +8,15 @@
 <a href="s_cutsc.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_jdsfx.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong>Dfbrief.lfd</strong></font>
+<h1>DFBRIEF.LFD</h1>
 <hr size="2">
 <p>
-The following files must always be present in <strong>DFBRIEF.LFD:</strong>
+    This is a special LFD file which contains mission briefings and graphics for the 
+    in-game PDA (accessed by pressing F1).
+</p>
+<p>
+    The following files must always be present in <strong>DFBRIEF.LFD:</strong>
+</p>
 <p>
 <table border="1" cellpadding="5"><tr><td><pre>
 PLTTbrf-jan	Palette to use for briefings
@@ -27,21 +32,210 @@ ANIMbrf-mon	Mon Mothma
 ANIMbrf-nil	Jabba
 </pre></td></tr>
 </table>
+
+<hr size="2" />
+
+<h3>Mission briefings</h3>
 <p>
-Briefings are stored in DELT sections of dfbrief.lfd, named after the level.
+    Briefings are stored in DELT sections of DFBRIEF.LFD, named after the level.
+    The <a href="s_brflst.htm">BRIEFING.LST</a> file (found in Dark.GOB) tells the game
+    which background image (Jan, Mon Mothma or Jabba) to use with the briefing. Custom background
+    ANIMs can be added.
+</p>
 <p>
 
 The width of the scrollable region seems to be hardcoded in the game, so the only field we'll want to change is SizeY.
 <p>
 
-Objective screens are stored in ANIM sections of dfbrief.lfd, also named after the level.
-The first DELT in the ANIM has all the goals in green text. The following DELTs have one goal each in yellow text. They are overlaid on the first DELT when the goal has been completed. See <a href="s_gol.htm"> GOL </a>file
+<h3>Mission objectives</h3>
 <p>
-See also <a href="s_brflst.htm">BRIEFING.LST</a>
+    Objective screens are stored in ANIM sections of DFBRIEF.LFD, also named after the level.
+    The first DELT in the ANIM has all the goals in green text. The following DELTs have one
+    goal each in yellow text. They are overlaid on the first DELT when the goal has been 
+    completed. 
+</p>
+<p>
+    The level's <a href="s_gol.htm">GOL</a> file controls the display of completed goals.
+</p>
 
+<table>
+    <tr>
+        <td><img src="images/gol000.png" /></td>
+    </tr>
+    <tr>
+        <td><img src="images/gol001.png" /></td>
+        <td><img src="images/gol002.png" /></td>
+        <td><img src="images/gol003.png" /></td>
+    </tr>
+</table>
 
 <p>
-<hr size="2">
+    When creating custom mission goals, the "completed" (yellow) text has to be positioned correctly in 
+    the DELT images, so that they precisely overlay the green text.
+</p>
+
+<hr size="2" />
+<h3>GUNS.ANIM</h3>
 <p>
+    Contains 9 DELT images corresponding to the 9 weapons, and an unused 10th image. It is shown 
+    on the WEAP screen in the PDA.
+</p>
+<ol type="1" start="0">
+    <li>Bryar pistol</li>
+    <li>E-11 Rifle</li>
+    <li>Thermal detonator</li>
+    <li>Repeater gun</li>
+    <li>Fusion cutter</li>
+    <li>IM Mines</li>
+    <li>Mortar gun</li>
+    <li>Concussion rifle</li>
+    <li>Assault cannon</li>
+    <li>Unused image</li>
+</ol>
+
+<h3>ITEMS.ANIM</h3>
+<p>
+    Contains the DELT images shown on the INV (inventory) screen in the PDA. There are 17 DELTs found
+    in the original items.anim but 4 more may be added, for a total of 21. The following table lists
+    each DELT and its corresponding <a href="s_o.htm#ol">LOGIC</a>.
+</p>
+<table border="1" cellpadding="4">
+    <tr>
+        <th>DELT</th>
+        <th>Description</th>
+        <th>LOGIC</th>
+    </tr>
+    <tr>
+        <td>0</td>
+        <td>Red Key</td>
+        <td>RED or I_OFFICERR</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Yellow Key</td>
+        <td>YELLOW or I_OFFICEY</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Blue Key</td>
+        <td>BLUE or I_OFFICERB</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>IR Goggles</td>
+        <td>GOGGLES</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Ice cleats</td>
+        <td>CLEATS</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>Gas mask</td>
+        <td>MASK</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>Death Star Plans</td>
+        <td>PLANS</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>Phrik</td>
+        <td>PHRIK</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>Nava card</td>
+        <td>NAVA</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>Data tapes</td>
+        <td>DATATAPE</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td><em>Unused</em></td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>DT Weapon</td>
+        <td>DT_WEAPON</td>
+    </tr>
+    <tr>
+        <td>12</td>
+        <td>Code 1</td>
+        <td>CODE1 or I_OFFICER1</td>
+    </tr>
+    <tr>
+        <td>13</td>
+        <td>Code 2</td>
+        <td>CODE2 or I_OFFICER2</td>
+    </tr>
+    <tr>
+        <td>14</td>
+        <td>Code 3</td>
+        <td>CODE3 or I_OFFICER3</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>Code 4</td>
+        <td>CODE4 or I_OFFICER4</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>Code 5</td>
+        <td>CODE5 or I_OFFICER5</td>
+    </tr>
+    <tr>
+        <td>17</td>
+        <td>Code 6</td>
+        <td>CODE6 or I_OFFICER6</td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td>Code 7</td>
+        <td>CODE7 or I_OFFICER7</td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td>Code 8</td>
+        <td>CODE8 or I_OFFICER8</td>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>Code 9</td>
+        <td>CODE9 or I_OFFICER9</td>
+    </tr>
+</table>
+    
+<p>
+    DELT 10 was associated with an image in the DF Demo, but this was cut from the final game. It might
+    have been "Moff Rebus' Notebook" which is mentioned in the SEWERS.ANIM found in the demo version. If
+    an image is inserted in DELT 10, it will be displayed if the LAMAXOUT cheat is used.
+</p>
+<p>
+    Code keys 6-9 are not present in Dark Forces, but can be added by adding DELTs 17-20 to ITEMS.ANIM. (They
+    don't <em>have</em> to be code keys; they can be modded as other kinds of items that are carried by Imperial Officers....)
+    However we are limited by how much can fit on the PDA screen...
+</p>
+
+<hr size="2" />
+
+<h3>Modding items and weapons</h3>
+<p>
+    Weapons can be modded by altering the DELTs found in GUNS.ANIM as well as the other assets (textures, sprites, etc.) for each weapon, 
+    and the messages in <a href="s_msg.htm">TEXT.MSG</a>. See the <a href="hardcode.html">resource lists</a>.
+</p>
+<p>
+    Items can be also be modded by altering the DELTs, TEXT.MSG, and assets. The existing keys, code keys and 5 goal items can
+    be replaced with new ones.
+</p>
+
+<br />
+<hr size="2" />
+<br />
 </body>
 </html>

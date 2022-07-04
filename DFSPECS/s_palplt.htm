@@ -8,17 +8,18 @@
 <a href="s_o.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_cmp.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong> PALETTE FILES</strong></font>
+<h1> PALETTE FILES</h1>
 
 <ul>
 <li><a href="#PAL Files"> PAL Files</a>
 <li><a href="#PLTT Res"> PLTT Resources (PLT Files)</a>
 </ul>
 
-<hr size="2">
+<hr size="2" />
 
 <a name="PAL Files"></a>
-<font size="+1"><strong>PAL Files </strong></font><p>
+<h2>PAL Files </h2>
+<p>
 
 PAL files are 768 bytes long, and store a single 256 colors palette as 256 x 3 RGB bytes.
 <p>
@@ -49,12 +50,28 @@ RGB_Color Is
 
 <strong>Note</strong><br>
 The intensities range from 0 to 63 (limit of VGA mode 0x13) in the PAL files.
-<p>
+<h4>
+    Further information
+</h4>
+<ul>
+    <li>PAL color 0 is treated as transparent where relevant.</li>
+    <li>Colors 1-23 are set as fully bright under all illumination levels in the 
+    Dark Forces <a href="s_cmp.htm">CMP files</a>. They are used to create parts of
+    textures and sprites that "glow in the dark".</li>
+    <li>Colours 24-31 are specially reserved for the HUD health, shield and battery displays.</li>
+    <li>Colors 32-207 are "universal" for all Dark Forces PALs. Textures and sprites using
+    these colors can be used with every PAL without distortion.</li>
+    <li>Colors 208-255 are different from one PAL to another. They are used for 
+    textures that are specific to a certain level (eg. Nar Shaddaa, Robotics) and 
+    will look "wrong" if used in other levels. For example, the Kell Dragon's 
+    distorted appearance if placed in SECBASE.</li>
+</ul>
 
-<hr size="2">
+
+<hr size="2" />
 
 <a name="PLTT Res"></a>
-<font size="+1"><strong>PLTT Resources (PLT Files)</strong></font><p>
+<h2>PLTT Resources (PLT Files)</h2><p>
 
 PLTT LFD resources are of variable size, and store a (possibly incomplete) palette used by ANIM and DELT resources.
 <p>

@@ -2,7 +2,6 @@
 <head>
 <title> DF Specs - JEDI.LVL</title>
 </head>
-<!--Version 3.00-->
 <body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
 
 
@@ -10,32 +9,32 @@
 <a href="s_lfd.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_lev.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong> JEDI.LVL</strong></font>
-<hr size="2">
-<p>
+<h2> JEDI.LVL</h2>
 
-Contains a list of the levels in DF.
+<p>
+	Contains a list of the levels in DF. The contents of JEDI.LVL determine what levels will be accessible from the game's main menu.
+</p>
 
 <table border="1" width="600"><tr><td><pre>
  | LEVELS 14
-<pre></td></tr></table>
+</pre></td></tr></table>
 <p>
-
 This is the number of entries in JEDI.LVL
 <p>
+
 <table border="1" width="600"><tr><td><pre>
-| Secret Base,        SECBASE,   
-\ L:\LEVELS\SECBASE\;L:\LEVELS\;L:\LEVELS\BM-GEN\;
-\ L:\LEVELS\PALETTES\;L:\LEVELS\BM-IMPER\;
-\ L:\LEVELS\HOLDER\
+| Secret Base,        SECBASE,    L:\LEVELS\SECBASE\; ......
 | ...
-<pre></td></tr></table>
+</pre></td></tr></table>
 <p>
+
+<p>
+	This is the definition for a level. The first entry is the description (eg. "Secret Base") to be shown in the mission menu in DF.
+</p>
+<p>
+	The second entry is the file name of the level (e.g. SECBASE).<br /> It will be applied in the following areas:
+</p>
 <pre>
-This is the definition for a level. The first entry is the description (eg. "Secret Base")<br> to be shown in the mission menu in DF.
-
-The second entry is the name of the level (e.g. SECBASE).<br> It will be applied in the following areas:
-
 	levname.LEV
 	levname.O
 	levname.INF
@@ -46,15 +45,64 @@ The second entry is the name of the level (e.g. SECBASE).<br> It will be applied
 	DELTlevname
 	ANIMlevname
 
-	
 LEV entry in BRIEFING.LST
-
-To successfully change the name of a level, <br>its name must be changed in all of these as well as in JEDI.LVL.
-
-
-The paths stored are unused, and were most probably referring to the LucasArts file server at development time.
-
-The remainder of this file contains the names of all the levels in Dark Forces.
 </pre>
+
+<p>
+	To successfully change the name of a level, its name must be changed in all of these as well as in JEDI.LVL.
+</p>
+<p>
+	The paths are unused, and were most probably referring to the LucasArts file server at development time.
+</p>
+
+<hr size="2" />
+
+<h3>Custom missions</h3>
+<p>
+	If you are creating a custom mission (or missions) you should modify JEDI.LVL accordingly. 
+</p>
+<p>
+	Your mission's FILE NAME does not need to be the same as any of the original 14 levels.
+</p>
+<p>
+	Suppose you create a mission with file name "MY_MAP". Your JEDI.LVL will look like this:
+</p>
+
+
+<table border="1" width="600"><tr><td><pre>
+LEVELS 1
+
+My new mission,        MY_MAP
+</pre></td></tr></table>
+
+<p>
+	In your GOB file, you will have the following files for your mission.
+</p>
+<pre>
+  MY_MAP.LEV
+  MY_MAP.O
+  MY_MAP.INF
+  MY_MAP.GOL
+  MY_MAP.PAL
+  MY_MAP.CMP
+</pre>
+
+<p>
+	Your <a href="s_dfbrf.htm">DFBRIEF.LFD</a> will contain the following files.
+</p>
+<pre>
+  MY_MAP.DELT		// mission briefing 
+  MY_MAP.ANIM		// mission objective screen (for PDA)
+</pre>
+
+<p>
+	When the game is started, this will show in the mission menu. When the user selects "My new mission", it will
+	load the briefing contained in MY_MAP.DELT, and then the level found in MY_MAP.LEV
+</p>
+<img src="images/jedilvl.png" />
+
+<br />
+<hr />
+
 </body>
 </html>

@@ -21,19 +21,19 @@ Here are the data structures for the FME file headers.
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th>FME_Header1 IS</th><th width="50px"></th><th></th></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td> InsertX</td><td>    long   </td><td>// Insertion point, X coordinate</td></tr>
+<tr><td> InsertX</td><td>    int32   </td><td>// Insertion point, X coordinate</td></tr>
 <tr><td></td><td></td><td>// Negative values shift the FME left</td></tr>
 <tr><td></td><td></td><td>// Positive values shift the FME right</td></tr>
-<tr><td> InsertY</td><td>    long    </td><td>// Insertion point, Y coordinate</td></tr>
+<tr><td> InsertY</td><td>    int32    </td><td>// Insertion point, Y coordinate</td></tr>
 <tr><td></td><td></td><td>// Negative values shift the FME up</td></tr>
 <tr><td></td><td></td><td>// Positive values shift the FME down</td></tr>
-<tr><td> Flip</td><td>    long    </td><td>// 0 = not flipped</td></tr>
+<tr><td> Flip</td><td>    int32    </td><td>// 0 = not flipped</td></tr>
 <tr><td></td><td></td><td>// 1 = flipped horizontally</td></tr>
-<tr><td> Header2</td><td>    long    </td><td>// pointer to FME_Header2</td></tr>
-<tr><td> UnitWidth</td><td>    long    </td><td>// Unused</td></tr>
-<tr><td> UnitHeight</td><td>    long    </td><td>// Unused</td></tr>
-<tr><td> pad3</td><td>    long    </td><td>// Unused</td></tr>
-<tr><td> pad4</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td> Header2</td><td>    int32    </td><td>// pointer to FME_Header2</td></tr>
+<tr><td> UnitWidth</td><td>    int32    </td><td>// Unused</td></tr>
+<tr><td> UnitHeight</td><td>    int32    </td><td>// Unused</td></tr>
+<tr><td> pad3</td><td>    int32    </td><td>// Unused</td></tr>
+<tr><td> pad4</td><td>    int32    </td><td>// Unused</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
 </table></td></tr></table>
 <p>
@@ -41,16 +41,16 @@ Here are the data structures for the FME file headers.
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th>FME_Header2 IS</th><th width="50px"></th><th></th></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td> SizeX</td><td>    long    </td><td>// Size of the FME, X value</td></tr>
-<tr><td> SizeY</td><td>    long    </td><td>// Size of the FME, Y value</td></tr>
-<tr><td> Compressed</td><td>    long    </td><td>// 0 = not compressed</td></tr>
+<tr><td> SizeX</td><td>    int32    </td><td>// Size of the FME, X value</td></tr>
+<tr><td> SizeY</td><td>    int32    </td><td>// Size of the FME, Y value</td></tr>
+<tr><td> Compressed</td><td>    int32    </td><td>// 0 = not compressed</td></tr>
 <tr><td></td><td></td><td>// 1 = compressed</td></tr>
-<tr><td> DataSize</td><td>    long    </td><td>// Datasize for compressed FMEs,</td></tr>
+<tr><td> DataSize</td><td>    int32    </td><td>// Datasize for compressed FMEs,</td></tr>
 <tr><td></td><td></td><td>// equals length of the FME file - 32</td></tr>
 <tr><td></td><td></td><td>// If not compressed, DataSize = 0</td></tr>
-<tr><td> ColOffs</td><td>    long    </td><td>// Always 0, because columns table </td></tr>
+<tr><td> ColOffs</td><td>    int32    </td><td>// Always 0, because columns table </td></tr>
 <tr><td></td><td></td><td>// follows just after</td></tr>
-<tr><td> pad1</td><td>    long    </td><td>// Unused</td></tr>
+<tr><td> pad1</td><td>    int32    </td><td>// Unused</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
 </table></td></tr></table>
 <p>

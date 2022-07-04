@@ -3,1030 +3,1427 @@
 <title> DF Specs - INF FILES </title>
 <!--Version 3.00-->
 </head>
-<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000"><basefont size="3">
+<body bgcolor="#C0C0C0" text="#000000" link="#00A000" vlink="#0000FF" alink="#FF0000">
+	<basefont size="3">
 
-<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
-<a href="s_lev.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
-<a href="s_gol.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
+	<a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
+	<a href="s_lev.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
+	<a href="s_gol.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong> INF Files</strong></font>
-<p>
+	<h1> INF Files</h1>
+	<p>
+		INF files control the dynamic workings of a level, turning static sectors and walls into doors, switches, elevators, rotating fans, forcefields, and so on.
+		They are text files written in "The INF language".
+		Although not a true programming or scripting language, INF can be used to
+		create scripted events in a level: for example, mission completion,
+		conversations between characters, and opening access to new parts of
+		the level as objectives are completed.
+	</p>
+	<p>
+		INFs accept C like /* */ comments.
+	</p>
+	<p>
+		They are made up of <strong>item</strong> definitions, which are linked to the corresponding LEV file
+	</p>
+	<ul>
+		<li>to the SECTORS via the sector names </li>
+		<li>to the WALLS via the sector names and wall number </li>
+	</ul>
 
-INF files control the dynamic workings of a level. They are text files written in "The INF programming language". 
-<p>
-INFs accept C like /* */ comments.
-<p><pre>
-They are made up of item definitions, which are linked
-	to the SCs via the SC names
-	to the WLs via the SC names and WL number
-</pre>
-<p>
-<hr size="2">
-<font size="+1"><b><strong>INF File Format</strong></b></font>
-<p>
-Here is the header of the INF file:
-<p>
-<table border="1" cellpadding="5">
-<tr><td><pre>
+	<hr size="2" />
+
+	<a name="TOC" />
+	<h3>Contents</h3>
+	<ol>
+		<li><a href="#TOC_fileformat">INF file format</a></li>
+		<li><a href="#TOC_overview">INF item overview</a></li>
+		<li><a href="#TOC_itemlevel">item: level</a></li>
+
+		<li>
+			<a href="#TOC_elevators">Elevators</a>
+			<ul>
+				<li><a href="#in_elev_stop">stop</a></li>
+				<li><a href="#in_elev_slave">slave</a></li>
+			</ul>
+		</li>
+
+		<li>
+			<a href="#TOC_triggers">Triggers</a>
+			<ul>
+				<li><a href="#in_client">client</a></li>
+			</ul>
+
+		</li>
+
+		<li><a href="#TOC_teleporter">Teleporter chute</a></li>
+		<li><a href="#TOC_properties">INF properties</a></li>
+		<li><a href="#TOC_messages">INF messages</a></li>
+
+		<li>
+			<a href="#TOC_special">Special INF functions</a>
+			<ul>
+				<li>adjoin:</li>
+				<li>page:</li>
+				<li>text:</li>
+				<li>texture:</li>
+			</ul>
+		</li>
+
+		<li><a href="#TOC_darkexe">INF functions from DARK.EXE</a></li>
+	</ol>
+
+	Details
+	<ul>
+		<li><a href="#TOC_elevdesc">Elevator classes</a></li>
+		<li><a href="#TOC_trigdesc">Trigger classes</a></li>
+		<li><a href="#TOC_propdesc">Property descriptions</a></li>
+		<li><a href="#TOC_mesgdesc">Message descriptions</a></li>
+	</ul>
+
+
+	<hr size="2" />
+	<!-- ----------------------------------------------------------------------------- -->
+	<a name="TOC_fileformat" />
+	<h3>INF File Format</h3>
+	<p>
+		Here is the header of the INF file:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
 |  INF 1.0
 |  LEVELNAME SECBASE   
 |
 |  items 2
-</pre></td></tr>
-</table><p>
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
 
-INF File version and level name, followed by total number of items in the file.
-Don't forget to change this value when you add or remove items in an INF. 
+		INF File version and level name, followed by total number of items in the file.
+		Don't forget to change this value when you add or remove items in an INF.
 
-<p>Then follow the items:
-<p>
-<table border="1" cellpadding="5">
-<tr><th>Sector Item.</th><tr><td><pre>
+	<p>Then follow the items:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><th>Sector Item.</th>
+			<tr>
+				<td>
+					<pre>
 |  item: sector  name: secname   
 |    seq
 |     ........
 |    seqend
- </pre></td></tr></tr>
-</table><p>
-<table border="1" cellpadding="5">
-<tr><th>Wall Item.</th><tr><td><pre>
+ </pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><th>Wall Item.</th>
+			<tr>
+				<td>
+					<pre>
 |  item: sector  name: secname  num: #wallnum   
 |    seq
 |     ........
 |    seqend
-</pre></td></tr></tr>
-</table><p>
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
 
 
-etc.
-<p>
-<a href="#IN_lev">See also item: level</a>
-<p>
-Each item follows the same format, structured by the seq and seqend statements, between which the definitions are contained.
-<p>
-<strong>Note:</strong><br>
-More than one class statement is allowed per item.
-<p>
-<hr size="2">
-<font size="+1"><b><strong>INF Programming language</strong></b></font><p>
-Each item (apart from an <a href="#IN_lev">item: level</a>) will have one or more classes. There are 3 types of classes:<p>
+		etc.
+	<p>
+		<a href="#IN_lev">See also item: level</a>
+	<p>
+		Each item follows the same format.
+		The "code" for each item is enclosed within the seq and seqend statements.
+	<p>
+		<strong>Note:</strong><br>
+		More than one class statement is allowed per item.
+	<p></p>
 
-<table><tr><td width="200">
-<a href="#IN_elev">elevators</a></td><td>They dynamically modify sectors and walls</td></tr>
-<tr><td><a href="#in_trig">triggers</a></td><td>When triggered, they trigger something in their clients</td></tr>
-<tr><td><a href="#in_telechut">teleporter chute</a></td><td>A very special item used to "fall" to another sector</td></tr>
-</table>
-<p>
-Each class will have several <a href="#in_var">variables</a> that can be customized to change how the class functions.
-<p>
-<a href="#in_mess">Messages</a> can be sent around a level to modify sectors, walls, and INF items.
-<p>
-There are a few special functions that can be executed: create an <a href="#in_specfunc">adjoin:</a>, <a href="#in_specfunc_page">page: </a>a sound, and display a <a href="#in_specfunc_text">text:</a> message.
-<p>
-See also some <a href="#in_nfdark">new INF functions</a> that weren't used in the original levels, but were found in DARK.EXE
-<p>
-<hr size="2">
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
 
-<font size="+1"><b><strong>INF item: level</strong></b></font>
-<a name="IN_lev"></a>
-<p>
-This is used to play entire level ambient sounds. Quite useless, but it might be needed if you've got a level with lots of water, wind or machinery and it saves you from putting lots of sound objects all over the place.
-<p>
-This is never successfully used in the original levels. There is, however, a failed attempt in EXECUTOR.INF which is where I found out about it from.
-<p>
-<strong>usage:</strong>
+	<!-- ------------------------------------------------------------------------ -->
 
-<table border="1" cellpadding="5">
-<tr><td><pre>
+	<a name="TOC_overview" />
+	<h3>INF item overview</h3>
+	<p>
+		Each sector or wall item will have one or more <strong>classes</strong>. There are 3 types of classes:
+	<p>
+
+		<table>
+			<tr>
+				<td width="200">
+					<a href="#IN_elev">elevators</a>
+				</td>
+				<td>They modify sectors or their walls</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="#in_trig">triggers</a>
+				</td>
+				<td>
+					When triggered, they send a message to their client(s)
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="#in_telechut">teleporter chute</a>
+				</td>
+				<td>
+					A very special item used to "fall" to another sector
+				</td>
+			</tr>
+		</table>
+	<p>
+		Each class will have several <a href="#in_var">properties</a> that can be customized to change how the class functions.
+	<p>
+		<a href="#in_mess">Messages</a> can be sent around a level to modify sectors, walls, and INF items.
+	<p>
+		There are a few special functions that can be executed: create an <a href="#in_specfunc">adjoin:</a>, <a href="#in_specfunc_page">page: </a>a sound, and display a <a href="#in_specfunc_text">text:</a> message.
+	<p>
+		See also some <a href="#in_nfdark">new INF functions</a> that weren't used in the original levels, but were found in DARK.EXE
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_itemlevel" />
+	<h3>INF item: level</h3>
+	<a name="IN_lev"></a>
+	<p>
+		This is used to play an ambient sound in the entire level.
+	<p>
+		This is never successfully used in the original 14 levels. There is, however, a failed attempt in EXECUTOR.INF.
+	<p>
+		<strong>usage:</strong>
+
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
 | item: level
 |  seq
 |     amb_sound: [voc file] [num] [num]
 |  seqend
-</pre></td></tr>
-</table>
-<p>
-I'm not sure what the 2 nums do, but including them seems to stop the sound from playing.
-<p>
-<hr size="2">
-<a name="IN_elev"></a>
-<font size="+1"><strong> Class:  Elevators</strong></font>
-<p>
-Elevators make sectors and walls dynamic. They can obviously be used to create lifts, platforms, doors etc., but you often also need dummy (i.e.  non-accessible) elevators for level control purposes.
-<p>
-Elevators will usually have <a href="#in_elev_stop">stops</a>, which are different values the elevator can arrive at.
-<p>
-Elevators may also have <a href="#in_elev_slave">slaves</a> copying their actions.
-<p>
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		The meaning of the 2 nums are unknown. Including them seems to stop the sound from playing.
+	<p></p>
 
-<strong>Here are the elevator classes:</strong>
-<table>
-<tr><td><a href="#elv_ch_light">elevator change_light</a></td></tr>
-<tr><td><a href="#elv_basic">elevator basic</a></td></tr>
-<tr><td><a href="#elv_inv">elevator inv</a></td></tr>
-<tr><td><a href="#elv_mov_flr">elevator move_floor</a></td></tr>
-<tr><td><a href="#elv_mov_ceil">elevator move_ceiling</a></td></tr>
-<tr><td><a href="#elv_mov_fc">elevator move_fc</a></td></tr>
-<tr><td><a href="#elv_scr_flr">elevator scroll_floor</a></td></tr>
-<tr><td><a href="#elv_scr_ceil">elevator scroll_ceiling</a></td></tr>
-<tr><td><a href="#elv_mov_off">elevator move_offset</a></td></tr>
-<tr><td><a href="#elv_bas_auto">elevator basic_auto</a></td></tr>
-<tr><td></td></tr>
-<tr><td><a href="#elv_chg_wll_lght">elevator change_wall_light</a></td></tr>
-<tr><td><a href="#elv_mor_mov1">elevator morph_move1</a></td></tr>
-<tr><td><a href="#elv_mor_mov2">elevator morph_move2</a></td></tr>
-<tr><td><a href="#elv_mor_spin1">elevator morph_spin1</a></td></tr>
-<tr><td><a href="#elv_mor_spn2">elevator morph_spin2</a></td></tr>
-<tr><td><a href="#elv_mov_wll">elevator move_wall</a></td></tr>
-<tr><td></td></tr>
-<tr><td><a href="#elv_rot_wll">elevator rotate_wall</a></td></tr>
-<tr><td><a href="#elv_scr_wll">elevator scroll_wall</a></td></tr>
-<tr><td></td></tr>
-<tr><td><a href="#elv_dr">elevator door</a></td></tr>
-<tr><td><a href="#elv_dr_mid">elevator door_mid</a></td></tr>
-<tr><td><a href="#elv_dr_inv">elevator door_inv</a></td></tr>
-</table>
-<p>
-<hr size="2">
-<a name="in_trig"></a>
-<font size="+1"><strong>Class:  Triggers</strong></font>
-<p>
-
-Triggers send a <a href="#in_mess">message</a> to a <a href="#in_client">client </a>sector when triggered.  They can be used to create switches, tripwires etc. Triggers can also be used to display <a href="#in_specfunc_text">text.</a><p>
-<strong>Note:</strong> if no message is specified, then the default message  <a href="#msg_mtrig">(m_trigger)</a> will be sent to the client(s).
-<p>
-<strong>Here are the trigger classes:</strong>
-<table>
-<tr><td><a href="#trg_stnd">trigger standard</a></td></tr>
-<tr><td><a href="#trg_trg">trigger</a></td></tr>
-<tr><td><a href="#trg_sw1">trigger switch1</a></td></tr>
-<tr><td><a href="#trg_sngl">trigger single</a></td></tr>
-<tr><td><a href="#trg_tggl">trigger toggle</a></td></tr>
-</table>
-<p>
-<hr size="2">
-<font size="+1"><strong>Class: Teleporter Chute</strong></font>
-<a name="in_telechut"></a>
-<p>
-Teleporter chutes are a special class of their own. Their function is to teleport the player directly up or down to another sector.
-<p>
-Dark Forces teleporter chutes are not deliberate teleporters like in  DOOM. They are usually not intended to be noticed, and are intended to  make it look like the player has just fallen through a chute into a layer  below, for example, in the Robotics Facility where you fall into the gas  room, and Jabba's Ship where you fall into the area where you rescue Jan.  These cases need to use teleporter chutes because it is impossible to use  the same sector in both layers - its walls would need to be given double  adjoins!
-<p>
-Because teleporter chutes send you to the same X and Z coordinates, the target sector MUST occupy the same physical space of the teleporter chute, or  it may be possible to teleport outside of a sector. Of course your Y coordinate can change.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| class: teleporter chute</td></tr>
-<tr><td>|  target: [target sectorname]</td></tr>
-</table>
-<p>
-<hr size="2">
-<font size="+1"><strong>INF Variables</strong></font>
-<a name="in_var"></a>
-<p>
-Variables set how elevators and triggers function.
-<p>
-<table>
-<tr><td><a href="#var_mstr">master:</a></td></tr>
-<tr><td><a href="#var_evt_msk">event_mask:</a></td></tr>
-<tr><td><a href="#var_evnt">event:</a></td></tr>
-<tr><td><a href="#var_enty_msk">entity_mask:</a></td></tr>
-<tr><td><a href="#var_spd">speed:</a></td></tr>
-<tr><td><a href="#var_srt">start:</a></td></tr>
-<tr><td><a href="#var_cntr">center:</a></td></tr>
-<tr><td><a href="#var_angl">angle:</a></td></tr>
-<tr><td><a href="#var_key">key:</a></td></tr>
-<tr><td><a href="#in_flags">flags:</a></td></tr>
-<tr><td><a href="#var_snd">sound:</a></td></tr>
-<tr><td><a href="#var_obj_mask">object_mask:</a></td></tr>
-</table>
-<p>
-<hr size="2">
-<font size="+1"><strong>INF Messages</strong></font>
-<a name="in_mess"></a>
-<p>
-Messages are sent from triggers when they are triggered and elevators when  they arrive at stops. They are sent to other triggers and elevators, and  in some cases just regular sectors and lines (except message: lights, which  is sent to the system). They do various things to their recipients.  Messages are placed in the sequence of elevators and triggers.
-<p>
-
-<strong>Messages all have these general syntax:</strong>
-<p>
-<table border="1" cellpadding="5"><tr><th>(sent from an elevator)</th></tr>
-<tr><td><pre>
-| message: [stop number] [receiver] [message] [parameters]</pre></td></tr></table><p>
-
-<table border="1" cellpadding="5"><tr><th>(sent from a trigger)</th></tr>
-<tr><td><pre>
-| client: [receiver]
-| message: [message] [parameters]</pre></td></tr></table><p>
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+	<a name="TOC_elevators" />
+	<a name="IN_elev"></a>
+	<h3>Class: Elevators</h3>
+	<p>
+		Elevators make sectors (or their walls) dynamic. They can be used to create lifts, platforms, doors, conveyor belts, flowing water etc.
+		They are also used for "dummy" (i.e. non-accessible) elevators for level control and scripting purposes.
+	<p>
+		Elevators will usually have <a href="#in_elev_stop">stops</a>, which are different values the elevator can arrive at.
+	<p>
+		Elevators may also have <a href="#in_elev_slave">slaves</a> copying their actions.
 
 
+		<h4>Here are the elevator classes:</h4>
+		<table>
+			<tr><td><a href="#elv_ch_light">elevator change_light</a></td></tr>
+			<tr><td><a href="#elv_basic">elevator basic</a></td></tr>
+			<tr><td><a href="#elv_inv">elevator inv</a></td></tr>
+			<tr><td><a href="#elv_mov_flr">elevator move_floor</a></td></tr>
+			<tr><td><a href="#elv_mov_ceil">elevator move_ceiling</a></td></tr>
+			<tr><td><a href="#elv_mov_fc">elevator move_fc</a></td></tr>
+			<tr><td><a href="#elv_scr_flr">elevator scroll_floor</a></td></tr>
+			<tr><td><a href="#elv_scr_ceil">elevator scroll_ceiling</a></td></tr>
+			<tr><td><a href="#elv_mov_off">elevator move_offset</a></td></tr>
+			<tr><td><a href="#elv_bas_auto">elevator basic_auto</a></td></tr>
+			<tr><td></td></tr>
+			<tr><td><a href="#elv_chg_wll_lght">elevator change_wall_light</a></td></tr>
+			<tr><td><a href="#elv_mor_mov1">elevator morph_move1</a></td></tr>
+			<tr><td><a href="#elv_mor_mov2">elevator morph_move2</a></td></tr>
+			<tr><td><a href="#elv_mor_spin1">elevator morph_spin1</a></td></tr>
+			<tr><td><a href="#elv_mor_spn2">elevator morph_spin2</a></td></tr>
+			<tr><td><a href="#elv_mov_wll">elevator move_wall</a></td></tr>
+			<tr><td></td></tr>
+			<tr><td><a href="#elv_rot_wll">elevator rotate_wall</a></td></tr>
+			<tr><td><a href="#elv_scr_wll">elevator scroll_wall</a></td></tr>
+			<tr><td></td></tr>
+			<tr><td><a href="#elv_dr">elevator door</a></td></tr>
+			<tr><td><a href="#elv_dr_mid">elevator door_mid</a></td></tr>
+			<tr><td><a href="#elv_dr_inv">elevator door_inv</a></td></tr>
+		</table>
+	<p></p>
 
-<table border="1" cellpadding="5"><tr><td><pre>
-[receiver]  is the receiver of a message. Can be one of the following:
-[sectorname] 				receiver is a sector
-[sectorname([wallnum])] 		receiver is a wall
-SYSTEM 				receiver is the SYSTEM (message: lights only)
-[parameters] are parameters specific to the type of message.</pre></td></tr></table><p>
+	<a name="in_elev_stop"></a>
+	<h3>stop:</h3>
+	<p>
+		A stop is a value that an elevator can arrive at. The meaning of the value varies depending on the class of elevator, and can be floor altitude, ceiling altitude, ambient light, degrees of rotation etc.
+		Stops are used in dummy elevators for level scripting control.
+		Elevators can send a <a href="#in_mess">message</a>,  <a href="#in_specfunc_page">page</a> a sound, or create an <a href="#in_specfunc">adjoin</a> upon arriving at a stop.
+	<p>
+		<strong>Note: </strong>Elevators can have any number of stops, including zero. If no stops are given, the elevator will
+		be continuously moving, so long as its MASTER is on. This is used for continuously scrolling (eg. to create a conveyor belt) and rotating elevators, but should not be used for
+		"elevator move_floor" and others !!!
+	<p>
+		<strong>Note: </strong>Door elevators should  NOT be given stops. They will have automatic stops set depending on the altitudes of the floor and ceiling of their sector.
+	<p>
+		<strong>Note:</strong> that altitudes in INF are expressed in normal fashion (opposite to
+		LEV and O files) -- positive values are "up" and negative values are "down".
+	</p>
+	<br />
 
-</pre></td></tr></table>
-<p>
-<strong>Here are the messages:</strong>
-<p>
-<table>
-<tr><td><a href="#msg_mtrig">m_trigger</a></td></tr>
-<tr><td><a href="#msg_gto_stp">goto_stop</a></td></tr>
-<tr><td><a href="#msg_nxt_stp">next_stop</a></td></tr>
-<tr><td><a href="#msg_prv_stp">prev_stop</a></td></tr>
-<tr><td><a href="#msg_mstr_on">master_on</a></td></tr>
-<tr><td><a href="#msg_mstr_off">master_off</a></td></tr>
-<tr><td><a href="#msg_clr_bts">clear_bits</a></td></tr>
-<tr><td><a href="#msg_set_bts">set_bits</a></td></tr>
-<tr><td><a href="#msg_cmplt">complete</a></td></tr>
-<tr><td><a href="#msg_dne">done</a></td></tr>
-<tr><td><a href="#msg_wkup">wakeup</a></td></tr>
-<tr><td><a href="#msg_lght">lights</a></td></tr>
-</table>
-<p>
-Remember that when you look at an INF file and you see something like :
-<p>
-<table border="1" cellpadding="5"><tr><td><pre>
-| class: elevator eeeee
-|  stop: 0
-|   message: 0 mmmmm
-|  stop: 1
-|   message: 1 mmmmm
-</pre></td></tr></table>
-<p>
-it's only a visual clue, and you could group all the messages in one place and in any order.
-Important : if you add a stop, you have to renumber !
-<p>
-<strong>Notes:</strong><br>
-- When a specific message is not specified, the default message is  <a href="#msg_mtrig">m_trigger</a>.<br>
-- When messages are sent from an elevator, they are sent when it ARRIVES at a stop.<br>
-- For some reason, messages can't be sent from "terminate" or "complete" stops.
-<p>
-<hr size="2">
-<font size="+1"><strong>New INF Functions from Dark.exe</strong></font>
-<a name="in_nfdark"></a>
-<p>
-<table>
-<tr><th>Elevators:</th></tr>
-<tr><td><a href="#elv_mov_off">elevator move_offset</a></td></tr>
-<tr><td><a href="#elv_bas_auto">elevator basic_auto</a></td></tr>
-<tr><td><a href="#elv_mov_wll">elevator move_wall</a></td></tr>
-<tr><td><a href="#elv_dr_inv">elevator door_inv</a></td></tr>
-<tr><td></td></tr>
-<tr><th>Variables:</th></tr>
-<tr><td><a href="#var_obj_mask">object_mask:</a></td></tr>
-<tr><td></td></tr>
-<tr><th>Special Functions:</th></tr>
-<tr><td><a href="#in_spcfun_textur">texture:</a></td></tr>
-</table>
-<p>
-Here are some INF keywords that were found in DARK.EXE but as yet are not understood. We would appreciate it if people could help work out these as they may be usable!
-<p>
-<table>
-<tr><td>stop_y:</td></tr>
-<tr><td>trigger_action:</td></tr>
-<tr><td>condition:</td></tr>
-<tr><td></td></tr>
-<tr><td>enclosed</td></tr>
-<tr><td>mid</td></tr>
-<tr><td></td></tr>
-<tr><td>entity_enter</td></tr>
-<tr><td>move:</td></tr>
-</table>
-<p>
-
-<hr size="2">
-<font size="+1"><strong> INF Special Functions</strong></font>
-<a name="in_specfunc"></a>
-<p>
-<strong><font size="+1">adjoin:</font></strong>
-<p>
-Adjoins a line to another line when an elevator arrives at a stop,  removing any adjoins it had with a previous line. This is required if you  need a line to remove its adjoin with one line and adjoin with another  line midway through a level. "Adjoin" is placed in an elevator's sequence.
-<p>
-For example, in level 6 (detention center), you may notice that the 2  main lifts have a door on each layer adjoined to it on the same line.  Since a line cannot be adjoined to more than one other line at once,  the following occurs: midway through moving up between 2 layers, the  elevator move_floor arrives at a stop which it remains at for 0 seconds.  At this stop, a line of the lift sector is adjoined to a line of the door  sector on the layer above, at the same time removing its adjoin with a  line of the door sector on the layer below. The lift's doors all appear  to be directly on top of each other.
-<p>
-
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| adjoin: [stopnum] [sector1] [line1] [sector2] [line2]</td></tr>
-</table>
-<p>
-<br>
-<strong><font size="+1">page:</font></strong>
-<a name="in_specfunc_page"></a>
-<p>
-Plays a sound effect when an elevator arrives at a stop. "Page:" is  placed in an elevator's sequence.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| page: [stopnum] [VOC file]</td></tr>
-</table>
-
-<p>
-<br>
-
-<strong><font size="+1">text:</font></strong>
-<a name="in_specfunc_text"></a>
-<p>
-Displays a text message from TEXT.MSG when a trigger is triggered. "Text:" is placed  in a trigger's sequence.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5"><tr><td><pre>
-| text: [text number in text.msg] 
-</pre></td></tr></table>
-<p>
-<hr size="2">
-<strong><font size="+1">client:</font></strong>
-<a name="in_client"></a>
-<p>
-Used with triggers, client defines which sector(s) a message is sent to when the trigger is triggered.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| client: [client sectorname]</td></tr>
-</table>
-<p>
-<hr size="2">
-
-<strong><font size="+1">stop:</font></strong>
-<a name="in_elev_stop"></a>
-<p>
-A stop is a value that an elevator can arrive at. This value varies depending on the class of elevator, and can be floor altitude, ceiling  altitude, ambience, degrees etc.  Stops can be used practically, such as different heights a lift stops at, or can be used purely for level control as elevators can also send a <a href="#in_mess">message</a>,  <a href="#in_specfunc_page">page</a> a sound, or create an <a href="#in_specfunc">adjoin</a> upon arriving at a stop.
-<p>
-<strong>Note: </strong>Elevators can have any number of stops. If no stops are given, the elevator will start at value 0 and keep increasing its value throughout the entire level. This may be appropriate for an "elevator scroll_floor", but not for an "elevator move_floor" !!!
-<p>
-<strong>Note: </strong>Door elevators should  NOT be given stops. They will have automatic stops set depending on the altitudes of the floor and ceiling of their sector.
-<p>
-
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| stop: [value1] [value2]</td></tr>
-</table>
-<p>
-The first value can be given in three ways:
-<p>
-<table border="1" cellpadding="5">
-<tr><td><pre>
-| [num]	absolute stop
+	<strong>usage:</strong>
+	<table border="1" cellpadding="5">
+		<tr><td>| stop: [value1] [value2]</td></tr>
+	</table>
+	<p>
+		The first value can be given in three ways:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+| [num]		absolute stop
 | @[num]	relative stop
-| [sectorname]	equal the value of the sector [sectorname]</pre></td></tr>
-</table>
-<p>
+| [sectorname]	equal the value of the sector [sectorname]
+					</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
 
-The second value can be given in 4 ways:
-<p>
-<table border="1" cellpadding="5">
-<tr><td><pre>
-| [time]	time in sec that elevator remains at stop
-| hold	elevator will remain at stop indefinitely
+		The second value can be given in 4 ways:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+| [time]	time in seconds that elevator remains at stop. Can be non-integer value.
+| hold		elevator will remain at stop until triggered to move again
 | terminate	elevator will stay at the stop permanently
-| complete	mission will be complete when elev arrives at stop</pre></td></tr>
-</table>
-<p>
-<hr size="2">
-<strong><font size="+1">slave:</font></strong>
-<a name="in_elev_slave"></a>
-<p>
-A slave of an elevator will follow whatever the elevator does does. However, if relative stops are used, the slave may not necessarily have the exact same actions. For example, a sector with "elevator move_floor" may have a floor  altitude of 0 and a slave of it may have a floor alt of 4. When the elevator  moves to "stop: @5" the slave will move to altitude 9.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| slave: [slave sectorname]</td></tr>
-</table>
-<p>
+| complete	mission will be complete when elev arrives at this stop</pre>
+				</td>
+			</tr>
+		</table>
 
-<hr size="2"><p>
-<strong><font size="+1">texture:</font></strong>
-<a name="in_spcfun_textur"></a><p>[by Anthony Hall]
-<p>
-The texture: command's format is like this:
-<p>
-<table border="1" cellpadding="5">
-<tr><td>texture: [stopnum] [flag] [donor]</td></tr>
-</table>
-<p>
-This command will copy the texturing from one specified sector to another one.  It must be used in the INF entry of the sector that will be changed. [donor] is the sector to copy a texture from.  The flag tells whether to copy ceiling to ceiling texture or floor to floor.  If the flag starts with a letter then ceiling textures will be used.  If it's a number then floors will be used.
-<p>
-I haven't been able to get it to work with walls or in trigger INF entries though.
-<p><hr size="2"><p>
+	<p>
+		The second (time) value can be omitted, in which case the elevator will remain at the stop for a default amount of time.
+	</p>
+	<p>
+		When an elevator arrives at a "complete" stop, the current mission will be complete. The mission complete message will be
+		displayed on the screen, and the player will be allowed to press ESC and advance to the next mission.
+	</p>
+
+	<a name="in_elev_slave"></a>
+	<h3>slave:</h3>
+	<p>
+		A slave of an elevator will follow whatever the elevator does does. However, if relative stops are used, the slave may not necessarily have the exact same actions. For example, a sector with "elevator move_floor" may have a floor  altitude of 0 and a slave of it may have a floor alt of 4. When the elevator  moves to "stop: @5" the slave will move to altitude 9.
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| slave: [slave sectorname]</td></tr>
+		</table>
+	<p></p>
+
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_triggers" />
+	<a name="in_trig"></a>
+	<h3>Class:  Triggers</h3>
+	<p>
+		Triggers send a <a href="#in_mess">message</a> to a <a href="#in_client">client </a>sector when triggered.  They can be used to create switches, tripwires etc. Triggers can also be used to display <a href="#in_specfunc_text">text.</a>
+	<p>
+		A trigger can be either a sector or a wall.
+	<p>
+		<strong>Note:</strong> if no message is specified, then the default message  <a href="#msg_mtrig">(m_trigger)</a> will be sent to the client(s).
+	<p>
+		<strong>Here are the trigger classes:</strong>
+		<table>
+			<tr><td><a href="#trg_stnd">trigger standard</a></td></tr>
+			<tr><td><a href="#trg_trg">trigger</a></td></tr>
+			<tr><td><a href="#trg_sw1">trigger switch1</a></td></tr>
+			<tr><td><a href="#trg_sngl">trigger single</a></td></tr>
+			<tr><td><a href="#trg_tggl">trigger toggle</a></td></tr>
+		</table>
+	<p></p>
+
+	<a name="in_client"></a>
+	<h3>client:</h3>
+	<p>
+		Used with triggers, client defines which sector(s) a message is sent to when the trigger is triggered.
+		A trigger may have one or more clients. Every trigger should have at least one client, unless it is a trigger used to display TEXT.
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| client: [client sectorname]</td></tr>
+		</table>
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_teleporter" />
+	<h3>Class: Teleporter Chute</h3>
+	<a name="in_telechut"></a>
+	<p>
+		Teleporter chutes are a special class of their own. Their function is to teleport the player directly up or down (usually down) to a <strong>target</strong> sector.
+	<p>
+		Dark Forces teleporter chutes are not deliberate teleporters like in  DOOM. They are usually
+		not intended to be noticed by the player, and are intended to  make it look like the player
+		has just fallen through a chute into a layer below, for example, in the Robotics Facility where
+		you fall through the fan into the gas room.
+	</p>
+	<p>Teleporter chutes create an illusion of two rooms that are vertically connected.</p>
+	<p>
+		Teleporter chutes send you directly up or down, without changing the player's X-Z
+		(horizontal) position. Therefore the target sector <strong>must</strong> occupy the same
+		X-Z space of the teleporter chute, or the player may be teleported into the "void" outside
+		of a sector.
+	</p>
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| class: teleporter chute</td></tr>
+			<tr><td>|  target: [target sectorname]</td></tr>
+		</table>
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_properties" />
+	<h3>INF Properties</h3>
+	<a name="in_var"></a>
+	<p>
+		Properties are set for elevators and triggers, and determine their behaviour.
+	<p>
+		If an INF item has more than one class, each class is followed by its properties:
+	</p>
+
+	<table border="1">
+		<tr>
+			<td>
+				<pre>
+seq
+  class elevator eeeee                 
+    speed: xx
+    event_mask: xx
+    master: xx
+    .....
+
+  class elevator eeeee
+    speed: xx
+    event_mask: xx
+    master: xx
+    .....
+
+  trigger tttttt
+    event_mask: xx
+    .....
+seqend
+</pre>
+			</td>
+		</tr>
+	</table>
+
+	<h4>List of properties</h4>
+	<table>
+		<tr><td><a href="#var_mstr">master:</a></td></tr>
+		<tr><td><a href="#var_evt_msk">event_mask:</a></td></tr>
+		<tr><td><a href="#var_evnt">event:</a></td></tr>
+		<tr><td><a href="#var_enty_msk">entity_mask:</a></td></tr>
+		<tr><td><a href="#var_spd">speed:</a></td></tr>
+		<tr><td><a href="#var_srt">start:</a></td></tr>
+		<tr><td><a href="#var_cntr">center:</a></td></tr>
+		<tr><td><a href="#var_angl">angle:</a></td></tr>
+		<tr><td><a href="#var_key">key:</a></td></tr>
+		<tr><td><a href="#in_flags">flags:</a></td></tr>
+		<tr><td><a href="#var_snd">sound:</a></td></tr>
+		<tr><td><a href="#var_obj_mask">object_mask:</a></td></tr>
+	</table>
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_messages" />
+	<h3>INF Messages</h3>
+	<a name="in_mess"></a>
+	<p>
+		Messages are sent from triggers when they are triggered and elevators when they arrive at
+		stops. They are sent to other triggers and elevators, and  in some cases just regular
+		sectors and lines (except message: lights, which  is sent to the <strong>system</strong>).
+		They do various things to their recipients.
+	<p>
+
+		<strong>Messages all have these general syntax:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><th>sent from an elevator</th></tr>
+			<tr>
+				<td>
+					<pre>
+| message: [stop number] [receiver] [message] [parameters] [event (optional)]</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+
+		<table border="1" cellpadding="5">
+			<tr><th>sent from a trigger</th></tr>
+			<tr>
+				<td>
+					<pre>
+| client: [receiver]
+| message: [message] [parameters] [event (optional)]</pre>
+				</td>
+			</tr>
+		</table>
+	<p></p>
+
+
+	<table border="1" cellpadding="5">
+		<tr>
+			<td>
+				<pre>
+[receiver]  is the receiver of a message. Can be one of the following:
+	[sectorname] 				receiver is a sector 
+	[sectorname([wallnum])] 		receiver is a wall
+	SYSTEM 					receiver is the SYSTEM (message: lights only)
 	
-<strong><font size="+1">Elevator Classes Descriptions</font></strong>
-<p>
-<strong>elevator change_light </strong><a name="elv_ch_light"></a>
-<p>
-Changes the AMBIENT of a sector, i.e. changes the light
-level in a sector.
-<p>
-Stop values are sector ambience.
-<p>
-<strong>elevator basic</strong><a name="elv_basic"></a>
-<p>
-Changes FLOOR ALTITUDE of a sector.
-<p>
-Stop values are the altitude of the floor.
-<p>
-<strong>elevator inv </strong><a name="elv_inv"></a>
-<p>
-Changes the CEILING ALTITUDE of a sector. 
-Often used for making doors (as you can set Smart Object Reactions).
-<p>
-Stop values are the altitude of the ceiling.
-<p>
-<strong>elevator move_floor </strong><a name="elv_mov_flr"></a>
-<p>
-Changes the FLOOR ALTITUDE of a sector.
-The difference from "elevator basic" is that the smart object flag does not affect this elevator.
-<p>
-Stop values are the altitude of the floor.
-<p>
-<strong>elevator move_ceiling </strong><a name="elv_mov_ceil"></a>
-<p>
-Changes the CEILING ALTITUDE of a sector. 
-The difference from "elevator inv" is that the smart object flag does not affect this elevator.
-<p>
-Stop values are the altitude of the ceiling.
-<p>
-<strong>elevator move_fc </strong><a name="elv_mov_fc"></a>
-<p>
-Changes both the FLOOR ALTITUDE and CEILING ALTITUDE of a sector, i.e. the floor and ceiling will move up and down together.
-<p>
-Stop values are the altitude of the floor.
-<p>
-<strong>elevator scroll_floor</strong><a name="elv_scr_flr"></a>
-<p>
-Scrolls the floor texture of a sector. Player moves with the floor texture by default, but see the  <a href="#in_flags">FLAGS </a> variable.
-<p>
-Stop values are distances in pixels ( x by 8 to get distances in level geometry units).
-<p>
-<strong>elevator scroll_ceiling </strong><a name="elv_scr_ceil"></a>
-<p>
-Scrolls the ceiling texture of a sector.
-<p>
-Stop values are distances in pixels ( x by 8 to get distances in level geometry units).
-<p>
-<strong>elevator move_offset</strong><a name="elv_mov_off"></a>
-<p>
-Changes the SECOND ALTITUDE of a sector.
-<p>
-Stop values are second altitude.
-<p>
-<strong>elevator basic_auto </strong><a name="elv_bas_auto"></a>
-<p>
-Changes the FLOOR ALTITUDE of a sector, but returns to altitude 0 after cycling through all its stops. From there, its event needs to be triggered twice to move it to its first stop again. Otherwise, seems to be the same as elevator_basic.
-<p>
-Stop values are floor altitude.
-<p>
-<strong>elevator change_wall_light </strong><a name="elv_chg_wll_lght"></a>
-<p>
-Changes the LIGHT of any walls in the sector with flag 1  bit 8 (allow change wall light), i.e. the relative light level  of a wall to the sector will change.
-<p>
-<strong>Note: </strong>this elevator won't work if the sector's AMBIENT is 31, in  the same way that the LIGHT field of walls won't work in the same  case.
-<p>
-Stops values are wall light.
-<p>
-<strong>elevator morph_move1 </strong><a name="elv_mor_mov1"></a>
-<p>Translates the VERTEX positions of any walls in the sector with  flag 1 bit 32 (wall morph with sector). The entire wall will  translate on the X-Z plane.
-<p>
-If the walls are adjoined, their mirrors also need to move so  should also be set with flag 1 bit 32.
-<p>
-The PLAYER will by default not move with the walls. (but see the  <a href="#in_flags">FLAGS </a>variable).
-<p>
-Stop values are distances on the X-Z (horizontal) plane relative  to the starting location of the wall.
-<p>
-<strong>elevator morph_move2 </strong><a name="elv_mor_mov2"></a>
-<p>
-Same as elevator morph_move1 except  the PLAYER will by default move relative to the walls if it  is in the sector (but see the  <a href="#in_flags">FLAGS </a> variable).
-<p>
-<strong>elevator morph_spin1 </strong><a name="elv_mor_spin1"></a>
-<p>
-Rotates the VERTEX positions of any walls in the sector with  flag 1 bit 32 (wall morph with sector). The entire wall will  rotate on the X-Z plane.
-<p>
-If the walls are adjoined, their mirrors also need to move so  should also be set with flag 1 bit 32.
-<p>
-The PLAYER will by default not spin with the walls (but see the  <a href="#in_flags">FLAGS </a> variable).
-<p>
-Stop values are angles in degrees.
-<p>
-<strong>elevator morph_spin2</strong> <a name="elv_mor_spn2"></a>
-<p>
-Same as elevator morph_spin1 except  the PLAYER will spin relative to the walls if it is in the  sector (but see the   <a href="#in_flags">FLAGS </a>variable).
-<p>
-<strong>elevator move_wall</strong><a name="elv_mov_wll"></a>
-<p>
-This is the same as <a href="#elv_mor_mov1">elevator morph_move1 </a> except that it has a default event_mask of 0.
-<p>
-<strong>elevator rotate_wall</strong><a name="elv_rot_wll"></a>
-<p>
-This is the same as <a href="#elv_mor_spin1">elevator morph_spin1</a>  except that it has a default event_mask of 0.
-<p>
-<strong>elevator scroll_wall</strong><a name="elv_scr_wll"></a>
-<p>
-Scrolls texture(s) of any walls in the sector with flag 1  bit 64/128/256/512 (allow scroll mid/top/bot/sign texture).  Stop values are distances in pixels ( x by 8 to get distances  in level geometry units)
-<p>
-<strong>elevator door</strong><a name="elv_dr"></a>
-<p>
-Instant door. Note, that it is easier to just use flag 1 bit 2  on a sector for an instant door. Elevator door is only really  needed if you want to alter variables, for example, create  a key door.
-<p>
-Stops and event_mask are set automatically - just make sure that  the ceiling altitude of the sector is when the door is OPEN.
-<p>
-<strong>elevator door_mid</strong><a name="elv_dr_mid"></a>
-<p>
-Instant 2 part door (opens upwards AND downwards). Information for the  top and bottom parts are specified individually (so if you want to set a  key, you have to set it to both halves of the door).
-<p>
-i.e.<table border="1" cellpadding="5">
-<tr><td><pre>
+[parameters]	are parameters specific to the type of message.
+
+[event (optional)]	specifies the custom event; used to send a message selectively to multi-class items
+				</pre>
+			</td>
+		</tr>
+	</table>
+
+	<p>
+
+	<p>
+		<strong>Here are the messages:</strong>
+	<p>
+		<table>
+			<tr><td><a href="#msg_mtrig">m_trigger</a></td></tr>
+			<tr><td><a href="#msg_gto_stp">goto_stop</a></td></tr>
+			<tr><td><a href="#msg_nxt_stp">next_stop</a></td></tr>
+			<tr><td><a href="#msg_prv_stp">prev_stop</a></td></tr>
+			<tr><td><a href="#msg_mstr_on">master_on</a></td></tr>
+			<tr><td><a href="#msg_mstr_off">master_off</a></td></tr>
+			<tr><td><a href="#msg_clr_bts">clear_bits</a></td></tr>
+			<tr><td><a href="#msg_set_bts">set_bits</a></td></tr>
+			<tr><td><a href="#msg_cmplt">complete</a></td></tr>
+			<tr><td><a href="#msg_dne">done</a></td></tr>
+			<tr><td><a href="#msg_wkup">wakeup</a></td></tr>
+			<tr><td><a href="#msg_lght">lights</a></td></tr>
+		</table>
+	<p>
+		Remember that when you look at an INF file and you see something like :
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+| class: elevator eeeee
+|  stop: 0 hold
+|   message: 0 mmmmm
+|  stop: 1 5
+|   message: 1 mmmmm
+|  stop: 2 hold
+|   message: 2 mmmmm
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		...the grouping of messages after their stops is only a convention, and you could group all the messages in one place and in any order. The following would work the same:
+
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+| class: elevator eeeee
+|  stop: 0 hold
+|  stop: 1 5
+|  stop: 2 hold
+|   message: 0 mmmmm
+|   message: 1 mmmmm
+|   message: 2 mmmmm
+</pre>
+				</td>
+			</tr>
+		</table>
+
+	<p></p>
+	Important : if you add a stop, you have to renumber !
+	<p>
+		<strong>Notes:</strong><br>
+		<ul>
+			<li> When a specific message is not specified, the default message is  <a href="#msg_mtrig">m_trigger</a>.<br>
+			<li> When messages are sent from an elevator, they are sent when it ARRIVES at a stop.<br>
+			<li> Messages can't be sent from "terminate" or "complete" stops.
+		</ul>
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_special" />
+	<a name="in_specfunc"></a>
+	<h3> INF Special Functions</h3>
+	<p></p>
+
+	<h4>adjoin:</h4>
+	<p>
+		Adjoins a line to another line when an elevator arrives at a stop,  removing any adjoins it had with a previous line. This is required if you  need a line to remove its adjoin with one line and adjoin with another  line midway through a level. "Adjoin" is placed in an elevator's code block.
+	<p>
+		For example, in level 6 (detention center), you may notice that the 2  main lifts have a door on each layer adjoined to it on the same line.  Since a line cannot be adjoined to more than one other line at once,  the following occurs: midway through moving up between 2 layers, the  elevator move_floor arrives at a stop which it remains at for 0 seconds.  At this stop, a line of the lift sector is adjoined to a line of the door  sector on the layer above, at the same time removing its adjoin with a  line of the door sector on the layer below. The lift's doors all appear  to be directly on top of each other.
+	<p>
+
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| adjoin: [stopnum] [sector1] [line1] [sector2] [line2]</td></tr>
+		</table>
+	<p></p>
+	<br />
+
+	<a name="in_specfunc_page"></a>
+	<h4>page:</h4>
+	<p>
+		Plays a sound effect when an elevator arrives at a stop. "Page:" is  placed in an elevator's code block.
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| page: [stopnum] [VOC file]</td></tr>
+		</table>
+
+	<p></p>
+	<br />
+
+	<a name="in_specfunc_text"></a>
+	<h4>text:</h4>
+	<p>
+		Displays a text message from TEXT.MSG when a trigger is triggered. "Text:" is placed  in a trigger's code block.
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+| text: [text number in text.msg] 
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p></p>
+
+	<a name="in_spcfun_textur"></a>
+	<h4>texture:</h4>
+	<p>[by Anthony Hall]</p>
+	<p>
+		The texture: command's format is like this:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><td>texture: [stopnum] [flag] [donor]</td></tr>
+		</table>
+	<p>
+		This command will copy the texturing from one specified sector to another one.  It must be used in the INF entry of the sector that will be changed. [donor] is the sector to copy a texture from.  The flag tells whether to copy ceiling to ceiling texture or floor to floor.  If the flag starts with a letter then ceiling textures will be used.  If it's a number then floors will be used.
+	<p>
+		I haven't been able to get it to work with walls or in trigger INF entries though.
+	<p></p>
+
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_darkexe" />
+	<a name="in_nfdark"></a>
+	<h3>New INF Functions from Dark.exe</h3>
+	<p>
+		These are INF functions found in DARK.EXE but were not used in the original 14 levels.
+	</p>
+	<table>
+		<tr><th>Elevators:</th></tr>
+		<tr><td><a href="#elv_mov_off">elevator move_offset</a></td></tr>
+		<tr><td><a href="#elv_bas_auto">elevator basic_auto</a></td></tr>
+		<tr><td><a href="#elv_mov_wll">elevator move_wall</a></td></tr>
+		<tr><td><a href="#elv_dr_inv">elevator door_inv</a></td></tr>
+		<tr><td></td></tr>
+		<tr><th>Properties:</th></tr>
+		<tr><td><a href="#var_obj_mask">object_mask:</a></td></tr>
+		<tr><td></td></tr>
+		<tr><th>Special Functions:</th></tr>
+		<tr><td><a href="#in_spcfun_textur">texture:</a></td></tr>
+	</table>
+	<p>
+		Here are some INF keywords that were found in DARK.EXE but as yet are not understood. We would appreciate it if people could help work out these as they may be usable!
+	<p>
+		<table>
+			<tr><td>stop_y:</td></tr>
+			<tr><td>trigger_action:</td></tr>
+			<tr><td>condition:</td></tr>
+			<tr><td></td></tr>
+			<tr><td>enclosed</td></tr>
+			<tr><td>mid</td></tr>
+			<tr><td></td></tr>
+			<tr><td>entity_enter</td></tr>
+			<tr><td>move:</td></tr>
+		</table>
+	<p></p>
+
+	<a href="#TOC">Back to top</a>
+	<hr size="2" />
+
+	<!-- ------------------------------------------------------------------------ -->
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_elevdesc" />
+	<h3>Elevator Classes Descriptions</h3>
+	<p>
+		<strong>elevator change_light </strong><a name="elv_ch_light"></a>
+	<p>
+		Changes the AMBIENT LIGHT of a sector.
+	<p>
+		Stop values are sector AMBIENT (as found in the LEV file) and can be from 0 to 31.
+	<p>
+		<strong>elevator basic</strong><a name="elv_basic"></a>
+	<p>
+		Changes FLOOR ALTITUDE of a sector.
+	<p>
+		Stop values are the altitude of the floor.
+	<p>
+		<strong>elevator inv </strong><a name="elv_inv"></a>
+	<p>
+		Changes the CEILING ALTITUDE of a sector.
+		Often used for making doors (as you can set Smart Object Reactions).
+	<p>
+		Stop values are the altitude of the ceiling.
+	<p>
+		<strong>elevator move_floor </strong><a name="elv_mov_flr"></a>
+	<p>
+		Changes the FLOOR ALTITUDE of a sector.
+		The difference from "elevator basic" is that the smart object flag does not affect this elevator.
+	<p>
+		Stop values are the altitude of the floor.
+	<p>
+		<strong>elevator move_ceiling </strong><a name="elv_mov_ceil"></a>
+	<p>
+		Changes the CEILING ALTITUDE of a sector.
+		The difference from "elevator inv" is that the smart object flag does not affect this elevator.
+	<p>
+		Stop values are the altitude of the ceiling.
+	<p>
+		<strong>elevator move_fc </strong><a name="elv_mov_fc"></a>
+	<p>
+		Changes both the FLOOR ALTITUDE and CEILING ALTITUDE of a sector, i.e. the floor and ceiling will move up and down together.
+	<p>
+		Stop values are the altitude of the floor.
+	<p>
+		<strong>elevator scroll_floor</strong><a name="elv_scr_flr"></a>
+	<p>
+		Scrolls the floor texture of a sector. Player moves with the floor texture by default, but see the  <a href="#in_flags">FLAGS </a> property.
+	<p>
+		Stop values are distances in pixels ( x by 8 to get distances in level geometry units).
+	<p>
+		<strong>elevator scroll_ceiling </strong><a name="elv_scr_ceil"></a>
+	<p>
+		Scrolls the ceiling texture of a sector.
+	<p>
+		Stop values are distances in pixels ( x by 8 to get distances in level geometry units).
+	<p>
+		<strong>elevator move_offset</strong><a name="elv_mov_off"></a>
+	<p>
+		Changes the SECOND ALTITUDE of a sector.
+	<p>
+		Stop values are second altitude.
+	<p>
+		<strong>elevator basic_auto </strong><a name="elv_bas_auto"></a>
+	<p>
+		Changes the FLOOR ALTITUDE of a sector, but returns to altitude 0 after cycling through all its stops. From there, its event needs to be triggered twice to move it to its first stop again. Otherwise, seems to be the same as elevator_basic.
+	<p>
+		Stop values are floor altitude.
+	<p>
+		<strong>elevator change_wall_light </strong><a name="elv_chg_wll_lght"></a>
+	<p>
+		Changes the LIGHT of any walls in the sector with flag 1  bit 8 (allow change wall light), i.e. the relative light level  of a wall to the sector will change.
+	<p>
+		Stops values are wall light.
+	<p>
+		<strong>elevator morph_move1 </strong><a name="elv_mor_mov1"></a>
+	<p>Translates the VERTEX positions of any walls in the sector with  flag 1 bit 32 (wall morph with sector). The entire wall will  translate on the X-Z plane.
+	<p>
+		If the walls are adjoined, their mirrors also need to move so  should also be set with flag 1 bit 32.
+	<p>
+		The PLAYER will by default not move with the walls. (but see the  <a href="#in_flags">FLAGS </a>property).
+	<p>
+		Stop values are distances on the X-Z (horizontal) plane relative  to the starting location of the wall.
+	<p>
+		<strong>elevator morph_move2 </strong><a name="elv_mor_mov2"></a>
+	<p>
+		Same as elevator morph_move1 except  the PLAYER will by default move relative to the walls if it  is in the sector (but see the  <a href="#in_flags">FLAGS </a> property).
+	<p>
+		<strong>elevator morph_spin1 </strong><a name="elv_mor_spin1"></a>
+	<p>
+		Rotates the VERTEX positions of any walls in the sector with  flag 1 bit 32 (wall morph with sector). The entire wall will  rotate on the X-Z plane.
+	<p>
+		If the walls are adjoined, their mirrors also need to move so  should also be set with flag 1 bit 32.
+	<p>
+		The PLAYER will by default not spin with the walls (but see the  <a href="#in_flags">FLAGS </a> property).
+	<p>
+		Stop values are angles in degrees.
+	<p>
+		<strong>elevator morph_spin2</strong> <a name="elv_mor_spn2"></a>
+	<p>
+		Same as elevator morph_spin1 except  the PLAYER will spin relative to the walls if it is in the  sector (but see the   <a href="#in_flags">FLAGS </a>property).
+	<p>
+		<strong>elevator move_wall</strong><a name="elv_mov_wll"></a>
+	<p>
+		This is the same as <a href="#elv_mor_mov1">elevator morph_move1 </a> except that it has a default event_mask of 0.
+	<p>
+		<strong>elevator rotate_wall</strong><a name="elv_rot_wll"></a>
+	<p>
+		This is the same as <a href="#elv_mor_spin1">elevator morph_spin1</a>  except that it has a default event_mask of 0.
+	<p>
+		<strong>elevator scroll_wall</strong><a name="elv_scr_wll"></a>
+	<p>
+		Scrolls texture(s) of any walls in the sector with flag 1  bit 64/128/256/512 (allow scroll mid/top/bot/sign texture).  Stop values are distances in pixels ( x by 8 to get distances  in level geometry units)
+	<p>
+		<strong>elevator door</strong><a name="elv_dr"></a>
+	<p>
+		Instant door. Note, that it is easier to just use flag 1 bit 2  on a sector for an instant door. Elevator door is only really  needed if you want to alter properties, for example, create  a key door.
+	<p>
+		Stops and event_mask are set automatically - just make sure that  the ceiling altitude of the sector is when the door is OPEN.
+	<p>
+		<strong>elevator door_mid</strong><a name="elv_dr_mid"></a>
+	<p>
+		Instant 2 part door (opens upwards AND downwards). Information for the  top and bottom parts are specified individually (so if you want to set a  key, you have to set it to both halves of the door).
+	<p>
+		i.e.<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
 | class: elevator door_mid
 |  addon: 0
 |  [info for the top part]
 |  addon: 1
 |  [info for the bottom part]
-</pre></td></tr>
-</table>
-<p>
-Stops and event_mask are set automatically - just make sure the  floor and ceiling altitudes of the sector are of the door  when it is OPEN.
-<p>
-<strong>elevator door_inv</strong><a name="elv_dr_inv"></a>
-<p>
-A door that opens downwards. Otherwise, the same as any other door  elevator.
-<p>
-Stops and event_mask are set automatically - just make sure that  the floor altitude of the sector is when the door is OPEN.
-<p>
-<hr size="2">
-<strong><font size="+1">flags:</font></strong>
-<a name="in_flags"></a>
-<p>
-Determines whether or not the player moves with a morphing or a horizontally scrolling elevator.
-<p>
-<strong>flag values</strong><br>
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		Stops and event_mask are set automatically - just make sure the  floor and ceiling altitudes of the sector are of the door  when it is OPEN.
+	<p>
+		<strong>elevator door_inv</strong><a name="elv_dr_inv"></a>
+	<p>
+		A door that opens downwards. Otherwise, the same as any other door  elevator.
+	<p>
+		Stops and event_mask are set automatically - just make sure that  the floor altitude of the sector is when the door is OPEN.
+	<p></p>
 
-<table border="1" cellpadding="5">
-<tr><td>1</td><td>	Move on floor</td></tr>
-<tr><td>2</td><td>	Move on 2nd altitude
-</td></tr>
-</table>
-<p>
-These are bit values, so can be added (3) for moving on both the floor  AND 2nd alt.
-<p>
-<strong>Note: </strong>In FUELSTAT.INF (I think) you may find "flags: 7". This suggests that there is a value for 4 as well.
-<p>
-<strong>Note: </strong>In some places in the original levels, flags is set on vertically moving elevators like move_floor and move_fc. I'm not sure whether this is a mistake, or if flags do something different here.
-<p>
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| flags: [value]</td></tr>
-</table>
-<p>
- Also See Defaults Below
-<p>
-<strong>  flag defaults</strong>
-<table border="1" cellpadding="5"><tr><td><pre>
-(elevs scroll_floor, morph_move2, morph_spin2)
-| flags: 3
 
-(elevs scroll_ceiling, morph_move1, morph_spin1, move_wall, rotate_wall)
-| flags: 0
-</pre></td></tr></table>
-<p>
-<strong>Note:</strong> all slaves will have flags set to 0.
-<p>
-<hr size="2">
-<strong><font size="+1">Trigger Classes Descriptions</font></strong>
-<p>
 
-<strong>trigger standard</strong><a name="trg_stnd"></a>
-<p>
-This can be applied to a sector (entering, leaving, nudging it etc.) or a line (crossing, nudging it etc.). Can't be used with switches, or you get a single vertical line where the sign  should be.
-<p>
+	<hr size="2" />
+	<!-- ------------------------------------------------------------------------ -->
 
-<strong>trigger</strong><a name="trg_trg"></a>
-<p>
-Exactly the same as trigger standard as far as I know (maybe  because trigger standard is the default trigger? So if there's  a default trigger and a default message than what's the default elevator???)
-<p>
-<strong>trigger switch1</strong><a name="trg_sw1"></a>
-<p>
-This is used specifically for switches. Remember, the wall containing the switch must have a sign which is a switch texture.  When the switch is pressed, the first texture will change to  the second texture in the multiple bm. The second texture can't  be pressed - a <a href="#msg_dne">message: done</a> must be sent to change  the switch back to the first texture. This can be done as many times as you like.
-<p>
-<strong>trigger single</strong><a name="trg_sngl"></a>
-<p>
-This is a trigger that is used with switches. The switch can  only be pressed ONCE. Once the switch is on its second texture,  it will remain there even if a "message: done" is sent.
-<p>
-<strong>trigger toggle</strong><a name="trg_tggl"></a>
-<p>
-This is a trigger that is used with switches. The switch can  be pressed while showing either texture, so there's no need  for "message: done".
-<p>
-<hr size="2">
-<strong><font size="+1">Variables Descriptions</font></strong>
-<p>
-<strong>master:</strong><a name="var_mstr"></a>
-<p>
-Determines whether an elevator or trigger is able to function.
-<p>
-usage:<p>
-<table border="1" cellpadding="5">
-<tr><td><pre>
+	<a name="TOC_trigdesc" />
+	<h3>Trigger Classes Descriptions</h3>
+	<p>
+
+		<strong>trigger standard</strong><a name="trg_stnd"></a>
+	<p>
+		This can be applied to a sector (entering, leaving, nudging it etc.) or a line (crossing, nudging it etc.). Can't be used with switches, or you get a single vertical line where the sign  should be.
+	<p>
+
+		<strong>trigger</strong><a name="trg_trg"></a>
+	<p>
+		Appears to behave exactly the same as trigger standard, possibly because trigger standard is the default.
+	<p>
+		<strong>trigger switch1</strong><a name="trg_sw1"></a>
+	<p>
+		This is used specifically for switches. Remember, the wall containing the switch 
+		should have a SIGN TX which is a switch texture.  When the switch is pressed, 
+		the first texture will change to the second texture in the multiple BM. The 
+		second texture can't  be pressed - a <a href="#msg_dne">message: done</a> must 
+		be sent to change the switch back to its first state. This can be done as many 
+		times as you like.
+	<p>
+		<strong>trigger single</strong><a name="trg_sngl"></a>
+	<p>
+		This is a trigger that is used with switches. The switch can  only be pressed 
+		ONCE. Once the switch is on its second texture,  it will remain there even if 
+		a "message: done" is sent.
+	<p>
+		<strong>trigger toggle</strong><a name="trg_tggl"></a>
+	<p>
+		This is a trigger that is used with switches. The switch can  be pressed while 
+		showing either texture, so there's no need for "message: done".
+	<p></p>
+
+	<hr size="2" />
+
+	<!-- ------------------------------------------------------------------------ -->
+
+	<a name="TOC_propdesc" />
+	<h3>Properties Descriptions</h3>
+	<p>
+		<strong>master:</strong><a name="var_mstr"></a>
+	<p>
+		Determines whether an elevator or trigger is active or inactive. If master is off, the elevator
+		or trigger will not respond to the player or other entities. An elevator or trigger with master off
+		will not respond to messages either.
+	<p>
+		usage:
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
 | master: on|off
 
 Default:
-| master: on</pre></td></tr>
-</table>
-<p>
-<strong>event_mask:</strong><a name="var_evt_msk"></a>
-<p>
-Determines what event will operate an elevator or trigger.  The event, when carried out, will move an elevator to its next stop, or trigger a trigger.
-<p><table border="1" cellpadding="5"><tr><th>
-event_mask values</th><td></td></tr>
-<tr><td>1</td><td>	Cross line from front side</td></tr>
-<tr><td>2 </td><td>Cross line from back side</td></tr>
-<tr><td>4 </td><td>Enter sector</td></tr>
-<tr><td>8 </td><td>Leave sector</td></tr>
-<tr><td>16 </td><td>Nudge line from front side / Nudge sector from inside</td></tr>
-<tr><td>32 </td><td>Nudge line from back side /  Nudge sector from outside</td></tr>
-<tr><td>64 </td><td>Explosion</td></tr>
-<tr><td>256 </td><td>Shoot or punch line (see <a href="#var_enty_msk">entity_mask</a> )</td></tr>
-<tr><td>512 </td><td>Land on floor of sector</td></tr>
-</table>
-<br>
-(The above are bit values, so are added up when more than one are needed.)
-<p>
-* or -1		All bits set
-Custom values		Triggered by triggers with an event: or by certain messages with the custom value as a parameter.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>
-| event_mask: [value]
-</td></tr>
-</table>
-<p>
-See Defaults Below
-<p>
-<strong>event_mask defaults</strong><a name="var_evt_msk_def"></a>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>(elevs basic, inv, basic_auto)</td></tr>
-<tr><td>| event_mask: 52</td></tr>
-<tr><td></td></tr>
-<tr><td>(elevs morph_move1, morph_move2, morph_spin1, morph_spin2)</td></tr>
-<tr><td>| event_mask: 60</td></tr>
-<tr><td></td></tr>
-<tr><td>(other elevators)</td></tr>
-<tr><td>| event_mask: 0</td></tr>
-<tr><td></td></tr>
-<tr><td>(all triggers)</td></tr>
-<tr><td>| event_mask: *</td></tr>
-</table>
-<p>
-<strong>event:</strong><a name="var_evnt"></a>
-<p>
-Creates a custom event value  for a trigger. The trigger will then only affect an elevator class with this event value set in its <a href="#var_evt_msk">event_mask.</a> The custom value should  be a bit value (i.e. a power of 2) so that it can be added with the other  custom and preset bits (this works fine). LEC always uses 65536 onwards so  I suggest you do this too. However, it seems that you do not HAVE to use a  bit value because in EXECUTOR.INF LEC uses 2621444 (note the extra 4) and  it works OK. But I don't suggest you do this.
-<p>
-Event: is needed with multi-class elevators or triggers where each class is  controlled by a separate trigger. For example in the Research Facility  (level 4), the sector called "Corecat" (spins around the Phrik metal) is  two classes of elevator - elevator move_fc and elevator morph_spin2. Two switches control these classes individually. If the "event" variable was  not used, both switches would move both classes of elevator to its next  stop at the same time. Utilising the event variable, it is made possible  to have one switch control the spinning and the other control the moving  floor/ceiling.
-<p>
+| master: on</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		<strong>event_mask:</strong><a name="var_evt_msk"></a>
+	<p>
+		Determines what event(s) will operate an elevator or trigger.  The event, when it 
+		occurs, will move an elevator to its next stop, or activate a trigger.
+		If event_mask is 0, an elevator can only be controlled by messages sent from 
+		other INF items; it will not respond directly to the player.
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<th>
+					event_mask values
+				</th>
+				<td></td>
+			</tr>
+			<tr><td>1</td><td>	Cross line from front side</td></tr>
+			<tr><td>2 </td><td>Cross line from back side</td></tr>
+			<tr><td>4 </td><td>Enter sector</td></tr>
+			<tr><td>8 </td><td>Leave sector</td></tr>
+			<tr><td>16 </td><td>Nudge line from front side / Nudge sector from inside</td></tr>
+			<tr><td>32 </td><td>Nudge line from back side /  Nudge sector from outside</td></tr>
+			<tr><td>64 </td><td>Explosion (eg. thermal detonator or mortar)</td></tr>
+			<tr><td>256 </td><td>Shoot or punch line (see <a href="#var_enty_msk">entity_mask</a> )</td></tr>
+			<tr><td>512 </td><td>Land on floor of sector</td></tr>
+		</table>
+		<br>
+		(The above are bit values, so are added up when more than one are needed.)
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>* or -1</td>
+				<td>All bits set</td>
+			</tr>
+			<tr>
+				<td>1024 or higher</td>
+				<td>Activated by custom event values, see <a href="#var_evnt">event:</a></td>
+			</tr>
 
-<strong>usage:</strong>
-<table border="1" cellpadding="5">
-<tr><td>| event: [value]</td></tr>
-</table>
-<p>
-<a href="#var_evt_msk_def">See Defaults</a> 
-<p>
 
-<strong>entity_mask:</strong><a name="var_enty_msk"></a>
-<p>
-Defines the entity that triggers a trigger
-<p>
-<table border="1" cellpadding="5">
-<tr><th>entity_mask values</th><th></th></tr>
-<tr><td>1</td><td>Enemy</td></tr>
-<tr><td>8</td><td>	Weapon</td></tr>
-<tr><td>2147483648</td><td>Player</td></tr>
-</table>
-<br>
+		</table>
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					| event_mask: [value]
+				</td>
+			</tr>
+		</table>
+	<p>
+		See Defaults Below
+	<p>
+		<strong>event_mask defaults</strong><a name="var_evt_msk_def"></a>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><td>elevs basic, inv, basic_auto</td></tr>
+			<tr><td>| event_mask: 52</td></tr>
+			<tr><td></td></tr>
+			<tr><td>elevs morph_move1, morph_move2, morph_spin1, morph_spin2</td></tr>
+			<tr><td>| event_mask: 60</td></tr>
+			<tr><td></td></tr>
+			<tr><td>other elevators</td></tr>
+			<tr><td>| event_mask: 0</td></tr>
+			<tr><td></td></tr>
+			<tr><td>all triggers</td></tr>
+			<tr><td>| event_mask: *</td></tr>
+		</table>
+	<p>
+		<strong>event:</strong><a name="var_evnt"></a>
+	<p>
+		Creates a custom event value  for a trigger. The trigger will then only affect an elevator class with this event value set in its <a href="#var_evt_msk">event_mask.</a>
+		The custom value should  be a bit value (i.e. a power of 2) so that it can be added with the other  custom and preset bits (this works fine). LEC always uses 65536 onwards so this seems advisable. However, it seems that you do not HAVE to use a  bit value because in EXECUTOR.INF LEC uses 2621444 (note the extra 4) and  it works OK. But this is not recommended.
+	<p>
+		Event: is needed with multi-class elevators or triggers where each class is  controlled by a separate trigger.
+		For example in Testbase  (level 4), the sector called "Corecat" (spins around the Phrik metal) is  two classes of elevator -
+		elevator move_fc and elevator morph_spin2. Two switches control these classes individually.
+		If the "event" property was  not used, both switches would trigger both classes of elevator. Utilising the event property, it is made possible  to isolate
+		the two classes to different switches.
+	<p>
 
- (The above are bit values, so are added up when more than one are needed.)
-<p>
-* or -1 	All bits set
-<p>
-<strong>Note: </strong>Enemies and weapons (laser bolts, rockets etc.) can enter and leave  sectors and cross lines just like the PLAYER, but can't nudge or land on the  floor. i.e. you can use entity_mask values 1 and 8 with event_mask values  1, 2, 4 and 8 but NOT with 16, 32 and 512. 
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5"><tr><td><pre>
-| entity_mask: [value]
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| event: [value]</td></tr>
+		</table>
+	<p>
 
+		<strong>entity_mask:</strong><a name="var_enty_msk"></a>
+	<p>
+		Defines the entity type that triggers a trigger. By changing this, you can create a 
+		shootable switch, or a trigger that will respond to enemies but not the player.
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><th>entity_mask values</th><th></th></tr>
+			<tr><td>1</td><td>Enemy</td></tr>
+			<tr><td>8</td><td>	Weapon</td></tr>
+			<tr><td>2147483648</td><td>Player</td></tr>
+		</table>
+		<br>
+
+		(The above are bit values, so are added up when more than one are needed.)
+	<p>
+		<table border="1">
+			<tr><td>* or -1</td><td>	All bits set</td></tr>
+		</table>
+	<p>
+		<strong>Note: </strong>Enemies and weapons (laser bolts, rockets etc.) can enter and leave  sectors and cross lines just like the PLAYER, but can't nudge or land on the  floor. i.e. you can use entity_mask values 1 and 8 with event_mask values  1, 2, 4 and 8 but NOT with 16, 32 and 512.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					| entity_mask: [value]
+				</td>
+			</tr>
+		</table>
+<pre>
 Default:
 | entity_mask: 2147483648
-</pre></td></tr>
-</table>
-<p>
+</pre>
 
-<strong>speed:</strong><a name="var_spd"></a>
-<p>
-Determines the speed that an elevator moves between stops. If speed: 0 is set the elevator will move between stops instantaneously.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| speed: [value]</td></tr>
-</table>
-<p>
+	<p>
 
-Default:<br>
-Different for each type of elevator.
-<p>
-<strong>start:</strong><a name="var_srt"></a>
-<p>
-Determines which stop an elevator starts at, right at the start of a level after it has loaded up.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| start: [stopnum]</td></tr>
-</table>
-<p>
+		<strong>speed:</strong><a name="var_spd"></a>
+	<p>
+		Determines the speed that an elevator moves between stops, in stop units per second. If speed: 0 is set the elevator will move between stops instantaneously.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| speed: [value]</td></tr>
+		</table>
+	<p>
 
-Default:<br>
-| start: 0
-<p>
-<strong>center:</strong><a name="var_cntr"></a>
-<p>
-Used with rotating elevators, center defines the coordinates of the center of revolution.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| center: [x coord] [z coord]</td></tr>
-</table>
+		Default:<br>
+		Different for each type of elevator.
+	<p>
+		<strong>start:</strong><a name="var_srt"></a>
+	<p>
+		Determines which stop an elevator starts at, when the level loads.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| start: [stopnum]</td></tr>
+		</table>
+	<p>
 
-<p>
-Default:<br>
-| center: 0 0
-<p>
-<strong>angle:</strong><a name="var_angl"></a>
-<p>
-Used with texture-scrolling or horizontally moving elevators, angle defines the direction in which the texture will scroll or the sector will move. For scrolling walls, angle: 0 is down. For scrolling floors,  scrolling ceilings and moving sectors, angle: 0 is north.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| angle: [value in degrees]</td></tr>
-</table>
-<p>
+		Default:<br>
+		| start: 0
+	<p>
+		<strong>center:</strong><a name="var_cntr"></a>
+	<p>
+		Used with rotating elevators, center defines the coordinates of the center of revolution.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| center: [x coord] [z coord]</td></tr>
+		</table>
 
-Default:<br>
-| angle: 0
-<p>
-<strong>key:</strong><a name="var_key"></a>
-<p>
-Defines which key is needed to manually trigger the event of an  elevator. Key is optional, of course.
-<p>
-<strong>usage:</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| key: red|blue|yellow</td></tr>
-</table>
-<p>
+	<p>
+		Default:<br>
+		| center: 0 0
+	<p>
+		<strong>angle:</strong><a name="var_angl"></a>
+	<p>
+		Used with texture-scrolling or horizontally moving elevators, angle defines the 
+		direction in which the texture will scroll or the sector will move. 
+		For scrolling walls, angle: 0 is down. 
+		For horizontally moving and scrolling elevators, angle: 0 is north.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| angle: [value in degrees]</td></tr>
+		</table>
+	<p>
 
-<strong>flags:</strong>
-<p>
-<a href="#in_flags">Flags</a>
+		Default:<br>
+		| angle: 0
+	<p>
+		<strong>key:</strong><a name="var_key"></a>
+	<p>
+		Defines which key the player must have to activate the elevator. Key is optional, of course.
+	<p>
+		<strong>usage:</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| key: red|blue|yellow</td></tr>
+		</table>
+	<p>
 
-<p>
-<strong>sound:</strong><a name="var_snd"></a>
-<p>
-Sets the sound effects of the elevator or trigger. Elevators have  3 sound effects - leaving a stop (1), moving between stops (2), and arriving  at a stop (3). Triggers only have one sound - when triggered.
-<p>
-<strong>usage (elevators):</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| sound: [sound value (1, 2 or 3)] [VOC file]</td></tr>
-</table>
-<p>
+		<strong>flags:</strong>
+		<a name="in_flags"></a>
+	<p>
+		Determines how the player moves with a morph_move, morph_spin or a 
+		scroll_floor elevator.
+	<p>
+		<strong>flag values</strong><br>
 
-<strong>usage (triggers):</strong><br>
-<table border="1" cellpadding="5">
-<tr><td>| sound: [VOC file]</td></tr>
-</table>
-<p>
-<strong>Note:</strong> Setting "0" in place of [VOC file] makes the sound effect silent.
-<p>
- Also See Defaults Below
-<p>
-<strong>sound defaults</strong>
-<table border="1CELLPADDING=5"><tr><td><pre>
-(elevs change_light, change_wall_light, scroll_floor, scroll_ceiling,  and scroll_wall)
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>1</td><td>	Move on floor</td>
+			</tr>
+			<tr>
+				<td>2</td><td>Move on 2nd altitude 
+				</td>
+			</tr>
+		</table>
+	<p>
+		These are bit values, so can be added (3) for moving on both the floor  AND 2nd alt.
+	</p>
+	<p>
+		2nd altitude applies for both negative ("water") and positive ("bridges") 2nd altitudes.
+	</p>
+	<p>
+		This property appears to affect enemies and items when used 
+		with elevator  morph_xxxx, but not with scroll_floor.
+		So enemies cannot be moved by a conveyor belt in Dark Forces.
+	</p>
+	<p>
+		<strong>Note: </strong>In FUELSTAT.INF you may find "flags: 7". This suggests
+		that there is a value for 4 as well but its purpose is unknown.
+	</p>
+	<p>
+		<strong>Note: </strong>In some places in the original levels, flags is set on vertically moving elevators like move_floor and move_fc. I'm not sure whether this is a mistake, or if flags do something different here.
+	<p>
+		<strong>usage:</strong>
+		<table border="1" cellpadding="5">
+			<tr><td>| flags: [value]</td></tr>
+		</table>
+	<p>
+		<strong>  flag defaults</strong>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<pre>
+elevs scroll_floor, morph_move2, morph_spin2
+| flags: 3
+
+elevs scroll_ceiling, morph_move1, morph_spin1, move_wall, rotate_wall
+| flags: 0
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		<strong>Note:</strong> all slaves will have flags set to 0.
+	<p>
+	<p>
+		<strong>sound:</strong><a name="var_snd"></a>
+	<p>
+		Sets the sound effects of the elevator or trigger. Elevators have  3 sound effects - leaving a stop (1), moving between stops (2), and arriving  at a stop (3). Triggers only have one sound - when triggered.
+	<p>
+		<strong>usage (elevators):</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| sound: [sound value (1, 2 or 3)] [VOC file]</td></tr>
+		</table>
+	<p>
+
+		<strong>usage (triggers):</strong><br>
+		<table border="1" cellpadding="5">
+			<tr><td>| sound: [VOC file]</td></tr>
+		</table>
+	<p>
+		<strong>Note:</strong> Setting "0" in place of [VOC file] makes the sound effect silent.
+	<p>
+		Also See Defaults Below
+	<p>
+		<strong>sound defaults</strong>
+		<table border="1" CELLPADDING="5">
+			<tr>
+				<td>
+					<pre>
+elevs change_light, change_wall_light, scroll_floor, scroll_ceiling,  and scroll_wall
 | sound: 1 0
 | sound: 2 0
 | sound: 3 0
 
-(elevs move_floor, move_fc, basic, basic_auto, change_offset,  door_inv and bottom half 
-of door_mid)
+elevs move_floor, move_fc, basic, basic_auto, change_offset,  door_inv and bottom half
+of door_mid
 | sound: 1 elev2-1.voc
 | sound: 2 elev2-2.voc
 | sound: 3 elev2-3.voc
 
-(elevs move_ceiling, inv, morph_move1, morph_move2, morph_spin1,  morph_spin2, move_wall
-, rotate_wall and top half of door_mid)
+elevs move_ceiling, inv, morph_move1, morph_move2, morph_spin1,  morph_spin2, move_wall,
+rotate_wall and top half of door_mid
 | sound: 1 door2-1.voc
 | sound: 2 door2-2.voc
 | sound: 3 door2-3.voc
 
-(elevator door)
+elevator door
 | sound: 1 door.voc
 | sound: 2 0
 | sound: 3 0
 
-(trigger standard)
+trigger standard
 | sound: 0
 
-(triggers switch1, single and toggle)
+triggers switch1, single and toggle
 | sound: switch3.voc
-</pre></td></tr></table>
-<p>
-<strong>object_mask:</strong><a name="var_obj_mask"></a>
-<p>
-This seems to work like event_mask when used with an elevator, and like entity_mask when used with a trigger.
-<p>
-<hr size="2">
-<strong><font size="+1">Messages Descriptions</font></strong>
-<p>
-<strong>m_trigger</strong><a name="msg_mtrig"></a>
-<p>
-Triggers the event of an elevator or trigger (no matter what its  event_mask value is).
-An elevator will be moved to its next stop, and a trigger will be triggered.
-<p>
-Sent from an elevator.
-<p>
-Sent to a line trigger or sector trigger or an elevator.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[event value]    -- </td>
-<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td></tr>
-</table>
-<p>
+</pre>
+				</td>
+			</tr>
+		</table>
+	<p>
+		<strong>object_mask:</strong><a name="var_obj_mask"></a>
+	<p>
+		This seems to work like event_mask when used with an elevator, and like entity_mask when used with a trigger.
+		It is not used in the original levels.
+	<p></p>
 
-<strong>goto_stop</strong><a name="msg_gto_stp"></a>
-<p>
-Sends an elevator to a specified stop.
-<p>
-Sent from a trigger or an elevator.
-<p>
-Sent to an elevator.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[num]--</td>
-<td>Stop number to send elevator to.</td></tr>
-</table>
-	
-<p>
-<strong>next_stop</strong><a name="msg_nxt_stp"></a>
-<p>
-Sends an elevator to its next stop.
-<p>
-Sent from an elevator or trigger.
-<p>
-Sent to an elevator.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[event value] </td>
-<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td></tr>
-</table>
-		
-<p>
-<strong>prev_stop</strong><a name="msg_prv_stp"></a>
-<p>
-Sends an elevator to its previous stop.
-<p>
-Sent from an elevator or trigger.
-<p>
-Sent to an elevator.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[event value] </td>
-<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td></tr>
-</table>
-		
-<p>
-<strong>master_on</strong><a name="msg_mstr_on"></a>
-<p>
-Turns an elevator's or trigger's master on.<br>
-This message also turns on all generators in the recipient  sector with "master: off" set in the .O file.
-<p>
-Sent from an elevator or trigger.
-<p>
-Sent to an elevator or trigger (or a normal sector with generators in it).
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[event value] </td>
-<td>optional -- the message will only be sent to the class with this event value set in its event_mask
-</td></tr>
-</table>
-	
-<p>
-<strong>master_off</strong><a name="msg_mstr_off"></a>
-<p>
-Turns an elevator's or trigger's master off.
-<p>
-Sent from an elevator or trigger.
-<p>
-Sent to an elevator or trigger.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[event value] </td>
-<td>optional -- the message will only be sent to the class with this event value set in its event_mask
-</td></tr>
-</table>
-<p>
-<strong>clear_bits</strong><a name="msg_clr_bts"></a>
-<p>
-Clears specified flag bits from a wall or sector. To clear more than one bit, add the bit values up that you want cleared.
-<p>
-Sent from a trigger or elevator.
-<p>
-Sent to a sector or wall.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>
-[flagnum]   --	flag number (1, 2 or 3)</td></tr>
-<tr><td>[bitnum]   --	bit value to clear</td></tr>
-</table>
-<p>
-<strong>set_bits</strong><a name="msg_set_bts"></a>
-<p>
-Sets specified flag bits to a sector or wall. To set more than one bit, add up the bit values that you want to be set.
-<p>
-Sent from a trigger or elevator.
-<p>
-Sent to a sector or wall.
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[flagnum]   --	flag number (1, 2 or 3)</td></tr>
-<tr><td>[bitnum]   --	bit value to set</td></tr>
-</table>
+	<hr size="2" />
+	<!-- ---------------------------------------------------------------->
 
-<p>
-<strong>complete</strong><a name="msg_cmplt"></a>
-<p>
-Tells the GOL file that a trigger goal has been completed, updating the objective screen. Also moves recipient elevator to its next stop.
-<p>
-Sent from a trigger or an elevator.
-<p>
-Sent to an elevator (preferably to your "complete" elevator as it will also be moved one stop closer to its complete stop).
-<p>
-<strong>Parameters:</strong>
-<p>
-<table border="1" cellpadding="5">
-<tr><td>[num]    --</td>
-<td>refers to the "TRIG: [num]" in the GOL file. The corresponding goal in your PDA will then be shown to be complete (if your ANIM is done correctly, that is!!!)
-</td></tr>
-</table>
+	<a name="TOC_mesgdesc" />
+	<h3>Messages Descriptions</h3>
+	<p>
+		<strong>m_trigger</strong><a name="msg_mtrig"></a>
+	<p>
+		Triggers an elevator or trigger (no matter what its event_mask value is).
+		An elevator will be moved to its next stop, and a trigger will be triggered.
+	<p>
+		Sent from an elevator.
+	<p>
+		Sent to a line trigger or sector trigger or an elevator.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[event value]     </td>
+				<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td>
+			</tr>
+		</table>
+	<p>
+
+		<strong>goto_stop</strong><a name="msg_gto_stp"></a>
+	<p>
+		Sends an elevator to a specified stop.
+	<p>
+		Sent from a trigger or an elevator.
+	<p>
+		Sent to an elevator.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[num]</td>
+				<td>Stop number to send elevator to.</td>
+			</tr>
+		</table>
+
+	<p>
+		<strong>next_stop</strong><a name="msg_nxt_stp"></a>
+	<p>
+		Sends an elevator to its next stop.
+	<p>
+		Sent from an elevator or trigger.
+	<p>
+		Sent to an elevator.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[event value] </td>
+				<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td>
+			</tr>
+		</table>
+
+	<p>
+		<strong>prev_stop</strong><a name="msg_prv_stp"></a>
+	<p>
+		Sends an elevator to its previous stop.
+	<p>
+		Sent from an elevator or trigger.
+	<p>
+		Sent to an elevator.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[event value] </td>
+				<td>optional -- the message will only be sent to the class with this event value set in its event_mask</td>
+			</tr>
+		</table>
+
+	<p>
+		<strong>master_on</strong><a name="msg_mstr_on"></a>
+	<p>
+		Turns an elevator's or trigger's master on.<br>
+		This message also turns on all generators in the recipient  sector with "master: off" set in the .O file.
+	<p>
+		Sent from an elevator or trigger.
+	<p>
+		Sent to an elevator or trigger (or a normal sector with generators in it).
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[event value] </td>
+				<td>
+					optional -- the message will only be sent to the class with this event value set in its event_mask
+				</td>
+			</tr>
+		</table>
+
+	<p>
+		<strong>master_off</strong><a name="msg_mstr_off"></a>
+	<p>
+		Turns an elevator's or trigger's master off.
+	<p>
+		Sent from an elevator or trigger.
+	<p>
+		Sent to an elevator or trigger.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[event value] </td>
+				<td>
+					optional -- the message will only be sent to the class with this event value set in its event_mask
+				</td>
+			</tr>
+		</table>
+	<p>
+		<strong>clear_bits</strong><a name="msg_clr_bts"></a>
+	<p>
+		Clears specified flag bits from a wall or sector. To clear more than one bit, add the bit values up that you want cleared.
+	<p>
+		Sent from a trigger or elevator.
+	<p>
+		Sent to a sector or wall.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					[flagnum]   --	flag number (1, 2 or 3)
+				</td>
+			</tr>
+			<tr><td>[bitnum]   --	bit value to clear</td></tr>
+		</table>
+	<p>
+		<strong>set_bits</strong><a name="msg_set_bts"></a>
+	<p>
+		Sets specified flag bits to a sector or wall. To set more than one bit, add up the bit values that you want to be set.
+	<p>
+		Sent from a trigger or elevator.
+	<p>
+		Sent to a sector or wall.
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr><td>[flagnum]   --	flag number (1, 2 or 3)</td></tr>
+			<tr><td>[bitnum]   --	bit value to set</td></tr>
+		</table>
+
+	<p>
+		<strong>complete</strong><a name="msg_cmplt"></a>
+	<p>
+		Tells the GOL file that a trigger goal has been completed, updating the objective screen. Also moves recipient elevator to its next stop.
+	<p>
+		Sent from a trigger or an elevator.
+	<p>
+		Sent to an elevator (preferably to your "complete" elevator as it will also be moved one stop closer to its complete stop).
+	<p>
+		<strong>Parameters:</strong>
+	<p>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>[num]  </td>
+				<td>
+					refers to the "TRIG: [num]" in the GOL file. The corresponding goal in your PDA will then be shown to be complete (if your ANIM is done correctly, that is!!!)
+				</td>
+			</tr>
+		</table>
 
 
-<p>
+	<p>
 
-<strong>done</strong><a name="msg_dne"></a>
-<p>
-Puts a switch on its first texture - it can be pressed again  (UNLESS it is a trigger single).
-<p>
-Sent from an elevator.
-<p>
-Sent to a line trigger.
-<p>
-<strong>Parameters:</strong> none
-<p>
-<strong>wakeup</strong><a name="msg_wkup"></a>
-<p>
-VUEs with "PAUSE: TRUE" will be played through once when this message is sent to the sector containing the 3DO object.
-<p>
-Sent from an elevator.
-<p>
-Sent to a sector.
-<p>
-<strong>Parameters:</strong> none
-<p>
-<strong>lights</strong><a name="msg_lght"></a>
-<p>
-Toggles the ambience of ALL sectors in the level between their original setting and the value of sector flag 3. Using sector flag 3 bits 1, 2, 4, 8, and 16 it is possible to make any ambient level from 0 to 31.
-<p>
-Sent from an elevator or trigger.
-<p>
-Sent to the SYSTEM (treat it like a sector with name "system", but make sure there are NO actual sectors called "system" anywhere in your level!
-<p>
-<strong>Parameters:</strong> none
+		<strong>done</strong><a name="msg_dne"></a>
+	<p>
+		Puts a switch on its first texture - it can be pressed again  (UNLESS it is a trigger single).
+	<p>
+		Sent from an elevator.
+	<p>
+		Sent to a line trigger.
+	<p>
+		<strong>Parameters:</strong> none
+	<p>
+		<strong>wakeup</strong><a name="msg_wkup"></a>
+	<p>
+		VUEs with "PAUSE: TRUE" will be played through once when this message is sent to the sector containing the 3DO object.
+	<p>
+		Sent from an elevator.
+	<p>
+		Sent to a sector.
+	<p>
+		<strong>Parameters:</strong> none
+	<p>
+		<strong>lights</strong><a name="msg_lght"></a>
+	<p>
+		Toggles the AMBIENT light of ALL sectors in the level between their original setting and the value of sector flag 3. Using sector flag 3 bits 1, 2, 4, 8, and 16 it is possible to make any AMBIENT level from 0 to 31.
+	<p>
+		Sent from an elevator or trigger.
+	<p>
+		Sent to the SYSTEM (treat it like a sector with name "system", but make sure there are NO actual sectors called "system" anywhere in your level!
+	<p>
+		<strong>Parameters:</strong> none
 
-<p>
-<hr size="2">
+	<p>
+		<hr size="2">
 
 
 </body>

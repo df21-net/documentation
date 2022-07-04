@@ -8,7 +8,7 @@
 <a href="s_vue.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_msg.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong> SOUND FILES</strong></font>
+<h1> SOUND FILES</h1>
 
 <ul>
 <li><a href="#VOC Files"> VOC Files</a>
@@ -17,10 +17,10 @@
 <li><a href="#GMID Res"> GMID Resources (GMD Files)</a>
 </ul>
 
-<hr size="2">
+<hr size="2" />
 
 <a name="VOC Files"></a>
-<font size="+1"><strong>VOC Files </strong></font><p>
+<h2>VOC Files </h2>
 
 <p>
 These are standard .VOC files in the <strong>Creative Labs format. </strong>
@@ -89,11 +89,14 @@ Note that sounds are looped (eg. the water and wind) using REPEAT/END REPEAT mar
 <tr><td>  </td><td>2-bits    = 3</td></tr>
 <tr><td> </td><td>Multi DAC = 3+(# of channels) [interesting--  this isn't in the developer's manual]</td></tr>
 </table>
-<p>
-<hr size="2">
+<p></p>
 
+<!-- ------------------------------------------------------------------------->
+
+<hr size="2" />
+     
 <a name="VOIC Res"></a>
-<font size="+1"><strong>VOIC Resources (VOC Files) </strong></font><p>
+<h2>VOIC Resources (VOC Files) </h2>
 
 Those LFD resources store .VOC files, in the Creative Labs format.
 <p>
@@ -101,13 +104,19 @@ Those LFD resources store .VOC files, in the Creative Labs format.
 It seems that all the VOIC resources are in the jedisfx.lfd file.
 <p>
 
-<hr size="2">
+
+<!-- ------------------------------------------------------------------------->
+
+<hr size="2" />
 
 <a name="GMD Files"></a>
-<font size="+1"><strong>GMD Files </strong></font><p>
+<h2>GMD Files </h2>
 
 <p>
 They contain the musics.
+<p>
+    <strong>Note: </strong> numbers in GMD files are all in <em>big endian</em> byte order.
+</p>
 <p>
 [by Alex Novikov]
 <p>
@@ -116,11 +125,11 @@ The header of GMD file (or the LFD GMID resource) consists of two fields:
 <tr><th>GMD_Header IS</th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
 <tr><td>Magic</td><td>char[4]</td><td>	// the string 'MIDI'</td></tr>
-<tr><td>Size</td><td>long</td><td>// Size of the whole file excluding header // inverted byte order</td></tr>
+<tr><td>Size</td><td>int32</td><td>// Size of the whole file excluding header // big endian byte order</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
-</table></td></tr><table><p>
+</table></td></tr></table><p>
 
-The order of bytes in the Size field is inverted: the first byte is the highest byte, the 4th byte is the lowest byte of the value (this order is normal for Mac, but inverted for PC).
+The order of bytes in the Size field is big endian: the first byte is the highest byte, the 4th byte is the lowest byte of the value (this order is normal for Mac, but inverted for PC).
 <p>
 Then follow a variable number of chunks in format:
 <p>
@@ -128,11 +137,11 @@ Then follow a variable number of chunks in format:
 <tr><th>GMD_Chunk IS</th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
  <tr><td>Type</td><td>char[4]</td><td>	// chunk type</td></tr>
- <tr><td>Size</td><td>long</td><td>// Size of the chunk excluding header // inverted byte order</td></tr>
+ <tr><td>Size</td><td>int32</td><td>// Size of the chunk excluding header // big endian byte order</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
 </table></td></tr></table>
 <p>
-The field Size has the inverted order of bytes - same as the field Size of the file header.
+    The field Size has the big endian order of bytes - same as the field Size of the file header.
 <p>
 The following Chunks are encountered:
 <p>
@@ -147,13 +156,13 @@ Normal MIDI header. Indicates MIDI format 2.
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th>MTHD_CHUNK IS</th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td>Format </td><td> INVERTED_INT</td><td>// always 2 (MIDI2 format)</td></tr>
-<tr><td>NTracks</td><td>INVERTED_INT</td><td>// Number of tracks in the file</td></tr>
-<tr><td>Division</td><td>INVERTED_INT</td><td>// always 1E0h (tempo constant)</td></tr>
+<tr><td>Format </td><td> INVERTED_INT16</td><td>// always 2 (MIDI2 format)</td></tr>
+<tr><td>NTracks</td><td>INVERTED_INT16</td><td>// Number of tracks in the file</td></tr>
+<tr><td>Division</td><td>INVERTED_INT16</td><td>// always 1E0h (tempo constant)</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
 </table></td></tr></table>
 <p>
-<strong>INVERTED_INT </strong>is an <strong>INT</strong> with inverted byte order.
+    <strong>INVERTED_INT16 </strong>is an <strong>int16</strong> with big endian byte order.
 <p>
 <strong>MTrk</strong><br>
 Normal MIDI format 0(2) track data with the exception that "running status" (i.e. if one MIDI event followed by the same MIDI event with different parameters, the MIDI event code can omitted) is not used/supported. You cannot omit MIDI event codes.This basically means that GMD MTrk data are compatible with the MIDI standard, but MTrk from external MIDIs can be (and often are) incompatible with the GMD standard. See SMF (Standard MIDI File) specs for more info on MTrk chunk content.
@@ -190,15 +199,16 @@ The number of parameters may vary. And, actually, the effect of these messages i
 
 <p>
 There are also iMuse messages beginning with 7D 01 whose format is unknown. They seem to have something to do with looping the in-level music.
-<p>
+<p></p>
 
 
 
+<!-- ------------------------------------------------------------------------->
 
-<hr size="2">
+<hr size="2" />
 
 <a name="GMID Res"></a>
-<font size="+1"><strong>GMID Resources (GMD Files) </strong></font><p>
+<h2>GMID Resources (GMD Files) </h2>
 
 Those LFD resources store .GMD general midi files.
 <p>

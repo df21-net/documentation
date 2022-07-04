@@ -26,15 +26,15 @@ of their FME_Header1).
 <tr>
 <th> WAX_Header IS</th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td> Version </td><td> long </td><td> // constant = 0x00100100 </td></tr>
-<tr><td> Nseqs</td><td> long </td><td> // number of SEQUENCES</td></tr>
-<tr><td> Nframes </td><td> long </td><td> // number of FRAMES</td></tr>
-<tr><td> Ncells </td><td> long </td><td> // number of CELLS</td></tr>
-<tr><td> Xscale </td><td> long </td><td> // unused </td></tr>
-<tr><td> Yscale </td><td> long </td><td> // unused </td></tr>
-<tr><td> XtraLight </td><td> long </td><td> // unused</td></tr>
-<tr><td> pad4</td><td> long </td><td> // unused </td></tr>
-<tr><td> WAXES </td><td> long[32]</td><td> // pointers to WAXES // = different actions</td></tr>
+<tr><td> Version </td><td> int32 </td><td> // constant = 0x00100100 </td></tr>
+<tr><td> Nseqs</td><td> int32 </td><td> // number of SEQUENCES</td></tr>
+<tr><td> Nframes </td><td> int32 </td><td> // number of FRAMES</td></tr>
+<tr><td> Ncells </td><td> int32 </td><td> // number of CELLS</td></tr>
+<tr><td> Xscale </td><td> int32 </td><td> // unused </td></tr>
+<tr><td> Yscale </td><td> int32 </td><td> // unused </td></tr>
+<tr><td> XtraLight </td><td> int32 </td><td> // unused</td></tr>
+<tr><td> pad4</td><td> int32 </td><td> // unused </td></tr>
+<tr><td> WAXES </td><td> int32[32]</td><td> // pointers to WAXES // = different actions</td></tr>
 <tr><td> }</td><td></td><td></td></tr>
 </table></td></tr></table>
  
@@ -44,14 +44,14 @@ of their FME_Header1).
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th> WAX IS </th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td> Wwidth </td><td> long</td><td> // World Width </td></tr>
-<tr><td> Wheight</td><td>  long </td><td> // World Height</td></tr>
-<tr><td> FrameRate </td><td> long </td><td> // Frames per second </td></tr>
-<tr><td> Nframes</td><td>  long</td><td>  // unused = 0 </td></tr>
-<tr><td> pad2 </td><td> long </td><td> // unused = 0 </td></tr>
-<tr><td> pad3 </td><td> long </td><td> // unused = 0 </td></tr>
-<tr><td> pad4 </td><td> long</td><td>  // unused = 0 </td></tr>
-<tr><td> SEQS </td><td> long[32] </td><td> // pointers to SEQUENCES // = views from different angles</td></tr>
+<tr><td> Wwidth </td><td> int32</td><td> // World Width </td></tr>
+<tr><td> Wheight</td><td>  int32 </td><td> // World Height</td></tr>
+<tr><td> FrameRate </td><td> int32 </td><td> // Frames per second </td></tr>
+<tr><td> Nframes</td><td>  int32</td><td>  // unused = 0 </td></tr>
+<tr><td> pad2 </td><td> int32 </td><td> // unused = 0 </td></tr>
+<tr><td> pad3 </td><td> int32 </td><td> // unused = 0 </td></tr>
+<tr><td> pad4 </td><td> int32</td><td>  // unused = 0 </td></tr>
+<tr><td> SEQS </td><td> int32[32] </td><td> // pointers to SEQUENCES // = views from different angles</td></tr>
 <tr><td> }</td><td></td><td></td></tr>
 </table></td></tr></table>
  
@@ -61,11 +61,11 @@ define how big the sprite actually appears in-game.</p>
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th> SEQUENCE IS </th><td></td><td></td></tr>
 <tr><td> {</td><td></td><td></td></tr>
-<tr><td> pad1 </td><td> long</td><td>  // unused = 0</td></tr>
-<tr><td> pad2 </td><td>long</td><td> // unused = 0 </td></tr>
-<tr><td> pad3 </td><td> long </td><td> // unused = 0</td></tr>
-<tr><td> pad4 </td><td> long</td><td>  // unused = 0 </td></tr>
-<tr><td> FRAMES</td><td>  long[32] </td><td> // pointers to FRAMES // = the animation frames</td></tr>
+<tr><td> pad1 </td><td> int32</td><td>  // unused = 0</td></tr>
+<tr><td> pad2 </td><td>int32</td><td> // unused = 0 </td></tr>
+<tr><td> pad3 </td><td> int32 </td><td> // unused = 0</td></tr>
+<tr><td> pad4 </td><td> int32</td><td>  // unused = 0 </td></tr>
+<tr><td> FRAMES</td><td>  int32[32] </td><td> // pointers to FRAMES // = the animation frames</td></tr>
 <tr><td> }</td><td></td><td></td></tr>
 </table></td></tr></table>
 
@@ -75,16 +75,16 @@ define how big the sprite actually appears in-game.</p>
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th> FRAME IS </th><td></td><td></td></tr>
 <tr><td> {</td><td></td><td></td></tr>
-<tr><td> InsertX</td><td> long </td><td> // Insertion point, X coordinate // Negative values shift
+<tr><td> InsertX</td><td> int32 </td><td> // Insertion point, X coordinate // Negative values shift
 the cell left// Positive values shift the cell right </td></tr>
-<tr><td> InsertY</td><td> long</td><td> // Insertion point, Y coordinate // Negative values shift
+<tr><td> InsertY</td><td> int32</td><td> // Insertion point, Y coordinate // Negative values shift
 the cell up// Positive values shift the cell down </td></tr>
-<tr><td> Flip</td><td>  long</td><td> // 0 = not flipped // 1 = flipped horizontally </td></tr>
-<tr><td> Cell </td><td> long </td><td> // pointer to CELL// = single picture </td></tr>
-<tr><td> UnitWidth </td><td> long</td><td>  // Unused</td></tr>
-<tr><td> UnitHeight</td><td>  long</td><td>  // Unused</td></tr>
-<tr><td> pad3 </td><td> long</td><td>  // Unused </td></tr>
-<tr><td> pad4</td><td>  long </td><td> // Unused</td></tr>
+<tr><td> Flip</td><td>  int32</td><td> // 0 = not flipped // 1 = flipped horizontally </td></tr>
+<tr><td> Cell </td><td> int32 </td><td> // pointer to CELL// = single picture </td></tr>
+<tr><td> UnitWidth </td><td> int32</td><td>  // Unused</td></tr>
+<tr><td> UnitHeight</td><td>  int32</td><td>  // Unused</td></tr>
+<tr><td> pad3 </td><td> int32</td><td>  // Unused </td></tr>
+<tr><td> pad4</td><td>  int32 </td><td> // Unused</td></tr>
 <tr><td> }</td><td></td><td></td></tr>
 </table></td></tr></table>
 <p><br clear="BOTH">
@@ -93,13 +93,13 @@ the cell up// Positive values shift the cell down </td></tr>
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th> CELL_Header IS</th><td></td><td></td></tr>
 <tr><td> {</td><td></td><td></td></tr>
-<tr><td> SizeX </td><td> long</td><td> // Size of the CELL, X value </td></tr>
-<tr><td> SizeY </td><td> long </td><td> // Size of the CELL, Y value</td></tr>
-<tr><td> Compressed</td><td>  long </td><td> // 0 = not compressed // 1 = compressed</td></tr>
-<tr><td> DataSize </td><td> long </td><td> // Datasize for compressed CELL,// equals length of the
+<tr><td> SizeX </td><td> int32</td><td> // Size of the CELL, X value </td></tr>
+<tr><td> SizeY </td><td> int32 </td><td> // Size of the CELL, Y value</td></tr>
+<tr><td> Compressed</td><td>  int32 </td><td> // 0 = not compressed // 1 = compressed</td></tr>
+<tr><td> DataSize </td><td> int32 </td><td> // Datasize for compressed CELL,// equals length of the
 CELL// If not compressed, DataSize = 0</td></tr>
-<tr><td> ColOffs</td><td>  long </td><td> // Always 0, because columns table // follows just after</td></tr>
-<tr><td> pad1 </td><td> long </td><td> // Unused </td></tr>
+<tr><td> ColOffs</td><td>  int32 </td><td> // Always 0, because columns table // follows just after</td></tr>
+<tr><td> pad1 </td><td> int32 </td><td> // Unused </td></tr>
 <tr><td> }</td><td></td><td></td></tr>
 </table></td></tr><table>
 

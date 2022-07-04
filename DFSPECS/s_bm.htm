@@ -33,14 +33,14 @@ Here is the data structure for the BM file header.
 <tr><th>BM_Header IS</th><th></th><th></th></tr>
 <tr><td>{</td><td></td><td></td></tr>
 <tr><td>MAGIC</td><td>char[4]</td><td>// = 'BM ' + 0x1E</td></tr>
-<tr><td> SizeX </td><td>int</td><td>// if = 1 then multiple BM in the file</td></tr>
-<tr><td>SizeY</td><td>int</td><td>// EXCEPT if SizeY also = 1,// in which case it is a 1x1 BM </td></tr>
-<tr><td>idemX </td><td>int</td><td>//unused by engine</td></tr>
-<tr><td>idemY</td><td>int </td><td>//unused by engine</td></tr>
+<tr><td> SizeX </td><td>int16</td><td>// if = 1 then multiple BM in the file</td></tr>
+<tr><td>SizeY</td><td>int16</td><td>// EXCEPT if SizeY also = 1,// in which case it is a 1x1 BM </td></tr>
+<tr><td>idemX </td><td>int16</td><td>//unused by engine</td></tr>
+<tr><td>idemY</td><td>int16 </td><td>//unused by engine</td></tr>
 <tr><td>Transparent </td><td>byte</td><td>// 0x36 for normal // 0x3E for transparent // 0x08 for weapons</td></tr>
 <tr><td> logSizeY</td><td>byte</td><td>// logSizeY = log2(SizeY)// logSizeY = 0 for weapons</td></tr>
-<tr><td>Compressed</td><td>int </td><td>// 0 = not compressed// 1 = compressed (RLE)// 2 = compressed (RLE0)</td></tr>
-<tr><td>DataSize </td><td>long</td><td>// Data size for compressed BM// excluding header and columns starts table// If not compressed,DataSize is unused
+<tr><td>Compressed</td><td>int16 </td><td>// 0 = not compressed// 1 = compressed (RLE)// 2 = compressed (RLE0)</td></tr>
+<tr><td>DataSize </td><td>int32</td><td>// Data size for compressed BM// excluding header and columns starts table// If not compressed,DataSize is unused
 </td></tr>
 <tr><td> pad1</td><td>byte[12]</td><td>// 12 times 0x00</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
@@ -75,14 +75,14 @@ The header of multiple BMs is different from that of a normal BM.
 <tr><th>BM_Multiple_Header IS</th><td></td><td></td></tr>
 <tr><td>{</td><td></td><td></td></tr>
 <tr><td>MAGIC</td><td>char[4]</td><td>// = 'BM ' + 0x1E </td></tr>
-<tr><td>SizeX</td><td>int</td><td>// = 1</td></tr>
-<tr><td>SizeY</td><td>int</td><td>// = length of file - 32 </td></tr>
-<tr><td>idemX</td><td>int</td><td>// = -2</td></tr>
-<tr><td>idemY</td><td>int</td><td>// number of 'sub' BMs </td></tr>
+<tr><td>SizeX</td><td>int16</td><td>// = 1</td></tr>
+<tr><td>SizeY</td><td>int16</td><td>// = length of file - 32 </td></tr>
+<tr><td>idemX</td><td>int16</td><td>// = -2</td></tr>
+<tr><td>idemY</td><td>int16</td><td>// number of 'sub' BMs </td></tr>
 <tr><td>Transparent</td><td>byte</td><td></td></tr>
 <tr><td>logSizeY</td><td>byte</td><td></td></tr>
-<tr><td>Compressed</td><td>int</td><td></td></tr>
-<tr><td>DataSize</td><td>long</td><td></td></tr>
+<tr><td>Compressed</td><td>int16</td><td></td></tr>
+<tr><td>DataSize</td><td>int32</td><td></td></tr>
 <tr><td>pad1</td><td>byte[12]</td><td>// 12 times 0x00</td></tr>
 <tr><td>}</td><td></td><td></td></tr>
 </table></td></tr></table>
@@ -96,7 +96,7 @@ Straight after the Multiple BM header are two bytes:
 (Note: A switch can only have two textures on or off and anything more will not work.)
 - The second byte is 2.
 <p>
-Then follows a table of offsets to the 'sub' BM composed of idemY long.
+Then follows a table of offsets to the 'sub' BM composed of idemY * int32.
 The simple fact that this table exists tells us that sub BMs of different sizes may be stored.
 
 Each 'sub' BM then has its own header, slightly different from the BM_Header:
@@ -104,11 +104,11 @@ Each 'sub' BM then has its own header, slightly different from the BM_Header:
 <table border="1" cellpadding="5"><tr><td><table>
 <tr><th>BM_SUBHeader IS</th><th></th><th></th></tr>
 <tr><td>{</td><td></td><td></td></tr>
-<tr><td>SizeX</td><td>int</td><td>// horizontal size</td></tr>
-<tr><td>SizeY</td><td>int</td><td>// vertical size</td></tr>
-<tr><td>idemX</td><td>int</td><td>// unused by engine</td></tr>
-<tr><td>idemY</td><td>int</td><td>// unused by engine</td></tr>
-<tr><td>DataSize</td><td>long</td><td>// unused (no compression allowed)</td></tr>
+<tr><td>SizeX</td><td>int16</td><td>// horizontal size</td></tr>
+<tr><td>SizeY</td><td>int16</td><td>// vertical size</td></tr>
+<tr><td>idemX</td><td>int16</td><td>// unused by engine</td></tr>
+<tr><td>idemY</td><td>int16</td><td>// unused by engine</td></tr>
+<tr><td>DataSize</td><td>int32</td><td>// unused (no compression allowed)</td></tr>
 <tr><td>logSizeY</td><td>byte</td><td>// logSizeY = log2(SizeY)</td></tr>
 <tr><td>pad1</td><td>byte[3]</td><td></td></tr>
 <tr><td>u1</td><td>byte[3]</td><td>// these are always filled, but they seem // to be unused</td></tr>
@@ -144,7 +144,7 @@ Note that Multiple BMs don't allow compression. <br>
 (thanks to Alex Novikov for corrections and improvements on these notions).
 <p>
 
-The heart of the data is a columns starts table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one long entry per column containing this column start address.
+The heart of the data is a columns starts table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one int32 entry per column containing this column start address.
 This start address is calculated without the 32 bytes BM header (i.e. read the header in a struct, then the data in a huge buffer at offset 0).
 <p>
 

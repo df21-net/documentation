@@ -22,7 +22,7 @@ They contain a header with a signature, a data part and an index part.
 GOB_Header IS
 {
  GOB_MAGIC        char[4]          // 'GOB' followed by 0x0A
- MASTERX          long             // offset to MASTERN
+ MASTERX          int32             // offset to MASTERN
 }
 <pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
 <p>
@@ -33,7 +33,7 @@ The embedded files follow, then comes the index.
 <table border="1" width="600"><tr><td><pre>
 GOB_Index IS
 {
- MASTERN          long             // number of files in the GOB
+ MASTERN          int32             // number of files in the GOB
  INDEXES          GOB_Ix_Entry[n]  // one index entry per file
 }
 <pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
@@ -45,8 +45,8 @@ Where:
 <table border="1" width="600"><tr><td><pre>
 GOB_Ix_Entry IS
 {
- IX               long             // pointer to start of the file
- LEN              long             // length of the file
+ IX               int32             // pointer to start of the file
+ LEN              int32             // length of the file
  NAME             char[13]         // name of the file, null terminated
 }
 <pre></td></tr></table>   <!-- PRE missing slash is voluntary -->

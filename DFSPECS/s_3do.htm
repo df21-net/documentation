@@ -9,7 +9,7 @@
 <p><a href="df_specs.htm" target="_top"><img src="./images/gototoc.gif" alt="[TOC]"></a>
 <a href="s_wax.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_vue.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
-<font size="+2"><strong> 3DO Files</strong></font></p>
+<h1> 3DO Files</h1>
 <hr align="CENTER" size="2">
 <p>
 
@@ -21,31 +21,32 @@
 
 <p>
 <a name="Gen"></a>
-<strong><font size="+1">General  Description</font></strong>
+<h2>General  Description</h2>
 
 <p>
-They contain the "3D" objects. (samples : MOUSEBOT,
-the DEATH STAR HOLOGRAM, ...) </p>
-
-<p><font size="+0">They are text files containing a geometric description
-of a full 3D object, and are converted from 3D Studio .ASC format. They
-accept # comments. </font></p>
-
-<strong>Note: </strong>"Underscore ("_")  in the 3DO name makes other objects behind it show 
-improperly - they get shown as if they are in front of the object rather 
-than behind it (that excludes other 3DOs with underscore in their names for some reason).
- Underscore somehow changes sorting order, Z-buffering or  some other rendering parameter
- probably giving a benefit in speed. Since the speed isn't really a problem for DF anymore, it's 
-recommended not to use underscore in the names of 3DO files."
-
-
-
-<p><font size="+0">[ by Michael Taylor] </font></p>
-
-
+    They contain the "3D" objects. (samples : MOUSEBOT, the DEATH STAR HOLOGRAM)
+</p>
 
 <p>
-<hr size="2"><a name="fh"></a><b><font size="+1">3DO Format: Header </font></b></p>
+    They are text files containing a geometric description
+    of a full 3D object, and are converted from 3D Studio .ASC format. They
+    accept # comments.
+</p>
+
+<p>
+    <strong>Note: </strong>Underscore ("_")  in the 3DO name makes other objects behind it show
+    improperly - they get shown as if they are in front of the object rather
+    than behind it (that excludes other 3DOs with underscore in their names for some reason).
+    Underscore somehow changes sorting order, Z-buffering or  some other rendering parameter
+    probably giving a benefit in speed on older machines.
+</p>
+
+<p><font size="+0">[by Michael Taylor (adapted)] </font></p>
+
+<hr size="2" />
+
+<a name="fh"></a>
+<h2>3DO Format: Header</h2>
 
 <table border="1" width="600">
 <tr>
@@ -56,14 +57,14 @@ recommended not to use underscore in the names of 3DO files."
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
+<p>
+    Magic and Version Number: this is the word &quot;3DO&quot;
+    followed by a version #, either 1.2, 1.20, or 1.30.
+</p>
 
-<p><font size="+0">Magic and Version Number: this is the word &quot;3DO&quot;
-followed by a version #, either 1.2, 1.20, or 1.30. </font></p>
-
-<p><font size="+0">Next comes several lines of header data.<br>
-Included is the picture name, number of objects in the file, number of
-vertice, number of polygons, palette used, and number of textures. </font></p>
+<p>Next comes several lines of header data.<br>
+Included is the 3DO name, number of objects in the file, total number of
+vertices, total number of polygons, palette used.</p>
 
 <table border="1" width="600">
 <tr>
@@ -78,7 +79,13 @@ vertice, number of polygons, palette used, and number of textures. </font></p>
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
+<p>The palette file doesn't appear to relate to any PAL file
+found in the GOB directory.<br>
+[Could this be the type of rendering (metal, phong, ...) used in 3DS ?
+[Yves]]<br>
+</p>
+
+<p>After the header comes a table of textures that are used.</p>
 
 <table border="1" width="600">
 <tr>
@@ -89,9 +96,7 @@ vertice, number of polygons, palette used, and number of textures. </font></p>
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
-
-<p><font size="+0">or </font></p>
+<p>or </p>
 
 <table border="1" width="600">
 <tr>
@@ -103,32 +108,36 @@ vertice, number of polygons, palette used, and number of textures. </font></p>
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
 
-<p><font size="+0">The palette file doesn't appear to relate to any PAL file
-found in the GOB directory.<br>
-[Could this be the type of rendering (metal, phong, ...) used in 3DS ?
-[Yves]]<br>
-Please note that textures are a little different and will be explained
-below. </font></p>
-
-<p><font size="+0">If any textures are used then below the TEXTURES # line
+<p>If any textures are used then below the TEXTURES # line
 is additional lines defining each texture file. It creates a zero based
-array of textures for later usage by the objects. </font></p>
+array of textures for later usage by the objects.</p>
+
+<!--  ----------------------------------------------------------------------------- -->
+
+<hr size="2" />
+<a name="od"></a>
+    
+<h2>Object Definitions</h2>
+
+<p>[by Michael Taylor (adapted)]</p>
 
 <p>
-<hr size="2"><a name="od"></a><b><font size="+1">Object Definitions </font></b></p>
-
-<p><font size="+0">[ by Michael Taylor] </font></p>
-
-<p><font size="+0">After the header data comes each object's definition.
-Each one starts with an object header and then the data. The object header
-is the word &quot;OBJECT&quot; followed by the object's name in double
-quotes. The object names seem irrelevant provided they are unique within
-the 3DO file. Next is the word &quot;TEXTURE&quot; followed by the texture
-used for this object. If no texture is used then the value of -1 is used
+    After the header data comes each object's definition. A 3DO consists of one or
+    more "object". Each object can have one texture associated with it.
+</p>
+<p>
+    Each one starts with an object header and then the data. The object header
+    is the word &quot;OBJECT&quot; followed by the object's name in double
+    quotes. The object names seem irrelevant provided they are unique within
+    the 3DO file.
+</p>
+    
+<p>
+    Next is the word &quot;TEXTURE&quot; followed by the texture
+used for this object. If no texture is used then the value of -1 is used,
 else an index into the texture table defined in the header data is given.
-</font></p>
+</p>
 
 <table border="1" width="600">
 <tr>
@@ -141,17 +150,15 @@ else an index into the texture table defined in the header data is given.
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
+<p>After the texture information, starts the actual geometric
+description of the object.</p>
 
-<p><font size="+0">After the texture information, starts the actual geometric
-description of the object. </font></p>
-
-<p><font size="+0">First comes the vertices. The initial line is the word
+<p>First comes the vertices. The initial line is the word
 VERTICES followed by the number of vertices defined. Then the vertices
 are listed starting with 0 and going up to the number of vertices listed
 on the VERTICES line. Each vertex is defined by 3 numbers; x, y, and z.
 They represent relative locations on a 3-D graph. They are taken to 3 decimal
-places. </font></p>
+places.</p>
 
 <table border="1" width="600">
 <tr>
@@ -165,63 +172,15 @@ places. </font></p>
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
 
-<p><font size="+0">After the vertex information, comes the polygonal information.
+<p>After the vertex information, comes the polygonal information.
 Each object may be made up of either triangles or quads. The appropriate
 header and number of polygons defined are listed, TRIANGLES for triangles
 and QUADS for quadrilaterals. The polygons are described with a number
 starting at 0, then the vertex number for each end point is given (3 for
 triangles and 4 for quadrilaterals). Then a color is given to each polygon
-(0 to 255). Finally comes the shading used for each polygon. </font></p>
-
-<p><font size="+0"><b>Note</b> that in order to use a texture for a polygon,
-you must set its shading to TEXTURE. </font></p>
-
-<p><font size="+0">[Here is a list and quick explanation of each of the shading
-types: </font></p>
-
-<table border="1" cellpadding="5">
-<tr>
-<td>FLAT</td>
-
-<td>Normal, flat surface</td>
-</tr>
-
-<tr>
-<td>GOURAUD</td>
-
-<td>Gouraud shading on surface</td>
-</tr>
-
-<tr>
-<td>VERTEX</td>
-
-<td>Display only vertexes of polygon (like Death Star holo)</td>
-</tr>
-
-<tr>
-<td>TEXTURE</td>
-
-<td>filled with a texture</td>
-</tr>
-
-<tr>
-<td>GOURTEX</td>
-
-<td>filled with a texture, plus gouraud shading on the texture</td>
-</tr>
-
-<tr>
-<td>PLANE</td>
-
-<td>texture on a horizontal plane (acts same as floor and ceiling textures
--- must be 64*64, affected by flr and ceil txoffsets, and scrolled by elevators
-scroll_floor and scroll_ceiling)</td>
-</tr>
-</table>
-
-<p><font size="+0">- Jereth] </font></p>
+(0 to 255), referencing the currently loaded level's <a href="s_palplt.htm">PAL</a>. Finally comes the 
+shading used for each polygon. </p>
 
 <table border="1" width="600">
 <tr>
@@ -237,49 +196,98 @@ scroll_floor and scroll_ceiling)</td>
 </tr>
 </table>
 
-<p><!-- PRE missing slash is voluntary --></p>
-
-<p><font size="+0">Also note that the vertices are listed in clockwise order
+<p>Also note that the vertices are listed in <em>clockwise</em> order
 if you are facing directly at the polygon.<br>
 [This simplifies hidden lines/surfaces algorithm, as you may determine
-the facet orientation with 3 of them [Yves]] </font></p>
+the facet orientation with 3 of them [Yves]] </p>
 
-<p><font size="+0">[end of Michael's section] </font></p>
+<p><b>Note</b> that in order to use a texture for a polygon,
+you must set its shading to TEXTURE. </p>
+
+<p>[end of Michael's section]</p>
+
+
+<h3>Shading types</h3>
+
+<table border="1" cellpadding="5">
+<tr>
+<td>FLAT</td>
+
+<td>Normal, flat surface filled uniformly with the designated color</td>
+</tr>
+
+<tr>
+<td>GOURAUD</td>
+
+<td>As for FLAT, but with gouraud shading</td>
+</tr>
+
+<tr>
+<td>VERTEX</td>
+
+<td>Draw only vertexes of polygon (like Death Star holo), remainder will not be drawn</td>
+</tr>
+
+<tr>
+<td>TEXTURE</td>
+
+<td>Texture mapped</td>
+</tr>
+
+<tr>
+<td>GOURTEX</td>
+
+<td>Texture mapped plus gouraud shading</td>
+</tr>
+
+<tr>
+<td>PLANE</td>
+
+<td>Texture on a horizontal plane. Rendered the same as floor and ceiling textures
+-- must be 64*64, affected by flr and ceil txoffsets, and scrolled by elevators
+scroll_floor and scroll_ceiling</td>
+</tr>
+</table>
+
+<!--  ----------------------------------------------------------------------------- -->
+
+<h3>Texture mapping</h3>
 
 <p><font size="+0">Here is a description of TEXTURE VERTICES and TEXTURE
 QUADS/TRIANGLES, which Michael didn't fully cover. </font></p>
 
 <p><font size="+0">If textures are used (TEXTURE, GOURTEX or PLANE shading),
-then texture vertices and texture triangles/quads also needed to be defined.
+then texture vertices and texture triangles/quads also need to be defined.
 </font></p>
 
-<p><font size="+0"><b>TEXTURE VERTICES:</b> </font></p>
-
-<p><font size="+0">These are a set of points defined on an X-Y plane, where
-X and Y coordinate values are &gt;=0 and &lt;= 1. These points define relative
-positions on the texture being used for the current object, eg. for a 16
-x 8 texture, the following </font></p>
-
-<table border="1" cellpadding="5">
-<tr>
-<th>TEXTURE VERTICE</th><td></td><td></td><td></td></tr>
-<tr><td>| #</td><td>num:</td><td>(x)</td><td>(y)</td></tr>
-<tr><td>|</td><td>0:</td><td>0.5</td><td>0.25</td></tr>
-</table>
+<h4>TEXTURE VERTICES:</h4>
 
 <p>
-<font size="+0">....defines a point on the texture at (8, 2) in geometry
-units, or (64, 8) in pixels. </font></p>
+    Each texture vertex is a U-V coordinate on the texture which is being mapped to the current 
+    object. Values are between 0.000 and 1.000 where (0,0) is the bottom left corner of the texture
+    and (1,1) is the top-right corner of the texture.
+</p>
 
-<p><font size="+0"><b>TEXTURE QUADS / TEXTURE TRIANGLES:<br>
-<br>
-</b>These link texture vertices into a 3 or 4 sided polygon, hence deciding
-which portion of the texture is to be placed on the polygon. For example,
-if you have an 16 x 8 texture, and the following 4 
-</font></p>
+<h4>TEXTURE QUADS / TEXTURE TRIANGLES:</h4>
+<p>
+    These link texture vertices into a 3 or 4 sided polygon, hence designating
+    which portion of the texture is to be mapped onto the polygon. The texture polygons
+    correspond to the previously defined object polygons. TEXTURE TRIANGLE 0 maps to 
+    TRIANGLE 0; TEXTURE TRIANGLE 1 maps to TRIANGLE 1; and so on.
+</p>
+<p>
+    
+    For example,
+    if you have an 16 x 8 texture <br/>
+    <img src="images\3dotex00.png" />
+</p>
+
+<p>
+    with the following 4 texture vertices
+</p>
 
 <table border="1" cellpadding="5">
-<tr><th>TEXTURE VERTICES:</th><td></td><td></td></tr>
+<tr><th>TEXTURE VERTICES:</th></tr>
 <tr><td>| 0:</td><td>0.00</td><td>0.00</td></tr>
 <tr><td>| 1:</td><td>0.00</td><td>0.50</td></tr>
 <tr><td>| 2:</td><td>1.00</td><td>0.50</td></tr>
@@ -287,37 +295,50 @@ if you have an 16 x 8 texture, and the following 4
 </table>
 
 <p>
-<font size="+0">and the following 
+and the following texture quad
 <p>
 
 
 <table border="1" cellpadding="5">
-<tr><th>TEXTURE QUAD:</th><th></th></tr>
-<tr><td>| 0:</td><td>0</td><td>1</td><td>2</td><td>	3</td><td></td></tr>
+<tr><th>TEXTURE QUAD:</th></tr>
+<tr><td>| 0:</td><td>0</td><td>1</td><td>2</td><td>	3</td></tr>
 </table>
-<p>
 
-   
-                                ....the bottom half of the texture will be placed onto QUAD 0 of the object (i.e. up to an X value of 16, but only up to a Y value of 4) with the first vertice of the TEXTURE QUAD being placed on the first vertice of the QUAD, the second vertice on the second, and so on. So you can also orientate the portion of texture on the polygon any way you want by keeping the TEXTURE VERTICES pointed to in the same order, but varying the starting vertice, flip it by reversing the order of TEXTURE VERTICES pointed to, or even deform the texture by varying the order of the TEXTURE VERTICES pointed to.
 <p>
-  
- <table border="1" cellpadding="5">
-<tr><td>   |         1: </td><td> 2 </td><td> 1 </td><td> 0   </td><td> 3</td></tr>
-</table>
-  <p>
-In this example, the texture will be flipped horizontally, and be on its side relative to TEXTURE QUAD 0 (the first example).
+    ...the bottom half of the texture will be mapped onto QUAD 0 of the object with the first
+    vertex of the TEXTURE QUAD mapping to the first vertex of the QUAD, the second vertex on the
+    second, and so on. <br />
+    <img src="images\3dotex01.png" />
+</p>
 
-  <p>
-  
-Of course, this section of the texture will need to be scaled to cover the whole polygon, so if the polygon is, say, a 64 by 32 rectangular QUAD, the texture will be expanded by a factor of 4 for the above example. If the polygon doesn't have dimensions of the same ratio as the portion of texture, the texture portion will be warped, eg. if the polygon for the above example is shaped like a regular trapezium, the top part of the texture will be squashed and the bottom part stretched.
-  <p>
-It is okay to point to the same texture vertices over and over again if you for example want to put the same section of a texture on more than one polygon in the object.
-  
 <p>
-<strong>Note: </strong>TEXTURE VERTICES and TEXTURE QUADS / TRIANGLES are also needed for PLANE fill, although you can't decide what part of a texture is to be placed on a PLANE polygon. Hence the TEXTURE VERTICES pointed to by the TEXTURE QUAD / TRIANGLE are unused.
-<p>
+    You can orientate the portion of texture on the polygon differently by shifting the sequence of the texture vertices
+    (eg. 2,3,0,1 instead of 0,1,2,3 represents a rotation of 180 degrees). You can flip the texture by reversing the order of texture vertices 
+    (eg. 3,2,1,0). You can even deform the texture by varying the order of the texture vertices
+    (eg. 0,2,1,3).
+</p>
   
-TEXTURE QUADS / TRIANGLES correspond with the polygons (having TEXTURE, GOURTEX or PLANE fill) that they are linked to. So if QUAD 0 and 2 of an object have a texture fill, but QUAD 1 is just gouraud or flat or otherwise, then TEXTURE QUAD 0 and 2 will be used, but TEXTURE QUAD 1 must also be defined even though it isn't used. So to be economical, you should have all polygons filled with a texture defined first within each object of the 3DO file.
+
 <p>
+    The mapped section of the texture will be scaled and stretched by the game engine to cover 
+    the whole polygon face.
+</p>
+
+<p>
+    Texture vertices can be re-used as many times as you want, for example, if you wish to map
+    the same section of a texture to multiple polygons.
+</p>
+
+<p>
+    <strong>Note: </strong>TEXTURE VERTICES and TEXTURE QUADS / TRIANGLES are also defined for PLANE 
+    fill, but the game engine <em>ignores</em> the values. Polygons with PLANE shading will have the selected texture
+    rendered on them as a repeating (tiled) 64x64 image exactly like a sector floor or ceiling. The texture will always
+    be rendered on the horizontal (X-Z) plane, therefore for a correct appearance the 3DO's polygons must
+    remain oriented parallel to the X-Z plane. (Rotating the 3DO with a VUE, for instance, will cause
+    strange looking results...)
+</p>
+
+<br />
+<br />
 </body>
 </html>

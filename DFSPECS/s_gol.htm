@@ -8,40 +8,69 @@
 <a href="s_inf.htm"><img src="./images/gotoprev.gif" alt="[Prev]"></a>
 <a href="s_o.htm"><img src="./images/gotonext.gif" alt="[Next]"></a>
 
-<font size="+2"><strong> GOL Files</strong></font>
+<h1> GOL Files</h1>
 <p>
 
-<hr size="2">
+<hr size="2" />
 
-<a name="ge"></a><font size="+1"><strong>General Description </strong></font><p>
+<a name="ge"></a>
+<h3>General Description </h3>
 
-GOL files control the functioning of the objective screen in the PDA. They contain a list of mission goals which are shown to be completed in the objective screen when they are fired. Note that the objective screen is an <a href="./s_anim.htm">ANIM</a> in DFBRIEF.LFD. It is composed of a number of DELTs (with yellow text) which are overlaid on the first embedded DELT (which has green text) as goals are completed.
 <p>
+    GOL files control the functioning of the objective screen in the PDA. They contain a list 
+    of mission goals which are shown to be completed in the objective screen when they are 
+    fired. 
+</p>
+<p>
+    The objective screen is an <a href="./s_anim.htm">ANIM</a> in <a href="s_dfbrf.htm">DFBRIEF.LFD</a>. 
+    It is composed of a number of DELTs (with yellow text) which are overlaid on the first embedded DELT (which has green text) as goals are completed.
+</p>
 
 <table border="1" width="600"><tr><td><pre>
-| GOL 1.0
-| GOAL: 0       ITEM:   5       # DT weapon
-| GOAL: 1       TRIG:   1
-<pre></td></tr></table>   <!-- PRE missing slash is voluntary -->
+/* TALAY.GOL */
+
+GOL 1.0
+  GOAL: 0 	TRIG:   0
+  GOAL: 1       ITEM:   5	# DT weapon
+  GOAL: 2       TRIG:   1       # Return to your ship for immediate evacuation.</pre>
+</td></tr></table>
 <p>
 
-Each GOAL: can be a TRIG: -- a goal trigger, or an ITEM: -- a goal item.
-<p>
+<table>
+    <tr>
+        <td><img src="images/gol000.png" /></td>
+    </tr>
+    <tr>
+        <td><img src="images/gol001.png" /></td>
+        <td><img src="images/gol002.png" /></td>
+        <td><img src="images/gol003.png" /></td>
+    </tr>
+</table>
 
-<strong>Goal triggers</strong>
-<p>
-These are goals that are fired by the .INF file when a "<a href="./s_inf.htm#msg_cmplt">complete</a>" message is sent. The message will fire the appropriate goal in the GOL file.
-<p>
 
-For instance,  "message: [stop] [recipient] complete 1" will say that "TRIG: 1" is complete!
 <p>
+    Each GOAL: can be<br /> 
+    a TRIG: -- a goal trigger<br/> 
+    an ITEM: -- a goal item.
+</p>
 
-<strong>Goal Items </strong>
+<h3>Goal triggers</h3>
+<p>
+    These are goals that are fired by the .INF file when a "<a href="./s_inf.htm#msg_cmplt">complete</a>" message is sent. 
+</p>
+<p>
+    The parameter (a number) sent with the message fires the corresponding goal in the GOL file.
+</p>
+<p>
+For instance,  <pre>message: [stop] [recipient] complete 3</pre> will fire the goal "TRIG: 3".
+</p>
+
+<h3>Goal Items </h3>
 <p>
 These are goals which are fired when you pick up a goal item. The logics of the goal items fire an internal message to the GOL when the item is picked up.
 
 <p>
-Each goal item has a num of its own:
+Each goal item has a num of its own, which is hardcoded:
 <p>
 <table border="1" cellpadding="5">
 <tr><th>Goal item</th><th>Description</th><th>Num</th></tr>
@@ -53,24 +82,62 @@ Each goal item has a num of its own:
 <tr><td>LOGIC: PILE</td><td>Your Gear</td><td>6</td></tr>
 </table>
 <p>
-For instance, picking up a broken DT weapon will say that "ITEM: 5" is complete!
+For instance, picking up a DT_WEAPON will fire the "ITEM: 5" goal.
 Notice this implies that you can only use one of each goal item in each level.
 <p>
 
-<strong>Note: </strong><br>the goal items will also move an elevator called "complete" to its next stop when picked up.
-<p>
-<strong>Managing Goals</strong>
-
+<strong>Note: </strong>
+    <br />The goal items will also move an elevator named "complete" to its next stop when picked up.
 <p>
 
-The best way to handle goals is to use elevator "complete" only for mission goal/completion handling. It should have a number of "hold" stops and a final "complete" stop. Each goal you accomplish will move elevator "complete" one stop forward, until accomplishing the final goal moves it onto its "complete" stop, completing the level. Goal triggers will move elevator "complete" if the "complete" message is sent to elevator "complete" (because the "complete" message also moves its recipient to its next stop). Goal items automatically move elevator "complete" when they are picked up, as mentioned above.
+<hr size="2" />
+
+<h3>Managing Goals</h3>
 
 <p>
-Don't get confused with the 3 different "completes" ! One is a message, one is the name of an elevator, and one is a stop option just like "hold".
+    The best way to handle goals is to use an inaccessible (dummy) elevator named "complete" only for mission goal/completion management. 
+    It should have a number of "hold" stops and a final "complete" stop. Each goal you accomplish will move elevator
+    "complete" one stop forward, until accomplishing the final goal moves it onto its "complete" stop, completing 
+    the level. 
+</p>
+
+<table border="1" width="600">
+    <tr>
+        <td>
+            <pre>
+/* INF file */
+
+item: sector name: complete
+ seq
+   class: elevator move_floor
+     stop: 0 hold           
+     stop: 1 hold           /* first goal done */
+     stop: 2 hold           /* second goal done */
+     ......
+     stop: 10 complete      /* final goal done, mission complete */
+ seqend
+</pre>
+        </td>
+    </tr>
+</table>
 
 <p>
-Final note: don't assume the goals will happen in the .GOL order ! Ordering completion of goals is something you need to do yourself as part of your level design !<p>
+    The following INF message will move the <strong>complete</strong> elevator to its next stop,
+    in addition to firing the GOL file.
 
+    <pre>message: [stopnum] complete complete [goalnum]</pre>
+    
+     Goal items automatically move the <strong>complete</strong> elevator when they are picked up, as mentioned above.
+</p>
+<p>
+Don't get confused with the 3 different "complete" keywords ! One is a message, one is the name of an elevator, and one is a stop option just like "hold".
+</p>
+<p>
+
+<p>
+    <strong>Final note: </strong>Goals do <em>not</em> need to happen in the order listed in the GOL file! You
+    may create a level where the player can complete the goals in any order.
+</p>
 <hr size="2">
 <p>
 

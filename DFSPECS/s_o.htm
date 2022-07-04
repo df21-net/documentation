@@ -160,11 +160,14 @@ CLASS is the type of object, and DATA is the offset in the corresponding object 
 (SPIRIT and SAFE have DATA = 0).
 <p>
 
-X, Y, Z are trivial.
+X, Y, Z are the position of the object in the level. 
+	This is the same coordinate system as found in the LEV file. 
+	The Y coordinate is "flipped" as in the LEV file (positive is down, negative is up).
 <p>
 
-PCH, YAW, ROL are classic spatial orientation, but only YAW is really used (DOOM equivalent is THING orientation). It takes a value in degrees where 0 is at the "top of the screen when you look at the map". The 
-value increases clockwise.
+PCH, YAW, ROL are classic spatial orientation. Values are in degrees.
+	For YAW, 0 is north and the value increases clockwise (90 degrees is east).
+	PCH (pitch) and ROL (roll) are only relevant for 3DOs. They have no effect on sprites and other objects.
 <p>
 
 DIFF is the difficulty level at which the object appears.
@@ -180,26 +183,37 @@ DIFF is the difficulty level at which the object appears.
  <tr><td>2 </td><td>  </td><td>X </td><td>X </td></tr>
  <tr><td>3 </td><td>  </td><td>  </td><td>X </td></tr>
 </table>
-<p>
+<p></p>
 
 <hr size="2">
 
 <a name="ff_obd_sl"></a>
 <font size="+1"><strong>Sequences and Logics </strong></font><p>
 
-SEQ and SEQEND are delimiters for a series of options/modifiers to apply to the object<br>
+SEQ and SEQEND are delimiters for a series of properties/modifiers to apply to the object 
  which determine its behavior.
 <p>
-The basic thing that all entities will have is a LOGIC: that controls it (eg. for an enemy, tells it what direction to walk in, when to shoot and so on). <p>
-Logics are hardcoded in DARK.EXE and also determine things like how fast an enemy moves, how it attacks, how strong it is, what sounds it makes, what weapon it drops when it dies etc.<p> In addition, logics will control what the sprite appears to be doing (i.e. what frames in the WAX that are shown).<p>
+The basic thing that most entities will have is a LOGIC: that controls it. 
+<p>
+Logics are hardcoded in DARK.EXE. For enemies, they determine its AI, eg. what weapon it uses, its health
+and intelligence, what sounds it makes.
+<p> In addition, logics are important for controlling how frames are displayed from a WAX file.
+<p></p>
 
 
 <a href="#ol"> See Full Logics List</a>
 <p>
 
 
-<strong> ( LOGIC: )</strong>.<br>
-The same viewable file may be used to create 'different' objects.<p> For instance, OFFCFIN.WAX may be used with a LOGIC: I_OFFICER or LOGIC: I_OFFICERR (note the second 'R') which will generate a red key then killed instead of the usual ammo clip. <p>Or you can use it with LOGIC: STORM1 and although the enemy will appear like an officer, it will behave as a stormtrooper, take as many shots to kill as a stormtrooper etc.
+<strong> LOGIC alternatives and interchanging </strong><br />
+The same sprite may be used with different logics provided they are compatible.
+<p> 
+	For instance, OFFCFIN.WAX may be used with a 
+	LOGIC: I_OFFICER or LOGIC: I_OFFICERB which will generate a blue key when killed instead of the usual 
+	ammo clip. 
+<p>
+Or you can use OFFCFIN.WAX with LOGIC: STORM1 and although the enemy will appear like an officer, it will 
+	behave as a stormtrooper.
 
 <p>
 
@@ -210,7 +224,12 @@ The keywords TYPE: and LOGIC: are freely exchangeable, and the ITEM keyword is o
 <p>
 
 If you combine enemy logics, the first LOGIC: is in this case the primary logic, which means that to kill the object, <br>you have to use the firepower needed to kill its first LOGIC: .<p>Very strange things may happen when combining LOGICs, and some combinations don't work, or even don't work every time!
-Try Mousebot + Barrel, or Player + Mousebot...<br>
+Try Mousebot + Barrel, or Player + Mousebot...<br/>
+
+<p>
+	LOGIC: ANIM is designed to be safely combined with many items and scenery objects.
+</p>
+
 
 <hr size="2">
 
@@ -280,6 +299,8 @@ and activate it by sending a "master_on" message to the sector that contains it.
 <p>
 
 
+<hr size="2">
+
 
 <a name="ol"></a><font size="+1"><strong>All Objects Logics </strong></font><p>
 
@@ -303,7 +324,7 @@ These should always be used together. Technically though, the LOGIC: PLAYER is t
 Remember that you can use ITEM keyword before these logics.<br>
 Message is the message number from TEXT.MSG that is displayed when you pick up the item <br>(just in case you want to patch).<p>
 
-<table border="1CELLPADDING=5" cellspacing="3">
+<table border="1" CELLPADDING=5" cellspacing="3">
 <tr><th>Logic:Description:</th><th>Message:</th><th>Message: #</th></tr>
 <tr><th>General</th><td></td><td></td></tr>
 <tr><td>LOGIC: SHIELD</td><td>20 shield units </td><td>114</td></tr>
@@ -499,22 +520,22 @@ When you kill the enemy, an elevator called "boss" will move to its next stop <b
 <tr><td width="80"><strong>RADIUS:</strong></td><td>[horizontal distance]
 </td></tr>
 </table><br>
-This defines the size of an invisible circle around the object where the PLAYER cannot enter or shoot through. Frames and sprites have radiuses by default, but 3D objects don't, so you have to set one unless you want the PLAYER to walk right through. You can use this with a Spirit to create an invisible obstacle.
+	This defines the radius of the object's cylindrical "hit box". Frames and sprites have collision detection
+	by default, but 3D objects don't, so you have to set one if you want the object to seem "solid". 
+	You can use this with a Spirit to create an invisible obstacle.
+<p>
+	<br>
+
+	<table border="0">
+		<tr><td width="100"><strong>HEIGHT:</strong></td><td>[vertical distance]</td></tr>
+	</table>
+	<br>
+	Similar to radius, height defines the vertical size of the object's "hit box". A positive value is up and a 
+	negative value is down, relative to the object's origin. Using radius and height together, an object will have 
+	a cylinder-shaped hit box for the purpose of collision detection.
 <p>
 <br>
-
- <table border="0">
-<tr><td width="100"><strong>HEIGHT:</strong></td><td>[vertical distance]</td></tr>
-</table>
-<br>
-
-Similar to radius, height defines an area above (positive value) or below (negative value) an object where you can't walk or fire through. Therefore, using radius and height together, you can effectively create an impenetrable cylinder-shaped area around an object.
-<p>
-<br>
-
-
-A further note:<br>
-	RADIUS and HEIGHT, if used with objects having a logic, will also affect how the logic interacts with the player. If used with items, they determine the distance Kyle has to be from the item to pick it up. If used with enemies and "LOGIC: SCENERY", they determine the distance from the enemy that laser bolts etc. have to come within to damage the enemy.
+	RADIUS and HEIGHT can be used with items and enemies to increase their default "hit box" size.
 <p>
 <br>
 
